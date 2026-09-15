@@ -1,0 +1,24 @@
+# dependencies / build
+node_modules/
+dist/
+*.tsbuildinfo
+.turbo/
+
+# runtime state (pieces, project.json, generated packs, history) — never committed
+data/
+# docker dev stack state (server data, plugins, Blockshop data)
+stack/
+
+# local config and scratch
+.env
+.env.*
+tmp/
+coverage/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+!.env.example
+# plugin build output
+plugin/target/

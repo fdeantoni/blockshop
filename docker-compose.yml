@@ -1,0 +1,59 @@
+# Development stack: the server from docs/server-setup.md (Paper + Geyser + Floodgate + CraftEngine) with Blockshop
+# built from this checkout; deploy/docker-compose.yml is the same with the published image. State lives under
+# ./stack/. Variables come from ./.env (see .env.example). First start: README.md, "Develop".
+services:
+  mc:
+    image: itzg/minecraft-server:java25-alpine
+    container_name: mc
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    environment:
+      EULA: "true"
+      TYPE: "PAPER"
+      VERSION: "26.2"
+      MAX_MEMORY: 2G
+      USE_AIKAR_FLAGS: "true"
+      # Everyone builds in creative; FORCE_GAMEMODE also switches players who joined earlier in another mode.
+      MODE: creative
+      FORCE_GAMEMODE: "true"
+      # Vanilla spawn protection blocks non-op players from building within 16 blocks of the world spawn.
+      SPAWN_PROTECTION: "0"
+      # Fixed password so Blockshop can reach RCON over the compose network (itzg generates a random one otherwise).
+      RCON_PASSWORD: ${RCON_PASSWORD:-blockshop-dev}
+      PLUGINS: |
+        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+        https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
+      # CraftEngine publishes every build as "beta" on Modrinth; without :beta the resolver finds no release.
+      MODRINTH_PROJECTS: |
+        craftengine:beta
+    ports:
+      - "25565:25565"
+      - "19132:19132/udp"
+    volumes:
+      - ./stack/mc-data:/data
+
+  blockshop:
+    build: .
+    image: ghcr.io/fdeantoni/blockshop:dev
+    container_name: blockshop
+    restart: unless-stopped
+    depends_on:
+      - mc
+    # Root here, so the restart command can use the Docker socket. The image sets the in-container paths
+    # (plugins, logs, data) and JAVA_DEPLOY=on; only what differs from those defaults is listed.
+    environment:
+      HOST_URL: ${BLOCKSHOP_HOST_URL:-http://localhost:8081}
+      UI_TITLE: ${BLOCKSHOP_UI_TITLE:-Blockshop}
+      LOG_LEVEL: ${BLOCKSHOP_LOG_LEVEL:-info}
+      JAVA_DEPLOY: ${BLOCKSHOP_JAVA_DEPLOY:-on}
+      RCON_PASSWORD: ${RCON_PASSWORD:-blockshop-dev}
+      # Runs only when an update needs a restart (new furniture); needs the socket mount below. Empty: restart by hand.
+      JAVA_RESTART_COMMAND: ${BLOCKSHOP_RESTART_COMMAND-docker restart mc}
+    ports:
+      - "${BLOCKSHOP_PORT:-8081}:8081"
+    volumes:
+      - ./stack/blockshop:/blockshop/data
+      - ./stack/mc-data/plugins:/mc/plugins
+      - ./stack/mc-data/logs:/mc/logs:ro
+      - /var/run/docker.sock:/var/run/docker.sock

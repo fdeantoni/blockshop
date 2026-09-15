@@ -1,0 +1,17 @@
+name: BlockshopCatalog
+version: 0.3.1
+main: family.blockshop.catalog.CatalogPlugin
+api-version: '1.21'
+description: Furniture menu for the family server. Bedrock players get a native form, Java players CraftEngine's browser.
+author: Blockshop
+softdepend: [floodgate, CraftEngine]
+commands:
+  catalog:
+    description: Open the furniture menu; /cat <1-9> puts the catalog item in that hotbar slot
+    usage: /cat [1-9]
+    aliases: [cat]
+    permission: blockshop.catalog
+permissions:
+  blockshop.catalog:
+    description: Open the furniture menu
+    default: true

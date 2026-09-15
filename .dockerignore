@@ -1,0 +1,14 @@
+node_modules
+packages/*/node_modules
+packages/*/dist
+packages/*/*.tsbuildinfo
+data
+stack
+tmp
+coverage
+.git
+.github
+.env
+.env.*
+!.env.example
+plugin/target

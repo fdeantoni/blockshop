@@ -1,0 +1,44 @@
+# A Minecraft server for Java and Bedrock players, with Blockshop next to it. Setup: docs/server-setup.md.
+# Put RCON_PASSWORD in a .env file next to this one.
+services:
+  mc:
+    image: itzg/minecraft-server:java25-alpine
+    restart: unless-stopped
+    environment:
+      EULA: "true"
+      TYPE: PAPER
+      VERSION: "26.2"
+      MODE: creative
+      # Lets players who are not operators build near the world spawn.
+      SPAWN_PROTECTION: "0"
+      # Blockshop reloads the plugins over RCON; without a fixed password the image picks a random one.
+      RCON_PASSWORD: ${RCON_PASSWORD:?set RCON_PASSWORD in the .env file}
+      # Geyser lets Bedrock players join; Floodgate lets them join without a Java account.
+      PLUGINS: |
+        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+        https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
+      # CraftEngine shows the furniture. Every CraftEngine build on Modrinth is tagged beta, hence the suffix.
+      MODRINTH_PROJECTS: |
+        craftengine:beta
+    ports:
+      - "25565:25565"          # Java
+      - "19132:19132/udp"      # Bedrock
+    volumes:
+      - ./data:/data
+
+  blockshop:
+    image: ghcr.io/fdeantoni/blockshop:0.3.1
+    restart: unless-stopped
+    depends_on:
+      - mc
+    # The server's user and group (the itzg default), so files Blockshop writes into plugins/ belong to the server.
+    user: "1000:1000"
+    environment:
+      HOST_URL: http://192.168.1.20:8081      # change: this computer's address as other devices reach it
+      RCON_PASSWORD: ${RCON_PASSWORD:?set RCON_PASSWORD in the .env file}
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./blockshop:/blockshop/data           # profiles, pieces and pack history
+      - ./data/plugins:/mc/plugins            # where the furniture goes
+      - ./data/logs:/mc/logs:ro               # lets Blockshop notice that the server restarted

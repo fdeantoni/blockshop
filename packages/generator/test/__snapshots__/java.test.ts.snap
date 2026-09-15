@@ -1,0 +1,6665 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildServerPack > all fixtures for family plus a table for Alex: snapshot of the full tree 1`] = `
+{
+  "catalog/pieces.json": "{
+  "version": "1.0.3",
+  "catalogItem": "blockshop:catalog",
+  "ui": {
+    "title": "Furniture",
+    "chooseGroup": "Whose furniture?",
+    "content": "Tap a piece to get it.",
+    "back": "◀ Back",
+    "empty": "No furniture yet. Build some in Blockshop!",
+    "given": "%name% is in your hand. Tap the ground to place it!",
+    "failed": "Could not give %name%. Ask a grown-up to check the server.",
+    "tooFar": "Too far away! Walk closer and tap the ground.",
+    "full": "Your inventory is full, so there is no room for the catalog. Free a slot!",
+    "pinned": "The catalog is in slot %slot%. Tap it to open the furniture menu.",
+    "usage": "/cat opens the furniture menu. /cat 1-9 puts the catalog in that slot."
+  },
+  "groups": [
+    {
+      "id": "alex",
+      "name": "Alex's Furniture",
+      "pieces": [
+        {
+          "id": "table",
+          "item": "alex:table",
+          "name": "Tafel",
+          "icon": "textures/items/alex_table"
+        }
+      ]
+    },
+    {
+      "id": "family",
+      "name": "Family Furniture",
+      "pieces": [
+        {
+          "id": "chair_asym",
+          "item": "family:chair_asym",
+          "name": "Stoel",
+          "icon": "textures/items/family_chair_asym"
+        },
+        {
+          "id": "full_cube",
+          "item": "family:full_cube",
+          "name": "Steenblok",
+          "icon": "textures/items/family_full_cube"
+        },
+        {
+          "id": "glass_cabinet",
+          "item": "family:glass_cabinet",
+          "name": "Vitrinekast",
+          "icon": "textures/items/family_glass_cabinet"
+        },
+        {
+          "id": "single_voxel",
+          "item": "family:single_voxel",
+          "name": "Blokje",
+          "icon": "textures/items/family_single_voxel"
+        },
+        {
+          "id": "table",
+          "item": "family:table",
+          "name": "Tafel",
+          "icon": "textures/items/family_table"
+        }
+      ]
+    }
+  ]
+}
+",
+  "craftengine/configuration/blockshop.json": "{
+  "items": {
+    "alex:table": {
+      "material": "paper",
+      "item_model": "alex:table",
+      "model": "alex:block/table",
+      "data": {
+        "item_name": "<!i>Tafel"
+      },
+      "behavior": {
+        "type": "block_item",
+        "block": {
+          "states": {
+            "properties": {
+              "facing": {
+                "type": "horizontal_direction",
+                "default": "south"
+              }
+            },
+            "appearances": {
+              "north": {
+                "state": "minecraft:azalea_leaves[distance=1,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "alex:block/table",
+                  "y": 180
+                }
+              },
+              "east": {
+                "state": "minecraft:azalea_leaves[distance=2,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "alex:block/table",
+                  "y": 270
+                }
+              },
+              "south": {
+                "state": "minecraft:azalea_leaves[distance=3,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "alex:block/table",
+                  "y": 0
+                }
+              },
+              "west": {
+                "state": "minecraft:azalea_leaves[distance=4,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "alex:block/table",
+                  "y": 90
+                }
+              }
+            },
+            "variants": {
+              "facing=north": {
+                "appearance": "north"
+              },
+              "facing=east": {
+                "appearance": "east"
+              },
+              "facing=south": {
+                "appearance": "south"
+              },
+              "facing=west": {
+                "appearance": "west"
+              }
+            }
+          },
+          "settings": {
+            "hardness": 0.6,
+            "resistance": 2,
+            "sounds": {
+              "break": "minecraft:block.wood.break",
+              "step": "minecraft:block.wood.step",
+              "place": "minecraft:block.wood.place",
+              "hit": "minecraft:block.wood.hit",
+              "fall": "minecraft:block.wood.fall"
+            },
+            "item": "alex:table",
+            "tags": [
+              "minecraft:mineable/axe"
+            ]
+          },
+          "loot": {
+            "template": "default:loot_table/self"
+          }
+        }
+      }
+    },
+    "family:chair_asym": {
+      "material": "paper",
+      "item_model": "family:chair_asym",
+      "model": "family:block/chair_asym",
+      "data": {
+        "item_name": "<!i>Stoel"
+      },
+      "behavior": {
+        "type": "block_item",
+        "block": {
+          "states": {
+            "properties": {
+              "facing": {
+                "type": "horizontal_direction",
+                "default": "south"
+              }
+            },
+            "appearances": {
+              "north": {
+                "state": "minecraft:azalea_leaves[distance=5,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/chair_asym",
+                  "y": 180
+                }
+              },
+              "east": {
+                "state": "minecraft:azalea_leaves[distance=6,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/chair_asym",
+                  "y": 270
+                }
+              },
+              "south": {
+                "state": "minecraft:azalea_leaves[distance=7,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/chair_asym",
+                  "y": 0
+                }
+              },
+              "west": {
+                "state": "minecraft:azalea_leaves[distance=1,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/chair_asym",
+                  "y": 90
+                }
+              }
+            },
+            "variants": {
+              "facing=north": {
+                "appearance": "north"
+              },
+              "facing=east": {
+                "appearance": "east"
+              },
+              "facing=south": {
+                "appearance": "south"
+              },
+              "facing=west": {
+                "appearance": "west"
+              }
+            }
+          },
+          "settings": {
+            "hardness": 0.6,
+            "resistance": 2,
+            "sounds": {
+              "break": "minecraft:block.wood.break",
+              "step": "minecraft:block.wood.step",
+              "place": "minecraft:block.wood.place",
+              "hit": "minecraft:block.wood.hit",
+              "fall": "minecraft:block.wood.fall"
+            },
+            "item": "family:chair_asym",
+            "tags": [
+              "minecraft:mineable/axe"
+            ]
+          },
+          "loot": {
+            "template": "default:loot_table/self"
+          },
+          "behavior": {
+            "type": "seat_block",
+            "seats": [
+              "0,0.3125,0"
+            ]
+          }
+        }
+      }
+    },
+    "family:full_cube": {
+      "material": "paper",
+      "item_model": "family:full_cube",
+      "model": "family:block/full_cube",
+      "data": {
+        "item_name": "<!i>Steenblok"
+      },
+      "behavior": {
+        "type": "block_item",
+        "block": {
+          "states": {
+            "properties": {
+              "facing": {
+                "type": "horizontal_direction",
+                "default": "south"
+              }
+            },
+            "appearances": {
+              "north": {
+                "state": "minecraft:azalea_leaves[distance=2,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/full_cube",
+                  "y": 180
+                }
+              },
+              "east": {
+                "state": "minecraft:azalea_leaves[distance=3,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/full_cube",
+                  "y": 270
+                }
+              },
+              "south": {
+                "state": "minecraft:azalea_leaves[distance=4,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/full_cube",
+                  "y": 0
+                }
+              },
+              "west": {
+                "state": "minecraft:azalea_leaves[distance=5,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/full_cube",
+                  "y": 90
+                }
+              }
+            },
+            "variants": {
+              "facing=north": {
+                "appearance": "north"
+              },
+              "facing=east": {
+                "appearance": "east"
+              },
+              "facing=south": {
+                "appearance": "south"
+              },
+              "facing=west": {
+                "appearance": "west"
+              }
+            }
+          },
+          "settings": {
+            "hardness": 0.6,
+            "resistance": 2,
+            "sounds": {
+              "break": "minecraft:block.stone.break",
+              "step": "minecraft:block.stone.step",
+              "place": "minecraft:block.stone.place",
+              "hit": "minecraft:block.stone.hit",
+              "fall": "minecraft:block.stone.fall"
+            },
+            "item": "family:full_cube",
+            "tags": [
+              "minecraft:mineable/pickaxe"
+            ]
+          },
+          "loot": {
+            "template": "default:loot_table/self"
+          }
+        }
+      }
+    },
+    "family:glass_cabinet": {
+      "material": "paper",
+      "item_model": "family:glass_cabinet",
+      "model": "family:block/glass_cabinet",
+      "data": {
+        "item_name": "<!i>Vitrinekast"
+      },
+      "behavior": {
+        "type": "block_item",
+        "block": {
+          "states": {
+            "properties": {
+              "facing": {
+                "type": "horizontal_direction",
+                "default": "south"
+              }
+            },
+            "appearances": {
+              "north": {
+                "state": "minecraft:azalea_leaves[distance=6,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/glass_cabinet",
+                  "y": 180
+                }
+              },
+              "east": {
+                "state": "minecraft:flowering_azalea_leaves[distance=1,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/glass_cabinet",
+                  "y": 270
+                }
+              },
+              "south": {
+                "state": "minecraft:flowering_azalea_leaves[distance=2,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/glass_cabinet",
+                  "y": 0
+                }
+              },
+              "west": {
+                "state": "minecraft:flowering_azalea_leaves[distance=3,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/glass_cabinet",
+                  "y": 90
+                }
+              }
+            },
+            "variants": {
+              "facing=north": {
+                "appearance": "north"
+              },
+              "facing=east": {
+                "appearance": "east"
+              },
+              "facing=south": {
+                "appearance": "south"
+              },
+              "facing=west": {
+                "appearance": "west"
+              }
+            }
+          },
+          "settings": {
+            "hardness": 0.6,
+            "resistance": 2,
+            "sounds": {
+              "break": "minecraft:block.wood.break",
+              "step": "minecraft:block.wood.step",
+              "place": "minecraft:block.wood.place",
+              "hit": "minecraft:block.wood.hit",
+              "fall": "minecraft:block.wood.fall"
+            },
+            "item": "family:glass_cabinet",
+            "tags": [
+              "minecraft:mineable/axe"
+            ],
+            "luminance": 7
+          },
+          "loot": {
+            "template": "default:loot_table/self"
+          }
+        }
+      }
+    },
+    "family:single_voxel": {
+      "material": "paper",
+      "item_model": "family:single_voxel",
+      "model": "family:block/single_voxel",
+      "data": {
+        "item_name": "<!i>Blokje"
+      },
+      "behavior": {
+        "type": "block_item",
+        "block": {
+          "states": {
+            "properties": {
+              "facing": {
+                "type": "horizontal_direction",
+                "default": "south"
+              }
+            },
+            "appearances": {
+              "north": {
+                "state": "minecraft:flowering_azalea_leaves[distance=4,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/single_voxel",
+                  "y": 180
+                }
+              },
+              "east": {
+                "state": "minecraft:flowering_azalea_leaves[distance=5,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/single_voxel",
+                  "y": 270
+                }
+              },
+              "south": {
+                "state": "minecraft:flowering_azalea_leaves[distance=6,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/single_voxel",
+                  "y": 0
+                }
+              },
+              "west": {
+                "state": "minecraft:flowering_azalea_leaves[distance=7,persistent=false,waterlogged=false]",
+                "model": {
+                  "path": "family:block/single_voxel",
+                  "y": 90
+                }
+              }
+            },
+            "variants": {
+              "facing=north": {
+                "appearance": "north"
+              },
+              "facing=east": {
+                "appearance": "east"
+              },
+              "facing=south": {
+                "appearance": "south"
+              },
+              "facing=west": {
+                "appearance": "west"
+              }
+            }
+          },
+          "settings": {
+            "hardness": 0.6,
+            "resistance": 2,
+            "sounds": {
+              "break": "minecraft:block.wool.break",
+              "step": "minecraft:block.wool.step",
+              "place": "minecraft:block.wool.place",
+              "hit": "minecraft:block.wool.hit",
+              "fall": "minecraft:block.wool.fall"
+            },
+            "item": "family:single_voxel"
+          },
+          "loot": {
+            "template": "default:loot_table/self"
+          }
+        }
+      }
+    },
+    "family:table": {
+      "material": "paper",
+      "item_model": "family:table",
+      "model": "family:block/table",
+      "data": {
+        "item_name": "<!i>Tafel"
+      },
+      "behavior": {
+        "type": "block_item",
+        "block": {
+          "states": {
+            "properties": {
+              "facing": {
+                "type": "horizontal_direction",
+                "default": "south"
+              }
+            },
+            "appearances": {
+              "north": {
+                "state": "minecraft:flowering_azalea_leaves[distance=1,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/table",
+                  "y": 180
+                }
+              },
+              "east": {
+                "state": "minecraft:flowering_azalea_leaves[distance=2,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/table",
+                  "y": 270
+                }
+              },
+              "south": {
+                "state": "minecraft:flowering_azalea_leaves[distance=3,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/table",
+                  "y": 0
+                }
+              },
+              "west": {
+                "state": "minecraft:flowering_azalea_leaves[distance=4,persistent=true,waterlogged=false]",
+                "model": {
+                  "path": "family:block/table",
+                  "y": 90
+                }
+              }
+            },
+            "variants": {
+              "facing=north": {
+                "appearance": "north"
+              },
+              "facing=east": {
+                "appearance": "east"
+              },
+              "facing=south": {
+                "appearance": "south"
+              },
+              "facing=west": {
+                "appearance": "west"
+              }
+            }
+          },
+          "settings": {
+            "hardness": 0.6,
+            "resistance": 2,
+            "sounds": {
+              "break": "minecraft:block.wood.break",
+              "step": "minecraft:block.wood.step",
+              "place": "minecraft:block.wood.place",
+              "hit": "minecraft:block.wood.hit",
+              "fall": "minecraft:block.wood.fall"
+            },
+            "item": "family:table",
+            "tags": [
+              "minecraft:mineable/axe"
+            ]
+          },
+          "loot": {
+            "template": "default:loot_table/self"
+          }
+        }
+      }
+    },
+    "blockshop:catalog": {
+      "material": "paper",
+      "item_model": "blockshop:catalog",
+      "texture": "blockshop:item/catalog",
+      "data": {
+        "item_name": "<!i>Furniture catalog",
+        "max_stack_size": 1
+      },
+      "events": [
+        {
+          "on": "right_click",
+          "functions": [
+            {
+              "type": "command",
+              "command": "ce item browser <arg:player.name>"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "categories": {
+    "alex:furniture": {
+      "name": "<!i>Alex's Furniture",
+      "icon": "alex:table",
+      "priority": 0,
+      "source": {
+        "type": "list",
+        "list": [
+          "alex:table"
+        ]
+      }
+    },
+    "family:furniture": {
+      "name": "<!i>Family Furniture",
+      "icon": "family:chair_asym",
+      "priority": 1,
+      "source": {
+        "type": "list",
+        "list": [
+          "family:chair_asym",
+          "family:full_cube",
+          "family:glass_cabinet",
+          "family:single_voxel",
+          "family:table"
+        ]
+      }
+    }
+  }
+}
+",
+  "craftengine/pack.yml": "# Generated by Blockshop (family server export v1.0.3); every update replaces this folder. Do not edit by hand.
+author: Blockshop
+version: "1.0.3"
+description: "Blockshop server export v1.0.3 - 6 pieces"
+namespace: blockshop
+",
+  "craftengine/resourcepack/assets/alex/models/block/table.json": "{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "alex:block/alex_oak",
+    "oak": "alex:block/alex_oak",
+    "dark_wood": "alex:block/alex_dark_wood"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        3,
+        6,
+        3
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        6,
+        3
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        0,
+        13
+      ],
+      "to": [
+        3,
+        6,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        0,
+        13
+      ],
+      "to": [
+        14,
+        6,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        6,
+        1
+      ],
+      "to": [
+        15,
+        7,
+        15
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            14,
+            14
+          ],
+          "texture": "#oak"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            14,
+            14
+          ],
+          "texture": "#oak"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        }
+      }
+    }
+  ]
+}
+",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_black.png": "sha256:204e3085b163e9a250c742ba8c8a13f1dc0c24b7c76443fbc488ca510710f095 (82 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_blue.png": "sha256:9366054b4b4c874d6cc6b316a2da1c80a211bfb82d92a7db1d1e084ef0f8412e (82 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_dark_wood.png": "sha256:5995814d97339fe8ce7198be83a2fbe65f96d4defbb6420850861b384c17601f (82 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_glass.png": "sha256:3cabffb4bd15d0d666b48a2562e06e54b7dbb7543977f7d59ac6d2dc24f81192 (83 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_green.png": "sha256:e115bdc3b2a933e2862b296b258077b2fc9d13d98e4f7f515c300714c774d252 (82 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_oak.png": "sha256:547f1b3b3857a857fc8a3967bdbe1a65fab13625928ac7e60bf14501bd884a46 (83 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_red.png": "sha256:321136c59c35d7cc69c280ada47a6d10820388ae7d0f7d8119ad7717fd1e6e97 (82 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_stone.png": "sha256:8afc9cb0e46be8347433188dcacedbc95b8424a0f3e21a837d120dc47f2a4f59 (82 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_white.png": "sha256:e1dfc330a39d48abc0f1330ab9f05adc63326ef3e7f3c8dcd126bc7e931fbcba (83 bytes)",
+  "craftengine/resourcepack/assets/alex/textures/block/alex_yellow.png": "sha256:1fb72c881d969d22bc865b4d7c00306a1f72d5c49fd02709cb58d3cac4192c8e (83 bytes)",
+  "craftengine/resourcepack/assets/blockshop/textures/item/catalog.png": "sha256:95d0a7cb9d68c50be21f57a32be96711086b1b1242c9ccb58771f5aa4c193bd4 (128 bytes)",
+  "craftengine/resourcepack/assets/family/models/block/chair_asym.json": "{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "family:block/family_dark_wood",
+    "dark_wood": "family:block/family_dark_wood",
+    "oak": "family:block/family_oak",
+    "red": "family:block/family_red"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        5,
+        4,
+        5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        4,
+        5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        0,
+        11
+      ],
+      "to": [
+        5,
+        4,
+        12
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        0,
+        11
+      ],
+      "to": [
+        12,
+        4,
+        12
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            4
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        4,
+        4
+      ],
+      "to": [
+        12,
+        5,
+        12
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#oak"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#oak"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#oak"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        5,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        5
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            7
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            7
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            7
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            7
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        5,
+        5
+      ],
+      "to": [
+        11,
+        6,
+        12
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            7
+          ],
+          "texture": "#red"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#red"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            7,
+            1
+          ],
+          "texture": "#red"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        5,
+        5
+      ],
+      "to": [
+        12,
+        8,
+        12
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            7
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            7,
+            3
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            7,
+            3
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    }
+  ]
+}
+",
+  "craftengine/resourcepack/assets/family/models/block/full_cube.json": "{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "family:block/family_stone",
+    "stone": "family:block/family_stone"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        }
+      }
+    }
+  ]
+}
+",
+  "craftengine/resourcepack/assets/family/models/block/glass_cabinet.json": "{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "family:block/family_dark_wood",
+    "dark_wood": "family:block/family_dark_wood",
+    "glass": "family:block/family_glass",
+    "oak": "family:block/family_oak"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        5
+      ],
+      "to": [
+        13,
+        1,
+        11
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            10,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            10,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            10,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            10,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        1,
+        5
+      ],
+      "to": [
+        13,
+        14,
+        6
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            10,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            10,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            10,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            13
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        1,
+        6
+      ],
+      "to": [
+        4,
+        14,
+        11
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            5,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            5,
+            13
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        12,
+        1,
+        6
+      ],
+      "to": [
+        13,
+        14,
+        11
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            5,
+            13
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            5,
+            13
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        1,
+        10
+      ],
+      "to": [
+        12,
+        13,
+        11
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            12
+          ],
+          "texture": "#glass"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            12
+          ],
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        6,
+        6
+      ],
+      "to": [
+        12,
+        7,
+        10
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "texture": "#oak"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            4
+          ],
+          "texture": "#oak"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#oak"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        13,
+        6
+      ],
+      "to": [
+        12,
+        14,
+        11
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            5
+          ],
+          "texture": "#dark_wood"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            5
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    }
+  ]
+}
+",
+  "craftengine/resourcepack/assets/family/models/block/single_voxel.json": "{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "family:block/family_red",
+    "red": "family:block/family_red"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        8,
+        1,
+        8
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#red"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#red"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#red"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#red"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#red"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#red"
+        }
+      }
+    }
+  ]
+}
+",
+  "craftengine/resourcepack/assets/family/models/block/table.json": "{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "family:block/family_oak",
+    "oak": "family:block/family_oak",
+    "dark_wood": "family:block/family_dark_wood"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        3,
+        6,
+        3
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        6,
+        3
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        0,
+        13
+      ],
+      "to": [
+        3,
+        6,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        0,
+        13
+      ],
+      "to": [
+        14,
+        6,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#dark_wood"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ],
+          "texture": "#dark_wood"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        6,
+        1
+      ],
+      "to": [
+        15,
+        7,
+        15
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            14,
+            14
+          ],
+          "texture": "#oak"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            14,
+            14
+          ],
+          "texture": "#oak"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            14,
+            1
+          ],
+          "texture": "#oak"
+        }
+      }
+    }
+  ]
+}
+",
+  "craftengine/resourcepack/assets/family/textures/block/family_black.png": "sha256:204e3085b163e9a250c742ba8c8a13f1dc0c24b7c76443fbc488ca510710f095 (82 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_blue.png": "sha256:9366054b4b4c874d6cc6b316a2da1c80a211bfb82d92a7db1d1e084ef0f8412e (82 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_dark_wood.png": "sha256:5995814d97339fe8ce7198be83a2fbe65f96d4defbb6420850861b384c17601f (82 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_glass.png": "sha256:3cabffb4bd15d0d666b48a2562e06e54b7dbb7543977f7d59ac6d2dc24f81192 (83 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_green.png": "sha256:e115bdc3b2a933e2862b296b258077b2fc9d13d98e4f7f515c300714c774d252 (82 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_oak.png": "sha256:547f1b3b3857a857fc8a3967bdbe1a65fab13625928ac7e60bf14501bd884a46 (83 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_red.png": "sha256:321136c59c35d7cc69c280ada47a6d10820388ae7d0f7d8119ad7717fd1e6e97 (82 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_stone.png": "sha256:8afc9cb0e46be8347433188dcacedbc95b8424a0f3e21a837d120dc47f2a4f59 (82 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_white.png": "sha256:e1dfc330a39d48abc0f1330ab9f05adc63326ef3e7f3c8dcd126bc7e931fbcba (83 bytes)",
+  "craftengine/resourcepack/assets/family/textures/block/family_yellow.png": "sha256:1fb72c881d969d22bc865b4d7c00306a1f72d5c49fd02709cb58d3cac4192c8e (83 bytes)",
+  "geyser/custom_mappings/blockshop_blocks.json": "{
+  "format_version": 1,
+  "blocks": {
+    "minecraft:azalea_leaves": {
+      "name": "blockshop_azalea_leaves",
+      "included_in_creative_inventory": false,
+      "only_override_states": true,
+      "state_overrides": {
+        "distance=1,persistent=false,waterlogged=false": {
+          "geometry": "geometry.alex.table",
+          "material_instances": {
+            "*": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "alex_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "alex_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "alex_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "alex_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "alex_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "alex_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "alex_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "alex_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "alex_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=1,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.chair_asym",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=2,persistent=false,waterlogged=false": {
+          "geometry": "geometry.alex.table",
+          "material_instances": {
+            "*": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "alex_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "alex_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "alex_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "alex_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "alex_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "alex_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "alex_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "alex_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "alex_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=2,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.full_cube",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=3,persistent=false,waterlogged=false": {
+          "geometry": "geometry.alex.table",
+          "material_instances": {
+            "*": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "alex_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "alex_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "alex_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "alex_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "alex_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "alex_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "alex_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "alex_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "alex_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=3,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.full_cube",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=4,persistent=false,waterlogged=false": {
+          "geometry": "geometry.alex.table",
+          "material_instances": {
+            "*": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "alex_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "alex_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "alex_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "alex_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "alex_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "alex_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "alex_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "alex_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "alex_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "alex_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=4,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.full_cube",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=5,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.chair_asym",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=5,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.full_cube",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=6,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.chair_asym",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=6,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.glass_cabinet",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "blend"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "blend"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "blend"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "blend"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "blend"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "blend"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "blend"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "blend"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "blend"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6,
+          "light_emission": 7
+        },
+        "distance=7,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.chair_asym",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        }
+      }
+    },
+    "minecraft:flowering_azalea_leaves": {
+      "name": "blockshop_flowering_azalea_leaves",
+      "included_in_creative_inventory": false,
+      "only_override_states": true,
+      "state_overrides": {
+        "distance=1,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.glass_cabinet",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "blend"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "blend"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "blend"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "blend"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "blend"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "blend"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "blend"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "blend"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "blend"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6,
+          "light_emission": 7
+        },
+        "distance=1,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.table",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=2,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.glass_cabinet",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "blend"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "blend"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "blend"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "blend"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "blend"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "blend"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "blend"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "blend"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "blend"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6,
+          "light_emission": 7
+        },
+        "distance=2,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.table",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=3,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.glass_cabinet",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "blend"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "blend"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "blend"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "blend"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "blend"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "blend"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "blend"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "blend"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "blend"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "blend"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6,
+          "light_emission": 7
+        },
+        "distance=3,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.table",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=4,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.single_voxel",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=4,persistent=true,waterlogged=false": {
+          "geometry": "geometry.family.table",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=5,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.single_voxel",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=6,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.single_voxel",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        },
+        "distance=7,persistent=false,waterlogged=false": {
+          "geometry": "geometry.family.single_voxel",
+          "material_instances": {
+            "*": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "oak": {
+              "texture": "family_oak",
+              "render_method": "opaque"
+            },
+            "dark_wood": {
+              "texture": "family_dark_wood",
+              "render_method": "opaque"
+            },
+            "white": {
+              "texture": "family_white",
+              "render_method": "opaque"
+            },
+            "red": {
+              "texture": "family_red",
+              "render_method": "opaque"
+            },
+            "blue": {
+              "texture": "family_blue",
+              "render_method": "opaque"
+            },
+            "green": {
+              "texture": "family_green",
+              "render_method": "opaque"
+            },
+            "yellow": {
+              "texture": "family_yellow",
+              "render_method": "opaque"
+            },
+            "black": {
+              "texture": "family_black",
+              "render_method": "opaque"
+            },
+            "glass": {
+              "texture": "family_glass",
+              "render_method": "opaque"
+            },
+            "stone": {
+              "texture": "family_stone",
+              "render_method": "opaque"
+            }
+          },
+          "collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              16
+            ]
+          },
+          "transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          },
+          "destructible_by_mining": 0.6
+        }
+      }
+    }
+  }
+}
+",
+  "geyser/custom_mappings/blockshop_items.json": "{
+  "format_version": 2,
+  "items": {
+    "minecraft:paper": [
+      {
+        "type": "definition",
+        "model": "alex:table",
+        "bedrock_identifier": "alex:table",
+        "display_name": "Tafel",
+        "bedrock_options": {
+          "icon": "alex_table"
+        }
+      },
+      {
+        "type": "definition",
+        "model": "family:chair_asym",
+        "bedrock_identifier": "family:chair_asym",
+        "display_name": "Stoel",
+        "bedrock_options": {
+          "icon": "family_chair_asym"
+        }
+      },
+      {
+        "type": "definition",
+        "model": "family:full_cube",
+        "bedrock_identifier": "family:full_cube",
+        "display_name": "Steenblok",
+        "bedrock_options": {
+          "icon": "family_full_cube"
+        }
+      },
+      {
+        "type": "definition",
+        "model": "family:glass_cabinet",
+        "bedrock_identifier": "family:glass_cabinet",
+        "display_name": "Vitrinekast",
+        "bedrock_options": {
+          "icon": "family_glass_cabinet"
+        }
+      },
+      {
+        "type": "definition",
+        "model": "family:single_voxel",
+        "bedrock_identifier": "family:single_voxel",
+        "display_name": "Blokje",
+        "bedrock_options": {
+          "icon": "family_single_voxel"
+        }
+      },
+      {
+        "type": "definition",
+        "model": "family:table",
+        "bedrock_identifier": "family:table",
+        "display_name": "Tafel",
+        "bedrock_options": {
+          "icon": "family_table"
+        }
+      },
+      {
+        "type": "definition",
+        "model": "blockshop:catalog",
+        "bedrock_identifier": "blockshop:catalog",
+        "display_name": "Furniture catalog",
+        "bedrock_options": {
+          "icon": "blockshop_catalog"
+        }
+      }
+    ]
+  }
+}
+",
+  "geyser_rp/alex/manifest.json": "{
+  "format_version": 2,
+  "header": {
+    "name": "Alex's Furniture (server)",
+    "description": "Blockshop server export v1.0.3 · 1 piece · served by Geyser",
+    "uuid": "2ff25ada-96bb-50cd-9f4f-b672be562d6c",
+    "version": [
+      1,
+      0,
+      3
+    ],
+    "min_engine_version": [
+      1,
+      26,
+      30
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "a35c0aca-227f-5a6b-823d-5f4b0c25adf9",
+      "version": [
+        1,
+        0,
+        3
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/alex/models/blocks/alex_table.geo.json": "{
+  "format_version": "1.16.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.alex.table",
+        "texture_width": 16,
+        "texture_height": 16,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                5,
+                0,
+                -6
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -6,
+                0,
+                -6
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                5,
+                0,
+                5
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -6,
+                0,
+                5
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -7,
+                6,
+                -7
+              ],
+              "size": [
+                14,
+                1,
+                14
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    14
+                  ],
+                  "material_instance": "oak"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    14
+                  ],
+                  "material_instance": "oak"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/alex/pack_icon.png": "sha256:3d35a805133799ea3720e3df8eff3c2f33e1c96bb0c153622fa472c6d7ad1254 (1238 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_black.png": "sha256:204e3085b163e9a250c742ba8c8a13f1dc0c24b7c76443fbc488ca510710f095 (82 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_blue.png": "sha256:9366054b4b4c874d6cc6b316a2da1c80a211bfb82d92a7db1d1e084ef0f8412e (82 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_dark_wood.png": "sha256:5995814d97339fe8ce7198be83a2fbe65f96d4defbb6420850861b384c17601f (82 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_glass.png": "sha256:3cabffb4bd15d0d666b48a2562e06e54b7dbb7543977f7d59ac6d2dc24f81192 (83 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_green.png": "sha256:e115bdc3b2a933e2862b296b258077b2fc9d13d98e4f7f515c300714c774d252 (82 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_oak.png": "sha256:547f1b3b3857a857fc8a3967bdbe1a65fab13625928ac7e60bf14501bd884a46 (83 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_red.png": "sha256:321136c59c35d7cc69c280ada47a6d10820388ae7d0f7d8119ad7717fd1e6e97 (82 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_stone.png": "sha256:8afc9cb0e46be8347433188dcacedbc95b8424a0f3e21a837d120dc47f2a4f59 (82 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_white.png": "sha256:e1dfc330a39d48abc0f1330ab9f05adc63326ef3e7f3c8dcd126bc7e931fbcba (83 bytes)",
+  "geyser_rp/alex/textures/blocks/alex_yellow.png": "sha256:1fb72c881d969d22bc865b4d7c00306a1f72d5c49fd02709cb58d3cac4192c8e (83 bytes)",
+  "geyser_rp/alex/textures/item_texture.json": "{
+  "resource_pack_name": "Alex's Furniture",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "alex_table": {
+      "textures": "textures/items/alex_table"
+    },
+    "blockshop_catalog": {
+      "textures": "textures/items/blockshop_catalog"
+    }
+  }
+}
+",
+  "geyser_rp/alex/textures/items/alex_table.png": "sha256:547f1b3b3857a857fc8a3967bdbe1a65fab13625928ac7e60bf14501bd884a46 (83 bytes)",
+  "geyser_rp/alex/textures/items/blockshop_catalog.png": "sha256:95d0a7cb9d68c50be21f57a32be96711086b1b1242c9ccb58771f5aa4c193bd4 (128 bytes)",
+  "geyser_rp/alex/textures/terrain_texture.json": "{
+  "resource_pack_name": "Alex's Furniture",
+  "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
+  "texture_data": {
+    "alex_oak": {
+      "textures": [
+        "textures/blocks/alex_oak"
+      ]
+    },
+    "alex_dark_wood": {
+      "textures": [
+        "textures/blocks/alex_dark_wood"
+      ]
+    },
+    "alex_white": {
+      "textures": [
+        "textures/blocks/alex_white"
+      ]
+    },
+    "alex_red": {
+      "textures": [
+        "textures/blocks/alex_red"
+      ]
+    },
+    "alex_blue": {
+      "textures": [
+        "textures/blocks/alex_blue"
+      ]
+    },
+    "alex_green": {
+      "textures": [
+        "textures/blocks/alex_green"
+      ]
+    },
+    "alex_yellow": {
+      "textures": [
+        "textures/blocks/alex_yellow"
+      ]
+    },
+    "alex_black": {
+      "textures": [
+        "textures/blocks/alex_black"
+      ]
+    },
+    "alex_glass": {
+      "textures": [
+        "textures/blocks/alex_glass"
+      ]
+    },
+    "alex_stone": {
+      "textures": [
+        "textures/blocks/alex_stone"
+      ]
+    }
+  }
+}
+",
+  "geyser_rp/family/manifest.json": "{
+  "format_version": 2,
+  "header": {
+    "name": "Family Furniture (server)",
+    "description": "Blockshop server export v1.0.3 · 5 pieces · served by Geyser",
+    "uuid": "295f2e47-8d2b-5ff5-b2fc-afdd75071193",
+    "version": [
+      1,
+      0,
+      3
+    ],
+    "min_engine_version": [
+      1,
+      26,
+      30
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "85fdafe5-d9b2-5e36-8a0c-440acbb7d509",
+      "version": [
+        1,
+        0,
+        3
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/family/models/blocks/family_chair_asym.geo.json": "{
+  "format_version": "1.16.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.family.chair_asym",
+        "texture_width": 16,
+        "texture_height": 16,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                3,
+                0,
+                -4
+              ],
+              "size": [
+                1,
+                4,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                0,
+                -4
+              ],
+              "size": [
+                1,
+                4,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                3,
+                0,
+                3
+              ],
+              "size": [
+                1,
+                4,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                0,
+                3
+              ],
+              "size": [
+                1,
+                4,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    4
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                4,
+                -4
+              ],
+              "size": [
+                8,
+                1,
+                8
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    8
+                  ],
+                  "material_instance": "oak"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    8
+                  ],
+                  "material_instance": "oak"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "oak"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                5,
+                -4
+              ],
+              "size": [
+                8,
+                7,
+                1
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    7
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    7
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    7
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    7
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -3,
+                5,
+                -3
+              ],
+              "size": [
+                6,
+                1,
+                7
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    6,
+                    7
+                  ],
+                  "material_instance": "red"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    6,
+                    1
+                  ],
+                  "material_instance": "red"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    7,
+                    1
+                  ],
+                  "material_instance": "red"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                5,
+                -3
+              ],
+              "size": [
+                1,
+                3,
+                7
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    7
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    3
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    7,
+                    3
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    7,
+                    3
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/family/models/blocks/family_full_cube.geo.json": "{
+  "format_version": "1.16.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.family.full_cube",
+        "texture_width": 16,
+        "texture_height": 16,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -8,
+                0,
+                -8
+              ],
+              "size": [
+                16,
+                16,
+                16
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    16,
+                    16
+                  ],
+                  "material_instance": "stone"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    16,
+                    16
+                  ],
+                  "material_instance": "stone"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    16,
+                    16
+                  ],
+                  "material_instance": "stone"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    16,
+                    16
+                  ],
+                  "material_instance": "stone"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    16,
+                    16
+                  ],
+                  "material_instance": "stone"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    16,
+                    16
+                  ],
+                  "material_instance": "stone"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/family/models/blocks/family_glass_cabinet.geo.json": "{
+  "format_version": "1.16.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.family.glass_cabinet",
+        "texture_width": 16,
+        "texture_height": 16,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                0,
+                -3
+              ],
+              "size": [
+                10,
+                1,
+                6
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    6,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    6,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -5,
+                1,
+                -3
+              ],
+              "size": [
+                10,
+                13,
+                1
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    10,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                4,
+                1,
+                -2
+              ],
+              "size": [
+                1,
+                13,
+                5
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    5
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    5,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    5,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -5,
+                1,
+                -2
+              ],
+              "size": [
+                1,
+                13,
+                5
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    5
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    5,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    5,
+                    13
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                1,
+                2
+              ],
+              "size": [
+                8,
+                12,
+                1
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    12
+                  ],
+                  "material_instance": "glass"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    12
+                  ],
+                  "material_instance": "glass"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                6,
+                -2
+              ],
+              "size": [
+                8,
+                1,
+                4
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    4
+                  ],
+                  "material_instance": "oak"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    4
+                  ],
+                  "material_instance": "oak"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "oak"
+                }
+              }
+            },
+            {
+              "origin": [
+                -4,
+                13,
+                -2
+              ],
+              "size": [
+                8,
+                1,
+                5
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    5
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    5
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    8,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/family/models/blocks/family_single_voxel.geo.json": "{
+  "format_version": "1.16.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.family.single_voxel",
+        "texture_width": 16,
+        "texture_height": 16,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                0,
+                -1
+              ],
+              "size": [
+                1,
+                1,
+                1
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "red"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "red"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "red"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "red"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "red"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "red"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/family/models/blocks/family_table.geo.json": "{
+  "format_version": "1.16.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.family.table",
+        "texture_width": 16,
+        "texture_height": 16,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                5,
+                0,
+                -6
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -6,
+                0,
+                -6
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                5,
+                0,
+                5
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -6,
+                0,
+                5
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": {
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    1
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    1,
+                    6
+                  ],
+                  "material_instance": "dark_wood"
+                }
+              }
+            },
+            {
+              "origin": [
+                -7,
+                6,
+                -7
+              ],
+              "size": [
+                14,
+                1,
+                14
+              ],
+              "uv": {
+                "up": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    14
+                  ],
+                  "material_instance": "oak"
+                },
+                "down": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    14
+                  ],
+                  "material_instance": "oak"
+                },
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "south": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "west": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                },
+                "east": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    14,
+                    1
+                  ],
+                  "material_instance": "oak"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",
+  "geyser_rp/family/pack_icon.png": "sha256:3d35a805133799ea3720e3df8eff3c2f33e1c96bb0c153622fa472c6d7ad1254 (1238 bytes)",
+  "geyser_rp/family/textures/blocks/family_black.png": "sha256:204e3085b163e9a250c742ba8c8a13f1dc0c24b7c76443fbc488ca510710f095 (82 bytes)",
+  "geyser_rp/family/textures/blocks/family_blue.png": "sha256:9366054b4b4c874d6cc6b316a2da1c80a211bfb82d92a7db1d1e084ef0f8412e (82 bytes)",
+  "geyser_rp/family/textures/blocks/family_dark_wood.png": "sha256:5995814d97339fe8ce7198be83a2fbe65f96d4defbb6420850861b384c17601f (82 bytes)",
+  "geyser_rp/family/textures/blocks/family_glass.png": "sha256:3cabffb4bd15d0d666b48a2562e06e54b7dbb7543977f7d59ac6d2dc24f81192 (83 bytes)",
+  "geyser_rp/family/textures/blocks/family_green.png": "sha256:e115bdc3b2a933e2862b296b258077b2fc9d13d98e4f7f515c300714c774d252 (82 bytes)",
+  "geyser_rp/family/textures/blocks/family_oak.png": "sha256:547f1b3b3857a857fc8a3967bdbe1a65fab13625928ac7e60bf14501bd884a46 (83 bytes)",
+  "geyser_rp/family/textures/blocks/family_red.png": "sha256:321136c59c35d7cc69c280ada47a6d10820388ae7d0f7d8119ad7717fd1e6e97 (82 bytes)",
+  "geyser_rp/family/textures/blocks/family_stone.png": "sha256:8afc9cb0e46be8347433188dcacedbc95b8424a0f3e21a837d120dc47f2a4f59 (82 bytes)",
+  "geyser_rp/family/textures/blocks/family_white.png": "sha256:e1dfc330a39d48abc0f1330ab9f05adc63326ef3e7f3c8dcd126bc7e931fbcba (83 bytes)",
+  "geyser_rp/family/textures/blocks/family_yellow.png": "sha256:1fb72c881d969d22bc865b4d7c00306a1f72d5c49fd02709cb58d3cac4192c8e (83 bytes)",
+  "geyser_rp/family/textures/item_texture.json": "{
+  "resource_pack_name": "Family Furniture",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "family_chair_asym": {
+      "textures": "textures/items/family_chair_asym"
+    },
+    "family_full_cube": {
+      "textures": "textures/items/family_full_cube"
+    },
+    "family_glass_cabinet": {
+      "textures": "textures/items/family_glass_cabinet"
+    },
+    "family_single_voxel": {
+      "textures": "textures/items/family_single_voxel"
+    },
+    "family_table": {
+      "textures": "textures/items/family_table"
+    },
+    "blockshop_catalog": {
+      "textures": "textures/items/blockshop_catalog"
+    }
+  }
+}
+",
+  "geyser_rp/family/textures/items/blockshop_catalog.png": "sha256:95d0a7cb9d68c50be21f57a32be96711086b1b1242c9ccb58771f5aa4c193bd4 (128 bytes)",
+  "geyser_rp/family/textures/items/family_chair_asym.png": "sha256:5995814d97339fe8ce7198be83a2fbe65f96d4defbb6420850861b384c17601f (82 bytes)",
+  "geyser_rp/family/textures/items/family_full_cube.png": "sha256:8afc9cb0e46be8347433188dcacedbc95b8424a0f3e21a837d120dc47f2a4f59 (82 bytes)",
+  "geyser_rp/family/textures/items/family_glass_cabinet.png": "sha256:5995814d97339fe8ce7198be83a2fbe65f96d4defbb6420850861b384c17601f (82 bytes)",
+  "geyser_rp/family/textures/items/family_single_voxel.png": "sha256:321136c59c35d7cc69c280ada47a6d10820388ae7d0f7d8119ad7717fd1e6e97 (82 bytes)",
+  "geyser_rp/family/textures/items/family_table.png": "sha256:547f1b3b3857a857fc8a3967bdbe1a65fab13625928ac7e60bf14501bd884a46 (83 bytes)",
+  "geyser_rp/family/textures/terrain_texture.json": "{
+  "resource_pack_name": "Family Furniture",
+  "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
+  "texture_data": {
+    "family_oak": {
+      "textures": [
+        "textures/blocks/family_oak"
+      ]
+    },
+    "family_dark_wood": {
+      "textures": [
+        "textures/blocks/family_dark_wood"
+      ]
+    },
+    "family_white": {
+      "textures": [
+        "textures/blocks/family_white"
+      ]
+    },
+    "family_red": {
+      "textures": [
+        "textures/blocks/family_red"
+      ]
+    },
+    "family_blue": {
+      "textures": [
+        "textures/blocks/family_blue"
+      ]
+    },
+    "family_green": {
+      "textures": [
+        "textures/blocks/family_green"
+      ]
+    },
+    "family_yellow": {
+      "textures": [
+        "textures/blocks/family_yellow"
+      ]
+    },
+    "family_black": {
+      "textures": [
+        "textures/blocks/family_black"
+      ]
+    },
+    "family_glass": {
+      "textures": [
+        "textures/blocks/family_glass"
+      ]
+    },
+    "family_stone": {
+      "textures": [
+        "textures/blocks/family_stone"
+      ]
+    }
+  }
+}
+",
+}
+`;
+
+exports[`buildServerPack > all fixtures for family plus a table for Alex: snapshot of the full tree 2`] = `
+{
+  "carrier": "leaves",
+  "fileCount": 74,
+  "profiles": [
+    {
+      "namespace": "alex",
+      "packName": "Alex's Furniture",
+      "pieces": [
+        {
+          "elements": 5,
+          "facesEmitted": 26,
+          "hidden": false,
+          "icon": "generated",
+          "id": "table",
+          "javaId": "alex:table",
+          "renderMethod": "opaque",
+          "seat": false,
+          "states": {
+            "east": "minecraft:azalea_leaves[distance=2,persistent=false,waterlogged=false]",
+            "north": "minecraft:azalea_leaves[distance=1,persistent=false,waterlogged=false]",
+            "south": "minecraft:azalea_leaves[distance=3,persistent=false,waterlogged=false]",
+            "west": "minecraft:azalea_leaves[distance=4,persistent=false,waterlogged=false]",
+          },
+          "warnings": [],
+        },
+      ],
+    },
+    {
+      "namespace": "family",
+      "packName": "Family Furniture",
+      "pieces": [
+        {
+          "elements": 8,
+          "facesEmitted": 38,
+          "hidden": false,
+          "icon": "generated",
+          "id": "chair_asym",
+          "javaId": "family:chair_asym",
+          "renderMethod": "opaque",
+          "seat": true,
+          "states": {
+            "east": "minecraft:azalea_leaves[distance=6,persistent=false,waterlogged=false]",
+            "north": "minecraft:azalea_leaves[distance=5,persistent=false,waterlogged=false]",
+            "south": "minecraft:azalea_leaves[distance=7,persistent=false,waterlogged=false]",
+            "west": "minecraft:azalea_leaves[distance=1,persistent=true,waterlogged=false]",
+          },
+          "warnings": [],
+        },
+        {
+          "elements": 1,
+          "facesEmitted": 6,
+          "hidden": false,
+          "icon": "generated",
+          "id": "full_cube",
+          "javaId": "family:full_cube",
+          "renderMethod": "opaque",
+          "seat": false,
+          "states": {
+            "east": "minecraft:azalea_leaves[distance=3,persistent=true,waterlogged=false]",
+            "north": "minecraft:azalea_leaves[distance=2,persistent=true,waterlogged=false]",
+            "south": "minecraft:azalea_leaves[distance=4,persistent=true,waterlogged=false]",
+            "west": "minecraft:azalea_leaves[distance=5,persistent=true,waterlogged=false]",
+          },
+          "warnings": [],
+        },
+        {
+          "elements": 7,
+          "facesEmitted": 27,
+          "hidden": false,
+          "icon": "generated",
+          "id": "glass_cabinet",
+          "javaId": "family:glass_cabinet",
+          "renderMethod": "blend",
+          "seat": false,
+          "states": {
+            "east": "minecraft:flowering_azalea_leaves[distance=1,persistent=false,waterlogged=false]",
+            "north": "minecraft:azalea_leaves[distance=6,persistent=true,waterlogged=false]",
+            "south": "minecraft:flowering_azalea_leaves[distance=2,persistent=false,waterlogged=false]",
+            "west": "minecraft:flowering_azalea_leaves[distance=3,persistent=false,waterlogged=false]",
+          },
+          "warnings": [],
+        },
+        {
+          "elements": 1,
+          "facesEmitted": 6,
+          "hidden": false,
+          "icon": "generated",
+          "id": "single_voxel",
+          "javaId": "family:single_voxel",
+          "renderMethod": "opaque",
+          "seat": false,
+          "states": {
+            "east": "minecraft:flowering_azalea_leaves[distance=5,persistent=false,waterlogged=false]",
+            "north": "minecraft:flowering_azalea_leaves[distance=4,persistent=false,waterlogged=false]",
+            "south": "minecraft:flowering_azalea_leaves[distance=6,persistent=false,waterlogged=false]",
+            "west": "minecraft:flowering_azalea_leaves[distance=7,persistent=false,waterlogged=false]",
+          },
+          "warnings": [],
+        },
+        {
+          "elements": 5,
+          "facesEmitted": 26,
+          "hidden": false,
+          "icon": "generated",
+          "id": "table",
+          "javaId": "family:table",
+          "renderMethod": "opaque",
+          "seat": false,
+          "states": {
+            "east": "minecraft:flowering_azalea_leaves[distance=2,persistent=true,waterlogged=false]",
+            "north": "minecraft:flowering_azalea_leaves[distance=1,persistent=true,waterlogged=false]",
+            "south": "minecraft:flowering_azalea_leaves[distance=3,persistent=true,waterlogged=false]",
+            "west": "minecraft:flowering_azalea_leaves[distance=4,persistent=true,waterlogged=false]",
+          },
+          "warnings": [],
+        },
+      ],
+    },
+  ],
+  "statesLeft": 119,
+  "version": [
+    1,
+    0,
+    3,
+  ],
+  "warnings": [],
+}
+`;

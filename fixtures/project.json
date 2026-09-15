@@ -1,0 +1,142 @@
+{
+  "namespace": "family",
+  "packName": "Family Furniture",
+  "uuids": {
+    "bp": "7c1f3b2e-4d5a-4b8e-9f10-2a3b4c5d6e7f",
+    "rp": "8d2e4c3f-5e6b-4c9f-a021-3b4c5d6e7f80",
+    "bpModule": "9e3f5d40-6f7c-4d00-b132-4c5d6e7f8091",
+    "rpModule": "af406e51-708d-4e11-8243-5d6e7f8091a2",
+    "scriptModule": "b0517f62-819e-4f22-8354-6e7f8091a2b3"
+  },
+  "version": [
+    1,
+    0,
+    0
+  ],
+  "formatVersion": "1.26.30",
+  "minEngineVersion": [
+    1,
+    26,
+    30
+  ],
+  "scriptApiVersion": "2.8.0",
+  "palette": [
+    {
+      "id": "oak",
+      "label": "Oak",
+      "rgba": [
+        184,
+        148,
+        95,
+        255
+      ],
+      "sound": "wood"
+    },
+    {
+      "id": "dark_wood",
+      "label": "Dark wood",
+      "rgba": [
+        92,
+        62,
+        38,
+        255
+      ],
+      "sound": "wood"
+    },
+    {
+      "id": "white",
+      "label": "White",
+      "rgba": [
+        240,
+        240,
+        236,
+        255
+      ],
+      "sound": "cloth"
+    },
+    {
+      "id": "red",
+      "label": "Red",
+      "rgba": [
+        196,
+        48,
+        44,
+        255
+      ],
+      "sound": "cloth"
+    },
+    {
+      "id": "blue",
+      "label": "Blue",
+      "rgba": [
+        52,
+        92,
+        196,
+        255
+      ],
+      "sound": "cloth"
+    },
+    {
+      "id": "green",
+      "label": "Green",
+      "rgba": [
+        72,
+        150,
+        64,
+        255
+      ],
+      "sound": "cloth"
+    },
+    {
+      "id": "yellow",
+      "label": "Yellow",
+      "rgba": [
+        232,
+        200,
+        52,
+        255
+      ],
+      "sound": "cloth"
+    },
+    {
+      "id": "black",
+      "label": "Black",
+      "rgba": [
+        28,
+        28,
+        32,
+        255
+      ],
+      "sound": "cloth"
+    },
+    {
+      "id": "glass",
+      "label": "Glass",
+      "rgba": [
+        200,
+        230,
+        240,
+        110
+      ],
+      "translucent": true,
+      "sound": "glass"
+    },
+    {
+      "id": "stone",
+      "label": "Stone",
+      "rgba": [
+        128,
+        128,
+        128,
+        255
+      ],
+      "sound": "stone"
+    }
+  ],
+  "nextPieceNumber": 6,
+  "generator": {
+    "mirrorX": true,
+    "rotationOffset": 0,
+    "merge": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "blockshop",
+  "private": true,
+  "version": "0.3.1",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "packageManager": "pnpm@12.4.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -b packages/schema packages/generator packages/server && pnpm --filter @blockshop/editor build",
+    "typecheck": "tsc -b packages/schema packages/generator packages/server && pnpm --filter @blockshop/editor typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gen": "tsx --conditions=development packages/generator/src/cli.ts",
+    "validate": "tsx --conditions=development packages/server/src/cli/validate.ts",
+    "dev:server": "tsx watch --conditions=development --env-file-if-exists=.env packages/server/src/main.ts",
+    "dev:editor": "pnpm --filter @blockshop/editor dev",
+    "start": "node --env-file-if-exists=.env packages/server/dist/main.js",
+    "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo",
+    "fixtures": "tsx --conditions=development scripts/make-fixtures.ts",
+    "rollback": "tsx --conditions=development --env-file-if-exists=.env packages/server/src/cli/rollback.ts",
+    "seed": "tsx --env-file-if-exists=.env scripts/seed-fixtures.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+# BlockshopCatalog. The furniture list itself is pieces.json in this folder, written by Blockshop on every family-server update.
+# Keys missing from this file are added with their defaults when the plugin starts.
+
+# Hand the catalog item to players who join without one. Off by default: players open the menu with /cat (or
+# /catalog), and /cat <1-9> gives them the item and puts it in that hotbar slot.
+give-on-join: false
+
+# Console commands. %player% is the Java name (Bedrock players carry Floodgate's prefix), %item% a CraftEngine item id.
+give-command: "ce item give %player% %item% 1"
+java-open-command: "ce item browser %player%"
+
+# Do not reopen the menu more often than this after a selection (milliseconds).
+debounce-ms: 700
+
+# Bedrock sends a block click on an air position when a tap is beyond reach, and CraftEngine would place the piece
+# there, floating in the sky. Cancel such clicks for custom items (Bedrock players only) and show the "too far" hint.
+bedrock-air-click-guard: true
