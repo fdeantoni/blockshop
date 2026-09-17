@@ -16,13 +16,19 @@ export function geometryId(namespace: string, id: string): string {
 
 const MIRROR: Record<Face, Face> = { east: "west", west: "east", up: "up", down: "down", north: "north", south: "south" };
 
-/** Editor box → Bedrock block-model cube. Model x/z run -8..8, y runs 0..16. */
+/**
+ * Editor box → Bedrock block-model cube. Model x/z run -8..8, y runs 0..16.
+ * Face keys name world sides, while file +x points west: the east face of a cube sits at its
+ * file -x side and is still called `east` (Blockbench negates x on import/export and keeps the
+ * keys). So `mirrorX`, which matches the file to the editor, keeps the keys; without it the
+ * piece comes out mirrored and its east/west faces swap.
+ */
 export function toCube(b: MeshBox, mirrorX: boolean): Cube {
   const half = GRID / 2;
   const ox = mirrorX ? half - b.x - b.sx : b.x - half;
   const cube: Cube = { origin: [ox, b.y, b.z - half], size: [b.sx, b.sy, b.sz], uv: {} };
   for (const f of b.faces) {
-    const face = mirrorX ? MIRROR[f] : f;
+    const face = mirrorX ? f : MIRROR[f];
     const dims: [number, number] =
       face === "up" || face === "down" ? [b.sx, b.sz] : face === "east" || face === "west" ? [b.sz, b.sy] : [b.sx, b.sy];
     cube.uv[face] = { uv: [0, 0], uv_size: dims, material_instance: b.c };

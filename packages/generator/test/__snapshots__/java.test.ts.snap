@@ -4396,7 +4396,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4407,7 +4407,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4465,7 +4465,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4476,7 +4476,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4534,7 +4534,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4545,7 +4545,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4603,7 +4603,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4614,7 +4614,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4683,7 +4683,7 @@ namespace: blockshop
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4694,7 +4694,7 @@ namespace: blockshop
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4899,7 +4899,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4910,7 +4910,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4968,7 +4968,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4979,7 +4979,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5037,7 +5037,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5048,7 +5048,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5106,7 +5106,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5117,7 +5117,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5186,7 +5186,7 @@ namespace: blockshop
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5197,7 +5197,7 @@ namespace: blockshop
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5255,7 +5255,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5266,7 +5266,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5313,7 +5313,7 @@ namespace: blockshop
                   ],
                   "material_instance": "red"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5360,7 +5360,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5371,7 +5371,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5472,7 +5472,7 @@ namespace: blockshop
                   ],
                   "material_instance": "stone"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5483,7 +5483,7 @@ namespace: blockshop
                   ],
                   "material_instance": "stone"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5584,7 +5584,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5595,7 +5595,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5653,7 +5653,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5664,7 +5664,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5711,7 +5711,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5722,7 +5722,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -5769,7 +5769,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -5780,7 +5780,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -6011,7 +6011,7 @@ namespace: blockshop
                   ],
                   "material_instance": "red"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -6022,7 +6022,7 @@ namespace: blockshop
                   ],
                   "material_instance": "red"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -6112,7 +6112,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -6123,7 +6123,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -6181,7 +6181,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -6192,7 +6192,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -6250,7 +6250,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -6261,7 +6261,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -6319,7 +6319,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -6330,7 +6330,7 @@ namespace: blockshop
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -6399,7 +6399,7 @@ namespace: blockshop
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -6410,7 +6410,7 @@ namespace: blockshop
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0

@@ -70,6 +70,14 @@ Rule: pin `project.json` to the **lowest** version installed on the family iPads
 ## Device test results (iPad, Minecraft 26.32, 2026-09-14)
 
 - **x axis is mirrored**: with `mirrorX: false` the chair's armrest came out on the opposite side. Bedrock block-model +x points west; `generator.mirrorX` now defaults to `true`. The back (north) was fine, so `rotationOffset` stays 0.
+- **Left and right sides see-through (reported 2026-09-17)**: two pieces from a local-world pack showed holes in
+  their sides. `toCube` mirrored the x positions *and* swapped the `east`/`west` uv keys, but the keys name world
+  sides: the east face of a cube sits at its file −x side and is still called `east`. Blockbench's Bedrock codec
+  reads files the same way (`parseCube`/`compileCube` negate x and keep the keys). Every merged box with only one
+  exposed side drew its hidden side instead: 18–67 % of the east/west faces of the four pieces published at the
+  time, and 14 of 86 on the device-tested chair, which nobody had noticed. `mirrorX` now keeps the keys (without
+  it the piece is mirrored and the keys swap). *Device*: confirm the sides are
+  closed after publishing, importing and activating the new version on the world.
 - **A newer pack version was not picked up by the world**: version 1.0.4 (changed chair) was imported, yet the world kept showing the 1.0.3 model. The expectation was that the newest version is used automatically; it is not, at least while the older version is still installed. See step 5 of "After a Minecraft update" for the manual switch. **2026-09-15:** deleting the old copies from Storage does not make the world switch either; the new version must be activated on the world (Edit → Behavior Packs → My Packs), otherwise the world has no furniture pack and every piece is gone from the creative inventory.
 - **Tapping a block in a creative world breaks it instantly**, so `onPlayerInteract` is not reachable by touch on a creative world. Seats now use a persistent rideable entity per placed chair (touch shows a ride button for rideable entities); `onPlayerInteract` remains for mouse/controller.
 - `min_engine_version` 1.26.40 was refused by the 26.32 client (see the version table).

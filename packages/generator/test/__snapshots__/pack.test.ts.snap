@@ -968,7 +968,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -979,7 +979,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1037,7 +1037,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1048,7 +1048,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1106,7 +1106,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1117,7 +1117,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1175,7 +1175,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1186,7 +1186,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1255,7 +1255,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1266,7 +1266,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1324,7 +1324,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1335,7 +1335,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1382,7 +1382,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "red"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1429,7 +1429,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1440,7 +1440,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1541,7 +1541,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "stone"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1552,7 +1552,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "stone"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1653,7 +1653,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1664,7 +1664,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1722,7 +1722,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1733,7 +1733,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1780,7 +1780,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1791,7 +1791,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -1838,7 +1838,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -1849,7 +1849,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2080,7 +2080,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "red"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2091,7 +2091,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "red"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2181,7 +2181,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2192,7 +2192,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2250,7 +2250,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2261,7 +2261,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2319,7 +2319,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2330,7 +2330,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2388,7 +2388,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2399,7 +2399,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2468,7 +2468,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2479,7 +2479,7 @@ action.hint.exit.family:seat=Sneak to stand up
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -2957,7 +2957,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -2968,7 +2968,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3026,7 +3026,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3037,7 +3037,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3095,7 +3095,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3106,7 +3106,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3164,7 +3164,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3175,7 +3175,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3244,7 +3244,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3255,7 +3255,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3313,7 +3313,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3324,7 +3324,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3371,7 +3371,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "red"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3418,7 +3418,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3429,7 +3429,7 @@ exports[`buildPack > fixture chair_asym: builds, passes sanity, snapshots its bl
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3653,7 +3653,7 @@ exports[`buildPack > fixture full_cube: builds, passes sanity, snapshots its blo
                   ],
                   "material_instance": "stone"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3664,7 +3664,7 @@ exports[`buildPack > fixture full_cube: builds, passes sanity, snapshots its blo
                   ],
                   "material_instance": "stone"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3897,7 +3897,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3908,7 +3908,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -3966,7 +3966,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -3977,7 +3977,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4024,7 +4024,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4035,7 +4035,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4082,7 +4082,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4093,7 +4093,7 @@ exports[`buildPack > fixture glass_cabinet: builds, passes sanity, snapshots its
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4447,7 +4447,7 @@ exports[`buildPack > fixture single_voxel: builds, passes sanity, snapshots its 
                   ],
                   "material_instance": "red"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4458,7 +4458,7 @@ exports[`buildPack > fixture single_voxel: builds, passes sanity, snapshots its 
                   ],
                   "material_instance": "red"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4675,7 +4675,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4686,7 +4686,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4744,7 +4744,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4755,7 +4755,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4813,7 +4813,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4824,7 +4824,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4882,7 +4882,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4893,7 +4893,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "dark_wood"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
@@ -4962,7 +4962,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "oak"
                 },
-                "west": {
+                "east": {
                   "uv": [
                     0,
                     0
@@ -4973,7 +4973,7 @@ exports[`buildPack > fixture table: builds, passes sanity, snapshots its block a
                   ],
                   "material_instance": "oak"
                 },
-                "east": {
+                "west": {
                   "uv": [
                     0,
                     0
