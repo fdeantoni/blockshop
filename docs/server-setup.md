@@ -36,7 +36,7 @@ services:
       - ./data:/data
 
   blockshop:
-    image: ghcr.io/fdeantoni/blockshop:0.3.1
+    image: ghcr.io/fdeantoni/blockshop:0.3.2
     restart: unless-stopped
     depends_on:
       - mc
