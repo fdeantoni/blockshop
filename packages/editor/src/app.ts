@@ -98,7 +98,7 @@ export class App {
   private saver!: Saver;
   private thumbTimer: number | null = null;
   private routing: Promise<void> = Promise.resolve();
-  private ui!: { undo: HTMLButtonElement; redo: HTMLButtonElement; build: HTMLButtonElement; erase: HTMLButtonElement; seat: HTMLButtonElement; seatH: HTMLElement; seatVal: HTMLElement; name: HTMLInputElement; status: HTMLElement; palette: HTMLElement };
+  private ui!: { undo: HTMLButtonElement; redo: HTMLButtonElement; build: HTMLButtonElement; erase: HTMLButtonElement; seat: HTMLButtonElement; seatH: HTMLElement; seatVal: HTMLElement; share: HTMLButtonElement; name: HTMLInputElement; status: HTMLElement; palette: HTMLElement };
   private galleryUi!: { header: HTMLElement; cards: HTMLElement; publish: HTMLButtonElement; count: HTMLElement; icon: HTMLButtonElement; title: HTMLElement };
 
   constructor(root: HTMLElement) { this.root = root; }
@@ -277,8 +277,8 @@ export class App {
     if (list.length === 0) cards.append(h("div", { class: "empty" }, T.empty));
     for (const p of list) {
       const img = p.hasThumbnail ? h("img", { src: api.thumbnailUrl(this.profile.id, p.id, p.updatedAt), alt: "" }) : h("div", { class: "ph" }, "🪑");
-      const mark = p.hidden ? T.hidden : p.onFamilyServer ? `🏠 ${T.onServerPiece}` : `🏡 ${T.offServerPiece}`;
-      const card = h("div", { class: `card${p.hidden ? " hidden-piece" : ""}` }, img, h("div", { class: "name" }, p.name), h("div", { class: "meta" }, mark));
+      // Being on the family server shows as the card's own outline; the words live in the menu and the editor.
+      const card = h("div", { class: `card${p.hidden ? " hidden-piece" : ""}${p.onFamilyServer ? " on-server" : ""}` }, img, h("div", { class: "name" }, p.name), h("div", { class: "meta" }, p.hidden ? T.hidden : p.author || ""));
       let longPressed = false;
       attachLongPress(card, 600, () => { longPressed = true; void this.pieceMenu(p); });
       card.addEventListener("click", () => { if (longPressed) { longPressed = false; return; } go(`#/p/${this.profile!.id}/piece/${p.id}`); });
@@ -286,7 +286,7 @@ export class App {
     }
   }
 
-  /** Long-press on a card: share with the family server, copy, hide or bring back, delete when never sent. */
+  /** Long-press on a card: on the family server or not, then copy, hide or bring back, delete when never sent. */
   private pieceMenu(p: PieceSummary): Promise<void> {
     const pid = this.profile!.id;
     return new Promise((resolve) => {
@@ -294,17 +294,23 @@ export class App {
       const close = () => { overlay.remove(); resolve(); };
       const after = (promise: Promise<unknown>) => { void promise.then(() => { close(); void this.showGallery(); }, (e) => { close(); this.showError(e); }); };
       const action = p.hidden
-        ? btn(T.unhide, "primary big", () => after(api.unhide(pid, p.id)))
+        ? btn(T.unhide, "big", () => after(api.unhide(pid, p.id)))
         : btn(T.hide, "danger big", () => after(api.hide(pid, p.id)));
-      const share = p.onFamilyServer
-        ? btn(T.shareOff, "big", () => after(api.update(pid, p.id, { options: { onFamilyServer: false } })))
-        : btn(T.shareOn, "primary big", () => after(api.update(pid, p.id, { options: { onFamilyServer: true } })));
-      const copy = btn(`📋 ${T.copy}`, "big", () => { close(); void this.copyPiece(p); });
-      const row = h("div", { class: "row" }, share, copy, action);
+      const set = (on: boolean) => () => (on === p.onFamilyServer ? close() : after(api.update(pid, p.id, { options: { onFamilyServer: on } })));
+      const choice = h("div", { class: "row" },
+        btn(T.yes, p.onFamilyServer ? "primary big on" : "big", set(true)),
+        btn(T.no, p.onFamilyServer ? "big" : "primary big on", set(false)),
+      );
+      const row = h("div", { class: "row" }, btn(`📋 ${T.copy}`, "big", () => { close(); void this.copyPiece(p); }), action);
       if (!p.publishedInVersion) row.append(btn(`🗑 ${T.delete}`, "danger big", () => after(api.remove(pid, p.id))));
-      row.append(btn(T.no, "big", close));
-      const note = h("p", {}, p.onFamilyServer ? T.shareOffText : T.shareOnText);
-      overlay.append(h("div", { class: "dialog" }, h("h2", {}, p.name), note, h("p", { class: "meta" }, p.publishedInVersion ? T.hideText : T.deleteText), row));
+      row.append(btn(T.close, "big", close));
+      overlay.append(h("div", { class: "dialog" },
+        h("h2", {}, p.name),
+        h("p", {}, `🏠 ${T.onFamilyServer}?`),
+        choice,
+        h("p", { class: "meta" }, p.onFamilyServer ? T.shareOffText : T.shareOnText),
+        row,
+      ));
       this.root.append(overlay);
     });
   }
@@ -405,6 +411,7 @@ export class App {
     const views = h("div", { class: "group" }, ...(["front", "side", "top"] as ViewName[]).map((v) => btn(T.views[v as "front" | "side" | "top"], "", () => this.scene?.setView(v))));
     const seat = btn("🪑", "icon", () => this.toggleSeat());
     seat.title = T.seat;
+    const share = btn("🏠", "icon", () => this.toggleShare());
     const seatVal = h("span", { class: "seatval" }, "5");
     const seatH = h("div", { class: "group" }, btn("▼", "icon", () => this.nudgeSeat(-1)), seatVal, btn("▲", "icon", () => this.nudgeSeat(1)));
     seatH.style.alignItems = "center";
@@ -418,12 +425,12 @@ export class App {
       h("div", { class: "group" }, name, btn("😀", "icon", () => this.pickIcon())),
       views,
       h("div", { class: "group" }, undo, redo, mirror),
-      h("div", { class: "group" }, seat, seatH),
+      h("div", { class: "group" }, seat, seatH, share),
     );
     const bottom = h("div", { class: "bottombar" }, h("div", { class: "group" }, build, erase), h("div", { class: "group" }, palette));
     const el = h("div", { id: "editor", class: "screen" }, this.canvas, top, bottom, status);
     el.hidden = true;
-    this.ui = { undo, redo, build, erase, seat, seatH, seatVal, name, status, palette };
+    this.ui = { undo, redo, build, erase, seat, seatH, seatVal, share, name, status, palette };
     attachTap(this.canvas, (x, y) => this.tap(x, y));
     return el;
   }
@@ -464,6 +471,7 @@ export class App {
     this.setMode("build");
     this.setColor(this.color);
     this.refreshSeat();
+    this.refreshShare();
     this.refreshHistoryButtons();
     // The canvas was display:none while hidden; size it now.
     window.dispatchEvent(new Event("resize"));
@@ -530,6 +538,20 @@ export class App {
     this.piece.options = { ...this.piece.options, seat: { enabled: true, height } };
     this.refreshSeat();
     this.saver.mark();
+  }
+
+  /** On the family server or not; a piece is always in its own profile's worlds either way. */
+  private toggleShare(): void {
+    if (!this.piece) return;
+    this.piece.options = { ...this.piece.options, onFamilyServer: this.currentOptions().onFamilyServer === false };
+    this.refreshShare();
+    this.saver.mark();
+  }
+
+  private refreshShare(): void {
+    const on = this.currentOptions().onFamilyServer !== false;
+    this.ui.share.classList.toggle("on", on);
+    this.ui.share.title = on ? T.onFamilyServer : T.offServerPiece;
   }
 
   private refreshSeat(): void {

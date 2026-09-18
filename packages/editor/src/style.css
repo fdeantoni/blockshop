@@ -77,6 +77,8 @@ footer.legal a { color: var(--muted); }
 .card img, .card .ph { width: 128px; height: 128px; border-radius: 16px; background: var(--panel2); object-fit: contain; display: flex; align-items: center; justify-content: center; font-size: 56px; }
 .card .name { font-size: 20px; font-weight: 700; text-align: center; word-break: break-word; }
 .card.hidden-piece { opacity: 0.45; }
+/* On the family server: the card says so by itself, no words needed. */
+.card.on-server { background: var(--panel2); outline: 3px solid var(--accent); }
 .card .meta { color: var(--muted); font-size: 14px; }
 .empty { color: var(--muted); font-size: 22px; text-align: center; padding: 40px; grid-column: 1 / -1; }
 
