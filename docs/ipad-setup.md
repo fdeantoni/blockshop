@@ -45,30 +45,41 @@ Renaming them would leave a stale folder behind on every tablet.
 1. **Find the folders.** Files → On My iPad → Minecraft → games → com.mojang. If `development_behavior_packs`
    and `development_resource_packs` are not there, make them (exact spelling, no capitals). If the `games` folder
    itself is missing, open Minecraft once and create a world first.
-2. **Build the Shortcut.** In the Shortcuts app, make one called *Update furniture*:
-   1. **Get Contents of URL** — `http://<blockshop address>/dev/blockshop-all.zip` (the exact link is on the
-      grown-up page with a copy button; use a profile's own link instead to carry just that person's furniture).
-   2. **Extract Archive** — input: the file from step 1.
-   3. **Get File from Folder** — folder: the extracted folder from step 2; path `behavior`.
-   4. **Get Contents of Folder** — input: that folder. This is every profile's behaviour pack at once, so the
-      Shortcut does not grow when a profile is added.
-   5. **Save Files** — destination `development_behavior_packs` (tap the default "Shortcuts" and pick the folder;
-      it is remembered), *Ask Where to Save* **off**, *Overwrite If File Exists* **on**.
-   6. Steps 3 to 5 again with `resource` and `development_resource_packs`.
+2. **Build the Shortcut.** In the Shortcuts app, make one called *Update furniture*. This is the whole thing,
+   as verified on iPadOS 16.5 (2026-09-18), which is the oldest version this is meant for:
+   1. **Get contents of** `http://<blockshop address>:8081/dev/blockshop-all.zip` — the exact link is on the
+      grown-up page with a copy button; a profile's own link instead carries just that person's furniture.
+   2. **Extract** *Contents of URL*. Its output is called **Files**: the archive's two folders.
+   3. **Get contents of folder** — folder: **Files** (the output of *Extract*). This flattens both folders into
+      one list of pack folders, which is why no navigating into `behavior` or `resource` is needed.
+   4. **Filter** *Contents of Folder* where **Name ends with `_bp`**.
+   5. **Save Files** to `development_behavior_packs` — tap the default "Shortcuts" and pick the folder, which is
+      then remembered; *Ask Where to Save* **off** and ***Overwrite If File Exists* on**. That toggle is what
+      makes a run replace the pack folders instead of adding another copy next to them.
+   6. **Filter** *Contents of Folder* where **Name ends with `_rp`** — the input must be re-selected: Shortcuts
+      offers the previous action's output, and what you want is step 3's list.
+   7. **Save Files** to `development_resource_packs`, with the same two toggles.
 
-   If a run leaves a `blockshop_dad_bp 2` behind, *Save Files* is not replacing folders. Add, before each save,
-   **Get Contents of Folder** on the destination → **Filter Files** (*Name contains* `blockshop_`) →
-   **Delete Files** with *Ask Before Deleting* **off**.
-3. **Run it once by hand** and check in Files that the folders are there, one pair per profile, nothing
-   duplicated as "… 2".
+   Nothing in the Shortcut names a profile, so it keeps working when a profile is added or removed.
+
+   **Both *Save Files* actions need *Overwrite If File Exists* on.** With it off, every run saves another copy
+   as `blockshop_dad_rp-2`, `-3`; the copies all declare the same blocks, and Minecraft then shows items with no
+   model and turns placed furniture invisible. It is the first thing to check if that happens.
+
+3. **Run it once by hand** and check in Files that each development folder holds exactly one folder per
+   profile, with no `-2` copies.
 4. **Automate it.** Shortcuts → Automation → New → **App** → Minecraft → **Is Opened** → **Run Shortcut** →
    *Update furniture*. Then turn *Ask Before Running* off and *Notify When Run* off. Opening Minecraft now
    refreshes the packs in the background.
 5. **Activate the packs on each world**: Edit world → Behavior Packs → My Packs → the "(live)" packs the kid
    wants. Each resource pack comes along with its behaviour pack. This is the only time a world needs touching,
    and it is where a kid chooses whose furniture their world has.
-6. **Turn off that world's imported furniture packs.** A live pack carries the same block ids as the profile's
-   imported pack, and two active packs claiming one id is a conflict. Placed furniture survives the switch.
+6. **If this world already has a pack that was imported from a download, turn that one off.** In the same
+   Behavior Packs screen, the imported one is the profile's pack *without* "(live)" after its name — the
+   `.mcaddon` someone downloaded and opened on this tablet. A profile's live pack and its imported pack declare
+   the same blocks, so leaving both on is a conflict: items lose their models and placed furniture goes
+   invisible. Switching is safe: the blocks are the same ids, so furniture already placed stays exactly as it
+   is. A world that never had an imported pack has nothing to turn off here.
 
 **On the other tablets**, don't rebuild the Shortcut: AirDrop it from the first one (Shortcuts → the shortcut →
 Share). The two *Save Files* destinations may have to be picked again, since they point at folders on the device
@@ -100,10 +111,11 @@ Worth knowing:
 
 | What you see | Why |
 |---|---|
-| A `blockshop_dad_bp 2` folder | *Save Files* did not overwrite; add the delete actions described under step 2 |
+| `blockshop_dad_rp-2`, `-3` folders, items with no model, placed furniture invisible | *Overwrite If File Exists* is off in a *Save Files* action, so every run added another copy and the copies fight over the same blocks; turn it on and delete the strays |
 | A "(live)" pack is missing from My Packs | The folders are in the wrong place, misspelled, or a pack landed one level too deep (its `manifest.json` must sit directly in `blockshop_<profile>_bp`) |
 | A piece is missing in game | It has no voxels yet, or it is hidden; the grown-up page lists what was skipped |
-| Furniture turned into purple-black blocks | Only the behaviour packs were refreshed; make sure both halves of the Shortcut ran |
+| Furniture turned into purple-black blocks | Only the behaviour packs were refreshed; make sure both *Save Files* actions ran |
+| You cannot move | You are sitting on a piece with a seat; sneak to stand up |
 | Blocks that vanish, or a pack that will not enable | The profile's imported pack and its live pack are both active on that world; turn the imported one off |
 | Everything is gone after a world edit | The world's packs were deactivated; re-activate the "(live)" ones |
 | The Shortcut asks for confirmation | *Ask Before Running* came back on; an iPadOS update can flip it |

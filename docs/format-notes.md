@@ -147,10 +147,17 @@ Rule: pin `project.json` to the **lowest** version installed on the family iPads
 - *Device*: **Download** makes a profile's pack file (validated) and the Ready dialog's steps still import it
   on a second device; and **Update the family server** now takes everyone's pieces as they are, with nobody
   having pressed anything first.
-- *Device*: **the live packs** (`docs/ipad-setup.md`). Each profile's live pack is the same tree its `.mcaddon`
-  carries (one `buildPack` call, seats and script included), only with derived ids, a fixed version 1.0.0 and
-  "(live)" in the name, so the checks are: the packs appear under My Packs, a world can enable one kid's and
-  leave another's off, placed furniture survives switching from the imported pack, and the chair can be sat on.
+- **The live packs work on a tablet (iPadOS 16.5, Minecraft 26.32, 2026-09-18)**: one Shortcut (download →
+  extract → *Get contents of folder* on the extracted output → filter on `_bp` / `_rp` → two *Save Files*) keeps
+  a tablet's own worlds current, run by the app-open automation. *Get contents of folder* flattens the archive's
+  `behavior/` and `resource/`, so the two filters route the packs and nothing navigates into either.
+  **`Save Files` needs *Overwrite If File Exists* on**, for folders as much as files: without it every run saved
+  another copy as `blockshop_<ns>_rp-2`, `-3`, several copies of one pack claimed the same blocks, and Minecraft
+  showed items with no model and turned placed furniture invisible (an invisible seat also kept a player from
+  moving until they stood up). With the toggle on, a run replaces the folders. Recipe in docs/ipad-setup.md.
+- *Device*: **the live packs**, still to check: that a world can enable one kid's pack and leave another's off,
+  and that furniture placed from a profile's imported pack survives switching that world to the live pack.
+  (Seats already work: a placed chair mounted a player on 2026-09-18.)
 
 ## Still open (device)
 
