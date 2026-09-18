@@ -766,6 +766,15 @@ export class App {
       const hint = h("div", { class: "meta" }, T.guestServerHint);
       hint.hidden = true;
       guest.addEventListener("change", () => { hint.hidden = !guest.checked; });
+      // Never fail silently: a name that is missing says so, and Enter works like the button, because on a
+      // tablet the first tap after typing often only closes the keyboard.
+      const submit = () => {
+        const value = name.value.trim();
+        if (!value) { name.focus(); this.showNotice(`✏️ ${T.kidName}`, T.nameNeeded); return; }
+        void guard(api.addProfile({ name: value, icon, role: guest.checked ? "guest" : "kid" }).then((p) => this.uploadPackIcon(p)));
+      };
+      name.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") submit(); });
+      const addBtn = btn(T.add, "primary", submit);
       addKid.append(
         h("div", { class: "grow" },
           h("div", { class: "name" }, `➕ ${T.addKid}`),
@@ -774,10 +783,7 @@ export class App {
           h("label", { class: "meta" }, guest, ` ${T.guestToggle}`),
           hint,
         ),
-        btn(T.add, "primary", () => {
-          if (!name.value.trim()) return;
-          void guard(api.addProfile({ name: name.value.trim(), icon, role: guest.checked ? "guest" : "kid" }).then((p) => this.uploadPackIcon(p)));
-        }),
+        addBtn,
       );
     }
 

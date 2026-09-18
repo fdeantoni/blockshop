@@ -79,6 +79,7 @@ export const T = {
   profiles: "Profiles",
   addKid: "Add a kid",
   kidName: "Kid's name",
+  nameNeeded: "Type a name first, then press Add.",
   add: "Add",
   rename: "Rename",
   newName: "New name",
