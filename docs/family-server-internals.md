@@ -23,8 +23,9 @@ someone else's edit.
 | `geyser_rp/<profile>/` | (unzipped copies of the packs) | for inspection |
 | `report.json`, `build.json`, `deploy.json` | | build report, last build, last deploy result |
 
-**What is on the server is a choice, and a budget.** A piece carries `options.onFamilyServer` (absent means yes,
-so nothing already on the server falls off), and a profile carries `onFamilyServer` (a guest starts off it). Only
+**What is on the server is a choice, and a budget.** A piece carries `options.onFamilyServer`: a new one is
+created with `false`, and absent means yes, because every piece that predates the choice was on the server
+already and must not fall off. A profile carries the same flag (a guest starts off it). Only
 chosen pieces of included profiles are built, allocated states and listed in `/cat`; everything else costs the
 server nothing and still reaches its own worlds through that profile's packs. Turning a piece or profile off
 leaves its states allocated — states are never reused — and anything placed from it in the shared world becomes

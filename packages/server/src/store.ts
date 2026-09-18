@@ -145,7 +145,9 @@ export class Store {
         author: input.author ?? "",
         createdAt: now, updatedAt: now,
         voxels: input.voxels ?? [],
-        options: input.options ?? {},
+        // A new piece stays in its own worlds until someone puts it on the family server: the shared world
+        // has room for a limited number, and every piece on it takes four carrier states forever.
+        options: { ...(input.options ?? {}), onFamilyServer: input.options?.onFamilyServer ?? false },
       });
       await this.savePiece(piece);
       return piece;

@@ -37,10 +37,10 @@ behind the PIN. A forgotten PIN is replaced by starting the server once with `AD
 (shared Java states and the merged export), `deleted/` (folders of removed profiles).
 
 **What goes on the family server.** A tablet's own worlds get everything a profile has. The shared world has room
-for about 35 pieces in total, because each one takes four Java block states that are never reused, so the kids
-choose: long-press a piece in the gallery and pick *Keep in my own worlds* or *Put on the family server*. The
-grown-up page shows how much room is left. Turning a piece off after it has been on the server makes anything
-already placed there turn back into leaves.
+for about 35 pieces in total, because each one takes four Java block states that are never reused, so a new piece
+stays at home until someone chooses it: long-press it in the gallery and answer *On the family server?*, or use
+the 🏠 button while building. A card with a green outline is on the server. The grown-up page shows how much room
+is left. Taking a piece off after it has been on the server makes anything already placed there turn into leaves.
 
 ## Templates
 

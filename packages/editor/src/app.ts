@@ -34,6 +34,14 @@ const btn = (label: string, cls: string, onClick: () => void): HTMLButtonElement
   b.addEventListener("click", onClick);
   return b;
 };
+/** A dialog with the X in the corner, which is how a popup is dismissed on a tablet. */
+const dialog = (onClose: () => void, ...children: Array<Node | string>): HTMLElement => {
+  const d = h("div", { class: "dialog" }, ...children);
+  const x = btn("✕", "x", onClose);
+  x.title = T.close;
+  d.prepend(x);
+  return d;
+};
 
 /** Debounced autosave with flush-on-hide, so edits survive a jump to Minecraft. */
 class Saver {
@@ -303,13 +311,13 @@ export class App {
       );
       const row = h("div", { class: "row" }, btn(`📋 ${T.copy}`, "big", () => { close(); void this.copyPiece(p); }), action);
       if (!p.publishedInVersion) row.append(btn(`🗑 ${T.delete}`, "danger big", () => after(api.remove(pid, p.id))));
-      row.append(btn(T.close, "big", close));
-      overlay.append(h("div", { class: "dialog" },
+      overlay.append(dialog(close,
         h("h2", {}, p.name),
         h("p", {}, `🏠 ${T.onFamilyServer}?`),
         choice,
         h("p", { class: "meta" }, p.onFamilyServer ? T.shareOffText : T.shareOnText),
         row,
+        h("p", { class: "meta" }, T.hideMeans),
       ));
       this.root.append(overlay);
     });
@@ -323,7 +331,7 @@ export class App {
       overlay.remove();
       void api.setIcon(p.id, icon).then((updated) => { this.profile = updated; this.refreshGalleryHeader(); return this.uploadPackIcon(updated); }, (e) => this.showError(e));
     });
-    overlay.append(h("div", { class: "dialog" }, h("h2", {}, T.pickIcon), grid, btn(T.close, "big", () => overlay.remove())));
+    overlay.append(dialog(() => overlay.remove(), h("h2", {}, T.pickIcon), grid));
     this.root.append(overlay);
   }
 
@@ -349,7 +357,9 @@ export class App {
       card.addEventListener("click", () => pick(t));
       cards.append(card);
     }
-    overlay.append(h("div", { class: "dialog wide" }, h("h2", {}, `✨ ${T.startFrom}`), cards, btn(T.close, "big", () => overlay.remove())));
+    const picker = dialog(() => overlay.remove(), h("h2", {}, `✨ ${T.startFrom}`), cards);
+    picker.classList.add("wide");
+    overlay.append(picker);
     this.root.append(overlay);
   }
 
@@ -571,7 +581,7 @@ export class App {
       b.addEventListener("click", () => { this.ui.name.value = word; this.saver.mark(); overlay.remove(); });
       grid.append(b);
     }
-    overlay.append(h("div", { class: "dialog" }, grid, btn(T.close, "big", () => overlay.remove())));
+    overlay.append(dialog(() => overlay.remove(), grid));
     this.root.append(overlay);
   }
 
@@ -635,7 +645,7 @@ export class App {
     const wasFirst = p.latest === null;
     // A plain same-tab link: Safari's download manager takes over, and tapping the file there
     // opens Minecraft. The minecraft:// deep link opens Minecraft without importing (device test).
-    const dialog = h("div", { class: "dialog" },
+    const box = dialog(() => overlay.remove(),
       h("h2", {}, `🎉 ${T.ready}`),
       h("p", {}, T.readyText(p.packName, r.versionString)),
       h("p", { class: "meta" }, T.downloadWhy),
@@ -647,29 +657,28 @@ export class App {
         h("p", {}, wasFirst ? T.firstActivateHint(p.packName) : T.updateHint(p.packName, r.versionString)),
       ),
       h("p", { class: "server" }, `🏠 ${T.serverNote}`),
-      btn(T.close, "", () => overlay.remove()),
     );
     if (adminToken() && (r.warnings.length || r.validation)) {
-      dialog.append(h("details", {}, h("summary", {}, `${r.pieceCount} pieces, ${r.cubeCount} cubes, ${r.durationMs} ms, ${r.warnings.length} warnings`), h("pre", {}, r.warnings.join("\n"))));
+      box.append(h("details", {}, h("summary", {}, `${r.pieceCount} pieces, ${r.cubeCount} cubes, ${r.durationMs} ms, ${r.warnings.length} warnings`), h("pre", {}, r.warnings.join("\n"))));
     }
-    overlay.append(dialog);
+    overlay.append(box);
     this.root.append(overlay);
   }
 
   private showNotice(title: string, text: string, details?: string): void {
     const overlay = h("div", { class: "overlay" });
-    const dialog = h("div", { class: "dialog" }, h("h2", {}, title), h("p", {}, text), btn(T.close, "big", () => overlay.remove()));
-    if (details) dialog.append(h("details", {}, h("summary", {}, T.details), h("pre", {}, details)));
-    overlay.append(dialog);
+    const box = dialog(() => overlay.remove(), h("h2", {}, title), h("p", {}, text));
+    if (details) box.append(h("details", {}, h("summary", {}, T.details), h("pre", {}, details)));
+    overlay.append(box);
     this.root.append(overlay);
   }
 
   private showError(e: unknown): void {
     const overlay = h("div", { class: "overlay" });
     const msg = e instanceof ApiError ? e.message : (e as Error)?.message ?? String(e);
-    const dialog = h("div", { class: "dialog" }, h("h2", {}, `😕 ${T.oops}`), h("p", {}, T.tryAgain), btn(T.close, "big", () => overlay.remove()));
-    dialog.append(h("details", {}, h("summary", {}, T.details), h("pre", {}, msg)));
-    overlay.append(dialog);
+    const box = dialog(() => overlay.remove(), h("h2", {}, `😕 ${T.oops}`), h("p", {}, T.tryAgain));
+    box.append(h("details", {}, h("summary", {}, T.details), h("pre", {}, msg)));
+    overlay.append(box);
     this.root.append(overlay);
   }
 
@@ -748,7 +757,7 @@ export class App {
         btn(T.rename, "", () => void this.prompt(T.newName, T.kidName, p.name).then((name) => { if (name?.trim()) void guard(api.updateProfile(p.id, { name: name.trim() })); })),
         btn(T.changeIcon, "", () => {
           const overlay = h("div", { class: "overlay" });
-          overlay.append(h("div", { class: "dialog" }, h("h2", {}, T.pickIcon), this.iconGrid(p.icon, (icon) => { overlay.remove(); void guard(api.updateProfile(p.id, { icon }).then((updated) => this.uploadPackIcon(updated))); }), btn(T.close, "big", () => overlay.remove())));
+          overlay.append(dialog(() => overlay.remove(), h("h2", {}, T.pickIcon), this.iconGrid(p.icon, (icon) => { overlay.remove(); void guard(api.updateProfile(p.id, { icon }).then((updated) => this.uploadPackIcon(updated))); })));
           this.root.append(overlay);
         }),
       );

@@ -37,6 +37,7 @@ export const T = {
   full: (max: number) => `This pack is full (${max} pieces). Hide one and remake it, or delete one that was never sent.`,
   pieces: (n: number, max: number) => `${n} of ${max}`,
   hideTitle: "Hide this piece?",
+  hideMeans: "Hide takes it out of the build menu; anything you already placed stays where it is.",
   hideText: "It stays in Minecraft, but disappears from this list.",
   hide: "Hide",
   no: "No",

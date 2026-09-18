@@ -241,8 +241,9 @@ describe("family server update over the API", () => {
   it("takes everyone's pieces as they are, makes their packs, allocates shared states, deploys, reports", async () => {
     const chair = await fixture("chair_asym");
     const table = await fixture("table");
-    await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "Dad chair", voxels: chair.voxels, options: chair.options } });
-    await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Chloë table", voxels: table.voxels } });
+    // A piece goes to the shared world only when someone chooses it; a new one starts off it.
+    await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "Dad chair", voxels: chair.voxels, options: { ...chair.options, onFamilyServer: true } } });
+    await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Chloë table", voxels: table.voxels, options: { onFamilyServer: true } } });
     await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Still empty" } }); // no voxels: left out
     // Nobody pressed anything: the update itself makes each profile's pack, so an edit needs no other step.
     const before = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth() })).json();
@@ -320,8 +321,9 @@ describe("family server update over the API", () => {
     expect(guest.json()).toMatchObject({ id: "sam", onFamilyServer: false });
     await ctx.app.inject({ method: "POST", url: "/api/profiles/sam/pieces", payload: { name: "Guest chair", voxels: table.voxels } });
 
-    // Someone keeps one piece at home.
-    const home = await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "Just for me", voxels: table.voxels, options: { onFamilyServer: false } } });
+    // Someone builds a new piece and leaves it as it comes: off the server until they choose it.
+    const home = await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "Just for me", voxels: table.voxels } });
+    expect(home.json().options.onFamilyServer).toBe(false);
     expect(home.statusCode, home.body).toBe(201);
 
     const before = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth })).json();

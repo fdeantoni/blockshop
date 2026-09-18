@@ -52,7 +52,8 @@ export const PieceOptionsSchema = z.object({
   /**
    * Whether this piece goes on the family server. Its own worlds always have it; the shared one has room
    * for a limited number of pieces (four carrier states each), so this is what the kids choose between.
-   * Absent means yes, so a piece that is already on the server stays there.
+   * A new piece is created with `false` and someone has to choose it; absent means yes, because pieces that
+   * predate the choice were all on the server already and must not fall off.
    */
   onFamilyServer: z.boolean().optional(),
 });
