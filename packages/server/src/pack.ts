@@ -203,10 +203,12 @@ export function packInputHash(project: Project, pieces: readonly Piece[], packIc
   const { version: _v, nextPieceNumber: _n, ...rest } = project;
   const input = {
     project: rest,
-    pieces: pieces.filter((p) => p.voxels.length > 0).map(({ publishedInVersion: _p, updatedAt: _u, options, ...piece }) => {
-      const { onFamilyServer: _s, ...rest } = options;
-      return { ...piece, options: rest };
-    }),
+    // By id, so the order a caller happens to pass them in never counts as a change.
+    pieces: [...pieces].filter((p) => p.voxels.length > 0).sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+      .map(({ publishedInVersion: _p, updatedAt: _u, options, ...piece }) => {
+        const { onFamilyServer: _s, ...rest } = options;
+        return { ...piece, options: rest };
+      }),
   };
   const h = createHash("sha256").update(JSON.stringify(input));
   if (packIcon) h.update(packIcon);

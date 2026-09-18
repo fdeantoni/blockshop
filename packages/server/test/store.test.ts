@@ -25,3 +25,16 @@ describe("palette migration", () => {
     expect(ensureDefaultPalette(project).added).toEqual([]);
   });
 });
+
+describe("piece order", () => {
+  it("is the order they were made, past the tenth", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "blockshop-order-"));
+    const store = new Store(dir);
+    await store.init();
+    for (let i = 0; i < 12; i++) await store.createPiece({ name: `P${i + 1}` });
+    const ids = (await store.listPieces()).map((p) => p.id);
+    expect(ids).toEqual(Array.from({ length: 12 }, (_, i) => `piece_${i + 1}`));
+    expect((await store.listSummaries()).map((p) => p.id)).toEqual(ids);
+    await rm(dir, { recursive: true, force: true });
+  });
+});

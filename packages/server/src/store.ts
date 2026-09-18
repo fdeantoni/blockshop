@@ -84,11 +84,15 @@ export class Store {
     await atomicWrite(this.projectPath, JSON.stringify(ProjectSchema.parse(project), null, 2) + "\n");
   }
 
+  /**
+   * Oldest first, so a kid's newest piece is always at the end of their gallery. Sorting the file names would
+   * read `piece_1, piece_10, piece_2`, which nobody noticed while a profile held fewer than ten pieces.
+   */
   async listPieces(): Promise<Piece[]> {
-    const files = (await readdir(this.piecesDir)).filter((f) => f.endsWith(".json")).sort();
+    const files = (await readdir(this.piecesDir)).filter((f) => f.endsWith(".json"));
     const pieces: Piece[] = [];
     for (const f of files) pieces.push(PieceSchema.parse(JSON.parse(await readFile(join(this.piecesDir, f), "utf8"))));
-    return pieces;
+    return pieces.sort((a, b) => (a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : pieceNumber(a.id) - pieceNumber(b.id)));
   }
 
   async listSummaries(): Promise<PieceSummary[]> {
@@ -243,6 +247,11 @@ export class Store {
     }
     return entries.sort((a, b) => compareVersions(b.version, a.version));
   }
+}
+
+/** The counter in `piece_<n>`; pieces made in the same millisecond still come out in the order they were made. */
+function pieceNumber(id: string): number {
+  return Number(id.replace(/^piece_/, "")) || 0;
 }
 
 export function compareVersions(a: string, b: string): number {
