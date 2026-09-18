@@ -17,6 +17,8 @@ export interface ServerProfileStatus {
   id: string;
   name: string;
   icon: string;
+  /** Whether the family server carries this profile at all (a guest is usually off it). */
+  onFamilyServer: boolean;
   /** The profile's current pack version, or null before it ever made one. */
   pack: string | null;
   /** The pack version the family server's last update was built from, or null. */
@@ -45,6 +47,8 @@ export interface ServerStatus {
   lastDeploy: JavaDeployResult | null;
   restartPending: boolean;
   statesLeft: number;
+  /** Pieces the family server still has room for: four carrier states each, and states are never reused. */
+  piecesLeft: number;
   busy: boolean;
 }
 
@@ -57,10 +61,13 @@ export interface ServerUpdateResult {
   report: JavaBuildReport;
 }
 
-/** What one profile would put on the server right now: its pieces as saved, empty ones left out. */
+/**
+ * What one profile would put on the server right now: the pieces it has chosen for it, empty ones left out.
+ * A piece with no choice recorded counts as chosen, so nothing already on the server falls off.
+ */
 async function currentSnapshot(store: Store): Promise<{ pieces: Piece[]; hash: string; packVersion: string | null }> {
   const project = await store.getProject();
-  const pieces = (await store.listPieces()).filter((p) => p.voxels.length > 0);
+  const pieces = (await store.listPieces()).filter((p) => p.voxels.length > 0 && p.options.onFamilyServer !== false);
   let packVersion: string | null = null;
   try {
     packVersion = ((JSON.parse(await readFile(join(store.packsDir, "latest.json"), "utf8")) as { version: number[] }).version).join(".");
@@ -94,6 +101,8 @@ export class ServerExporter {
     const hashes: Record<string, string> = {};
     const snapshots = new Map<string, { version: string | null; hash: string; pieces: number }>();
     for (const p of profiles) {
+      // A profile kept off the family server costs it nothing: no pieces, no carrier states, no mapping.
+      if (!p.onFamilyServer) continue;
       const store = await this.workspace.storeFor(p.id);
       const snap = await currentSnapshot(store);
       if (snap.pieces.length === 0) continue;
@@ -121,7 +130,7 @@ export class ServerExporter {
     // Exact per profile: the pieces the last update was built from are recorded as a hash, because a
     // pack version only moves when someone makes a pack, and editing alone must still count as changed.
     const statuses: ServerProfileStatus[] = profiles.map((p) => ({
-      id: p.id, name: p.name, icon: p.icon,
+      id: p.id, name: p.name, icon: p.icon, onFamilyServer: p.onFamilyServer,
       pack: snapshots.get(p.id)?.version ?? null,
       onServer: build?.profiles[p.id] ?? null,
       changed: snapshots.has(p.id) && snapshots.get(p.id)!.hash !== build?.hashes?.[p.id],
@@ -159,6 +168,7 @@ export class ServerExporter {
       rcon: cfg.rcon !== null, restartCommand: cfg.restartCommand !== null, logWatched: cfg.mcLogFile !== null,
       build, lastDeploy, restartPending: lastDeploy?.restartPending ?? false,
       statesLeft: carrierStateCount(input.states.carrier) - input.states.cursor,
+      piecesLeft: Math.floor((carrierStateCount(input.states.carrier) - input.states.cursor) / 4),
       busy: this.busy,
     };
   }
@@ -178,6 +188,7 @@ export class ServerExporter {
     // runs, and it leaves the version, history and "this piece is out there" marks the server relies on.
     // A profile with nothing drawn yet is simply not on the server.
     for (const p of await this.workspace.listProfiles()) {
+      if (!p.onFamilyServer) continue;
       const store = await this.workspace.storeFor(p.id);
       if ((await store.listPieces()).every((x) => x.voxels.length === 0)) continue;
       const builder = await this.packBuilderFor(p.id);

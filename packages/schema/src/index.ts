@@ -49,6 +49,12 @@ export const PieceOptionsSchema = z.object({
   /** Hidden pieces stay in the pack (placed blocks survive) but leave the creative menu. */
   hidden: z.boolean().optional(),
   light: LightLevelSchema.optional(),
+  /**
+   * Whether this piece goes on the family server. Its own worlds always have it; the shared one has room
+   * for a limited number of pieces (four carrier states each), so this is what the kids choose between.
+   * Absent means yes, so a piece that is already on the server stays there.
+   */
+  onFamilyServer: z.boolean().optional(),
 });
 export type PieceOptions = z.infer<typeof PieceOptionsSchema>;
 
@@ -265,13 +271,19 @@ export function sanitizeDisplayName(name: string, fallback: string): string {
 
 // ---- Profiles: one pack per person, a workspace file holding them and the grown-up PIN
 
-export const MAX_PROFILES = 3;
-/** Pieces per profile, hidden ones included: 3 × 11 × 4 facings stays under the 143 Java carrier states. */
+/** Three for the family plus room for guests, who normally stay off the family server (see `onFamilyServer`). */
+export const MAX_PROFILES = 5;
+/**
+ * Pieces per profile, hidden ones included. What the family server can hold is a separate, shared budget:
+ * every piece on it takes four carrier states (one per facing) out of the carrier's supply, and states are
+ * never reused, so the count is over everything ever sent. The update says when that budget runs out.
+ */
 export const MAX_PIECES_PER_PROFILE = 11;
 export const ProfileIdSchema = z.string().regex(/^[a-z][a-z0-9_]{0,15}$/, "a-z, 0-9 and _; starts with a letter; at most 16");
 /** Namespaces that can never be a profile: Minecraft's, ours for shared items, Geyser's. */
 export const RESERVED_PROFILE_IDS = ["minecraft", "blockshop", "geyser_custom", "geyser", "default", "craftengine"] as const;
-export const ProfileRoleSchema = z.enum(["grownup", "kid"]);
+/** `guest`: a friend visiting for an afternoon. Same editor and packs, normally not on the family server. */
+export const ProfileRoleSchema = z.enum(["grownup", "kid", "guest"]);
 export type ProfileRole = z.infer<typeof ProfileRoleSchema>;
 /** One or two emoji; UTF-16 units, so a flag or a keycap fits. */
 export const IconSchema = z.string().trim().min(1).max(16);
@@ -283,6 +295,12 @@ export const ProfileSchema = z.object({
   name: z.string().trim().min(1).max(40),
   icon: IconSchema,
   role: ProfileRoleSchema,
+  /**
+   * Whether the family server carries this profile's furniture. A profile that is off it still has its own
+   * packs for its own worlds and costs nothing on the shared world: no carrier states, no Geyser mapping,
+   * nothing in the `/cat` menu. Guests default to off, everyone else to on.
+   */
+  onFamilyServer: z.boolean().default(true),
   createdAt: z.iso.datetime(),
 });
 export type Profile = z.infer<typeof ProfileSchema>;

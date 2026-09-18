@@ -30,8 +30,8 @@ const DevFileParam = z.object({ file: z.string().regex(/^blockshop(-all|_[a-z][a
 const SetupSchema = z.object({ pin: PinSchema, name: NameSchema, icon: IconSchema });
 const LoginSchema = z.object({ pin: z.string().max(16) });
 const PinChangeSchema = z.object({ pin: PinSchema });
-const ProfileCreateSchema = z.object({ name: NameSchema, icon: IconSchema, role: ProfileRoleSchema.default("kid") });
-const ProfilePatchSchema = z.object({ name: NameSchema.optional(), icon: IconSchema.optional() });
+const ProfileCreateSchema = z.object({ name: NameSchema, icon: IconSchema, role: ProfileRoleSchema.default("kid"), onFamilyServer: z.boolean().optional() });
+const ProfilePatchSchema = z.object({ name: NameSchema.optional(), icon: IconSchema.optional(), onFamilyServer: z.boolean().optional() });
 const IconPatchSchema = z.object({ icon: IconSchema });
 
 export interface AppContext { app: FastifyInstance; workspace: Workspace; config: Config; packBuilderFor: (pid: string) => Promise<PackBuilder>; exporter: ServerExporter; devPacks: DevPackServer }

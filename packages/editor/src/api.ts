@@ -1,7 +1,7 @@
 import type { PaletteEntry, Piece, PieceOptions, Voxel, Version } from "@blockshop/schema";
 
 export interface ProfileInfo {
-  id: string; name: string; icon: string; role: "grownup" | "kid"; createdAt: string;
+  id: string; name: string; icon: string; role: "grownup" | "kid" | "guest"; createdAt: string; onFamilyServer: boolean;
   namespace: string; packName: string; version: Version; versionString: string;
   palette: PaletteEntry[]; latest: { version: string; mcaddonUrl: string } | null; makingPack: boolean; hasIconPng: boolean;
   pieceCount: number; maxPieces: number;
@@ -9,19 +9,19 @@ export interface ProfileInfo {
 export interface WorkspaceInfo { uiTitle: string; setupNeeded: boolean; maxProfiles: number; maxPieces: number; profiles: ProfileInfo[] }
 export interface PieceSummary {
   id: string; name: string; author: string; hidden: boolean; updatedAt: string; createdAt: string;
-  voxelCount: number; hasThumbnail: boolean; publishedInVersion?: Version;
+  voxelCount: number; hasThumbnail: boolean; publishedInVersion?: Version; onFamilyServer: boolean;
 }
 export interface RconReply { command: string; response: string }
 export interface JavaDeployResult {
   at: string; version: string; geyserChanged: boolean; mappingsChanged: boolean; packChanged: boolean; pluginChanged: boolean; catalogChanged: boolean; restarted: boolean; reloadedGeyser: boolean;
   restartPending: boolean; restartNeeded: boolean; commands: RconReply[]; error: string | null;
 }
-export interface ServerProfileStatus { id: string; name: string; icon: string; pack: string | null; onServer: string | null; changed: boolean; pieces: number }
+export interface ServerProfileStatus { id: string; name: string; icon: string; onFamilyServer: boolean; pack: string | null; onServer: string | null; changed: boolean; pieces: number }
 export interface ServerStatus {
   mode: "off" | "on"; version: string; profiles: ServerProfileStatus[]; changed: boolean; needsRestart: boolean | null;
   online: string[] | null; onlineError: string | null; rcon: boolean; restartCommand: boolean; logWatched: boolean;
   build: { version: string; at: string; pieces: number; profiles: Record<string, string> } | null; lastDeploy: JavaDeployResult | null;
-  restartPending: boolean; statesLeft: number; busy: boolean;
+  restartPending: boolean; statesLeft: number; piecesLeft: number; busy: boolean;
 }
 export interface ServerUpdateResult { version: string; profiles: Record<string, string>; pieces: number; warnings: string[]; deploy: JavaDeployResult }
 export interface PackResult {
@@ -89,8 +89,8 @@ export const api = {
   logout: () => call<void>("POST", "/api/admin/logout"),
   admin: () => call<AdminInfo>("GET", "/api/admin"),
   changePin: (pin: string) => call<{ token: string }>("PUT", "/api/admin/pin", { pin }),
-  addProfile: (body: { name: string; icon: string }) => call<ProfileInfo>("POST", "/api/admin/profiles", body),
-  updateProfile: (pid: string, patch: { name?: string; icon?: string }) => call<ProfileInfo>("PUT", `/api/admin/profiles/${encodeURIComponent(pid)}`, patch),
+  addProfile: (body: { name: string; icon: string; role?: "kid" | "guest" }) => call<ProfileInfo>("POST", "/api/admin/profiles", body),
+  updateProfile: (pid: string, patch: { name?: string; icon?: string; onFamilyServer?: boolean }) => call<ProfileInfo>("PUT", `/api/admin/profiles/${encodeURIComponent(pid)}`, patch),
   deleteProfile: (pid: string) => call<void>("DELETE", `/api/admin/profiles/${encodeURIComponent(pid)}`),
   server: () => call<ServerStatus>("GET", "/api/admin/server"),
   serverUpdate: () => call<ServerUpdateResult>("POST", "/api/admin/server/update"),

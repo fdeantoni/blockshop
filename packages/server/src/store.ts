@@ -9,6 +9,8 @@ import {
 export interface PieceSummary {
   id: string; name: string; author: string; hidden: boolean; updatedAt: string; createdAt: string;
   voxelCount: number; hasThumbnail: boolean; publishedInVersion?: Version;
+  /** Whether this piece is meant for the family server (the shared world has room for a limited number). */
+  onFamilyServer: boolean;
 }
 
 /** Fields a client may send; `undefined` means "leave as is". */
@@ -96,6 +98,7 @@ export class Store {
       const s: PieceSummary = {
         id: p.id, name: p.name, author: p.author, hidden: p.options.hidden === true, updatedAt: p.updatedAt, createdAt: p.createdAt,
         voxelCount: p.voxels.length, hasThumbnail: await exists(this.thumbnailPath(p.id)),
+        onFamilyServer: p.options.onFamilyServer !== false,
       };
       if (p.publishedInVersion) s.publishedInVersion = p.publishedInVersion;
       out.push(s);

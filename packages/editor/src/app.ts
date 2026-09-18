@@ -277,7 +277,8 @@ export class App {
     if (list.length === 0) cards.append(h("div", { class: "empty" }, T.empty));
     for (const p of list) {
       const img = p.hasThumbnail ? h("img", { src: api.thumbnailUrl(this.profile.id, p.id, p.updatedAt), alt: "" }) : h("div", { class: "ph" }, "🪑");
-      const card = h("div", { class: `card${p.hidden ? " hidden-piece" : ""}` }, img, h("div", { class: "name" }, p.name), h("div", { class: "meta" }, p.hidden ? T.hidden : p.author || ""));
+      const mark = p.hidden ? T.hidden : p.onFamilyServer ? `🏠 ${T.onServerPiece}` : `🏡 ${T.offServerPiece}`;
+      const card = h("div", { class: `card${p.hidden ? " hidden-piece" : ""}` }, img, h("div", { class: "name" }, p.name), h("div", { class: "meta" }, mark));
       let longPressed = false;
       attachLongPress(card, 600, () => { longPressed = true; void this.pieceMenu(p); });
       card.addEventListener("click", () => { if (longPressed) { longPressed = false; return; } go(`#/p/${this.profile!.id}/piece/${p.id}`); });
@@ -285,7 +286,7 @@ export class App {
     }
   }
 
-  /** Long-press on a card: copy, hide or bring back, delete when it was never sent. */
+  /** Long-press on a card: share with the family server, copy, hide or bring back, delete when never sent. */
   private pieceMenu(p: PieceSummary): Promise<void> {
     const pid = this.profile!.id;
     return new Promise((resolve) => {
@@ -295,11 +296,15 @@ export class App {
       const action = p.hidden
         ? btn(T.unhide, "primary big", () => after(api.unhide(pid, p.id)))
         : btn(T.hide, "danger big", () => after(api.hide(pid, p.id)));
+      const share = p.onFamilyServer
+        ? btn(T.shareOff, "big", () => after(api.update(pid, p.id, { options: { onFamilyServer: false } })))
+        : btn(T.shareOn, "primary big", () => after(api.update(pid, p.id, { options: { onFamilyServer: true } })));
       const copy = btn(`📋 ${T.copy}`, "big", () => { close(); void this.copyPiece(p); });
-      const row = h("div", { class: "row" }, copy, action);
+      const row = h("div", { class: "row" }, share, copy, action);
       if (!p.publishedInVersion) row.append(btn(`🗑 ${T.delete}`, "danger big", () => after(api.remove(pid, p.id))));
       row.append(btn(T.no, "big", close));
-      overlay.append(h("div", { class: "dialog" }, h("h2", {}, p.name), h("p", {}, p.publishedInVersion ? T.hideText : T.deleteText), row));
+      const note = h("p", {}, p.onFamilyServer ? T.shareOffText : T.shareOnText);
+      overlay.append(h("div", { class: "dialog" }, h("h2", {}, p.name), note, h("p", { class: "meta" }, p.publishedInVersion ? T.hideText : T.deleteText), row));
       this.root.append(overlay);
     });
   }
@@ -705,7 +710,19 @@ export class App {
     for (const p of profiles) {
       const row = h("div", { class: "prow" },
         h("span", { class: "bigicon small" }, iconNode(p.icon)),
-        h("div", { class: "grow" }, h("div", { class: "name" }, `${p.name} `, h("small", {}, `(${p.id}${p.role === "grownup" ? ", grown-up" : ""})`)), h("div", { class: "meta" }, `${T.pieces(p.pieceCount, p.maxPieces)} · ${p.latest ? T.latestPack(p.latest.version) : T.noPackYet}`)),
+        h("div", { class: "grow" },
+          h("div", { class: "name" }, `${p.name} `, h("small", {}, `(${p.id}${p.role === "grownup" ? ", grown-up" : p.role === "guest" ? `, ${T.guest}` : ""})`)),
+          h("div", { class: "meta" }, `${T.pieces(p.pieceCount, p.maxPieces)} · ${p.latest ? T.latestPack(p.latest.version) : T.noPackYet}`),
+          h("label", { class: "meta" },
+            (() => {
+              const box = h("input", { type: "checkbox" }) as HTMLInputElement;
+              box.checked = p.onFamilyServer;
+              box.addEventListener("change", () => void guard(api.updateProfile(p.id, { onFamilyServer: box.checked })));
+              return box;
+            })(),
+            ` ${T.onFamilyServer}`,
+          ),
+        ),
         btn(T.rename, "", () => void this.prompt(T.newName, T.kidName, p.name).then((name) => { if (name?.trim()) void guard(api.updateProfile(p.id, { name: name.trim() })); })),
         btn(T.changeIcon, "", () => {
           const overlay = h("div", { class: "overlay" });
@@ -722,7 +739,15 @@ export class App {
     if (profiles.length < maxProfiles) {
       const name = h("input", { class: "name", type: "text", maxlength: "40", placeholder: T.kidName, autocomplete: "off", autocapitalize: "words" });
       let icon = "🦄";
-      addKid.append(h("div", { class: "grow" }, h("div", { class: "name" }, `➕ ${T.addKid}`), name, this.iconGrid(icon, (i) => { icon = i; })), btn(T.add, "primary", () => { if (name.value.trim()) void guard(api.addProfile({ name: name.value.trim(), icon }).then((p) => this.uploadPackIcon(p))); }));
+      const add = (role: "kid" | "guest") => {
+        if (!name.value.trim()) return;
+        void guard(api.addProfile({ name: name.value.trim(), icon, role }).then((p) => this.uploadPackIcon(p)));
+      };
+      addKid.append(
+        h("div", { class: "grow" }, h("div", { class: "name" }, `➕ ${T.addKid}`), name, this.iconGrid(icon, (i) => { icon = i; }), h("div", { class: "meta" }, T.guestServerHint)),
+        btn(T.add, "primary", () => add("kid")),
+        btn(`🧑‍🤝‍🧑 ${T.addGuest}`, "", () => add("guest")),
+      );
     }
 
     // Family server
@@ -730,7 +755,9 @@ export class App {
     if (!server || server.mode === "off") {
       serverBox.append(h("p", {}, T.serverOff));
     } else {
-      const rows = server.profiles.map((s) => h("li", {}, iconNode(s.icon), ` ${s.name}: ${T.piecesNow(s.pieces)}, ${T.onServer} ${s.onServer ?? T.never}${s.changed ? ` · ${T.changedSince}` : ""}`));
+      const rows = server.profiles.map((s) => h("li", {}, iconNode(s.icon), s.onFamilyServer
+        ? ` ${s.name}: ${T.piecesNow(s.pieces)}, ${T.onServer} ${s.onServer ?? T.never}${s.changed ? ` · ${T.changedSince}` : ""}`
+        : ` ${s.name}: ${T.offServerPiece}`));
       const online = server.online === null ? (server.onlineError ? `? (${server.onlineError})` : "?") : server.online.length ? server.online.map((n) => n.replace(/^\./, "")).join(", ") : T.nobodyOnline;
       const verdict = !server.changed ? T.serverUpToDate : server.needsRestart ? T.serverRestartNeeded : T.serverReloadOnly;
       serverBox.append(
@@ -738,7 +765,7 @@ export class App {
         h("p", {}, `${T.online}: ${online}`),
         h("p", { class: server.changed && server.needsRestart ? "warnline" : "" }, verdict),
         ...(server.restartPending ? [h("p", { class: "warnline" }, T.serverRestartPending)] : []),
-        h("p", { class: "meta" }, `v${server.version} · ${T.statesLeft(server.statesLeft)}${server.lastDeploy?.error ? ` · ${server.lastDeploy.error}` : ""}`),
+        h("p", { class: "meta" }, `v${server.version} · ${T.serverFull(server.piecesLeft)}${server.lastDeploy?.error ? ` · ${server.lastDeploy.error}` : ""}`),
         h("div", { class: "row" },
           btn(`🏠 ${T.updateServer}`, "warn big", () => void this.updateServer()),
           ...(server.restartPending && !server.restartCommand ? [btn(`✅ ${T.markRestarted}`, "", () => void guard(api.serverRestarted()))] : []),

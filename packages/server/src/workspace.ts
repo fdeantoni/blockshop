@@ -92,13 +92,16 @@ export class Workspace {
     return this.store(id);
   }
 
-  async createProfile(input: { name: string; icon: string; role: ProfileRole }): Promise<Profile> {
+  async createProfile(input: { name: string; icon: string; role: ProfileRole; onFamilyServer?: boolean | undefined }): Promise<Profile> {
     return this.withLock(async () => {
       const ws = await this.get();
       if (ws.profiles.length >= MAX_PROFILES) throw new ProjectError(`at most ${MAX_PROFILES} profiles`, 409);
       const taken = new Set<string>([...ws.profiles.map((p) => p.id), ...ws.retired, ...RESERVED_PROFILE_IDS]);
       const profile = ProfileSchema.parse({
-        id: profileIdFromName(input.name, taken), name: input.name, icon: input.icon, role: input.role, createdAt: new Date().toISOString(),
+        id: profileIdFromName(input.name, taken), name: input.name, icon: input.icon, role: input.role,
+        // A guest is here for an afternoon: their furniture stays in their own worlds unless a grown-up says otherwise.
+        onFamilyServer: input.onFamilyServer ?? input.role !== "guest",
+        createdAt: new Date().toISOString(),
       });
       const store = new Store(this.profileDir(profile.id));
       await store.init({ namespace: profile.id, packName: packNameFor(profile.name) });
@@ -108,12 +111,12 @@ export class Workspace {
     });
   }
 
-  async updateProfile(id: string, patch: { name?: string | undefined; icon?: string | undefined }): Promise<Profile> {
+  async updateProfile(id: string, patch: { name?: string | undefined; icon?: string | undefined; onFamilyServer?: boolean | undefined }): Promise<Profile> {
     return this.withLock(async () => {
       const ws = await this.get();
       const i = ws.profiles.findIndex((p) => p.id === id);
       if (i < 0) throw new ProjectError(`no such profile: ${id}`, 404);
-      const updated = ProfileSchema.parse({ ...ws.profiles[i], ...(patch.name !== undefined ? { name: patch.name } : {}), ...(patch.icon !== undefined ? { icon: patch.icon } : {}) });
+      const updated = ProfileSchema.parse({ ...ws.profiles[i], ...(patch.name !== undefined ? { name: patch.name } : {}), ...(patch.icon !== undefined ? { icon: patch.icon } : {}), ...(patch.onFamilyServer !== undefined ? { onFamilyServer: patch.onFamilyServer } : {}) });
       const profiles = [...ws.profiles];
       profiles[i] = updated;
       await this.save({ ...ws, profiles });

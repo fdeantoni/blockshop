@@ -21,12 +21,18 @@ describe("profiles", () => {
   });
 
   it("limits and defaults", () => {
-    expect(MAX_PROFILES).toBe(3);
+    expect(MAX_PROFILES).toBe(5);
     expect(MAX_PIECES_PER_PROFILE).toBe(11);
-    expect(3 * MAX_PIECES_PER_PROFILE * 4).toBeLessThanOrEqual(143);
+    // What the family server can hold is a shared budget (four carrier states per piece), not this cap;
+    // one profile alone must never be able to exhaust it.
+    expect(MAX_PIECES_PER_PROFILE * 4).toBeLessThanOrEqual(143);
     const ws = WorkspaceSchema.parse({});
     expect(ws).toEqual({ profiles: [], retired: [], admin: null, serverVersion: [1, 0, 0] });
     expect(() => ProfileSchema.parse({ id: "Robin", name: "Robin", icon: "🦄", role: "kid", createdAt: new Date().toISOString() })).toThrow();
-    expect(() => WorkspaceSchema.parse({ profiles: Array.from({ length: 4 }, (_, i) => ({ id: `p${i}`, name: "x", icon: "x", role: "kid", createdAt: new Date().toISOString() })) })).toThrow();
+    expect(() => WorkspaceSchema.parse({ profiles: Array.from({ length: MAX_PROFILES + 1 }, (_, i) => ({ id: `p${i}`, name: "x", icon: "x", role: "kid", createdAt: new Date().toISOString() })) })).toThrow();
+    // Everyone is on the family server unless it is turned off; a guest starts off it (see createProfile).
+    const profile = { id: "robin", name: "Robin", icon: "🦄", role: "kid", createdAt: new Date().toISOString() };
+    expect(ProfileSchema.parse(profile).onFamilyServer).toBe(true);
+    expect(ProfileSchema.parse({ ...profile, role: "guest", onFamilyServer: false }).onFamilyServer).toBe(false);
   });
 });

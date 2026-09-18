@@ -232,8 +232,8 @@ describe("family server update over the API", () => {
     const st = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth() })).json();
     expect(st).toMatchObject({ mode: "on", version: "1.0.0", changed: false, needsRestart: true, online: ["Steve", ".Alex"], rcon: true, restartCommand: false, build: null, lastDeploy: null, restartPending: false, statesLeft: 143, busy: false });
     expect(st.profiles).toEqual([
-      { id: "dad", name: "Dad", icon: "🧔", pack: null, onServer: null, changed: false, pieces: 0 },
-      { id: "chloe_mae", name: "Chloë-Mae", icon: "🦄", pack: null, onServer: null, changed: false, pieces: 0 },
+      { id: "dad", name: "Dad", icon: "🧔", onFamilyServer: true, pack: null, onServer: null, changed: false, pieces: 0 },
+      { id: "chloe_mae", name: "Chloë-Mae", icon: "🦄", onFamilyServer: true, pack: null, onServer: null, changed: false, pieces: 0 },
     ]);
     expect((await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth() })).statusCode).toBe(422);
   });
@@ -311,5 +311,41 @@ describe("family server update over the API", () => {
     const states = JSON.parse(await readFile(join(dir, "data", "server", "java-states.json"), "utf8"));
     expect(Object.keys(states.states).sort()).toEqual(["chloe_mae:piece_1", "dad:piece_1"]);
     expect(await exists(join(dir, "plugins", "CraftEngine", "resources", "blockshop", "resourcepack", "assets", "chloe_mae"))).toBe(false);
+  });
+  it("only chosen pieces and included profiles reach the server; the rest cost it nothing", async () => {
+    const table = await fixture("table");
+    const auth = { "x-admin-token": token };
+    // A guest: their own packs work, the shared world never sees them.
+    const guest = await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Sam", icon: "🐸", role: "guest" } });
+    expect(guest.json()).toMatchObject({ id: "sam", onFamilyServer: false });
+    await ctx.app.inject({ method: "POST", url: "/api/profiles/sam/pieces", payload: { name: "Guest chair", voxels: table.voxels } });
+
+    // Someone keeps one piece at home.
+    const home = await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "Just for me", voxels: table.voxels, options: { onFamilyServer: false } } });
+    expect(home.statusCode, home.body).toBe(201);
+
+    const before = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth })).json();
+    const sam = before.profiles.find((p: { id: string }) => p.id === "sam");
+    expect(sam).toMatchObject({ onFamilyServer: false, pieces: 0, onServer: null });
+    const statesBefore = before.statesLeft;
+
+    const r = (await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth })).json();
+    expect(Object.keys(r.profiles)).not.toContain("sam");
+    const ce = JSON.parse(await readFile(join(dir, "plugins", "CraftEngine", "resources", "blockshop", "configuration", "blockshop.json"), "utf8"));
+    expect(Object.keys(ce.items)).not.toContain(`dad:${home.json().id}`);
+    expect(Object.keys(ce.items).some((k) => k.startsWith("sam:"))).toBe(false);
+    // Neither the guest nor the piece kept at home took a carrier state.
+    const after = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth })).json();
+    expect(statesBefore - after.statesLeft).toBe(0);
+    expect(after.piecesLeft).toBe(Math.floor(after.statesLeft / 4));
+
+    // Sharing it later puts it on the server, and that is when it takes its states.
+    await ctx.app.inject({ method: "PUT", url: `/api/profiles/dad/pieces/${home.json().id}`, payload: { options: { onFamilyServer: true } } });
+    const shared = (await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth })).json();
+    expect(Object.keys(JSON.parse(await readFile(join(dir, "plugins", "CraftEngine", "resources", "blockshop", "configuration", "blockshop.json"), "utf8")).items)).toContain(`dad:${home.json().id}`);
+    expect(shared.pieces).toBeGreaterThan(r.pieces);
+
+    // The guest went home; the next test starts from the family again.
+    expect((await ctx.app.inject({ method: "DELETE", url: "/api/admin/profiles/sam", headers: auth })).statusCode).toBe(204);
   });
 });

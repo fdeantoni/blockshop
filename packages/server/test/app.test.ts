@@ -49,7 +49,7 @@ describe("workspace and profiles", () => {
   it("starts empty and asks for setup", async () => {
     const res = await ctx.app.inject({ method: "GET", url: "/api/workspace" });
     expect(res.statusCode).toBe(200);
-    expect(res.json()).toMatchObject({ setupNeeded: true, profiles: [], maxProfiles: 3, maxPieces: 11 });
+    expect(res.json()).toMatchObject({ setupNeeded: true, profiles: [], maxProfiles: 5, maxPieces: 11 });
     expect((await ctx.app.inject({ method: "GET", url: "/api/admin" })).statusCode).toBe(401);
     expect((await ctx.app.inject({ method: "POST", url: "/api/setup", payload: { pin: "12", name: "Dad", icon: "🧔" } })).statusCode).toBe(400);
   });
@@ -82,16 +82,22 @@ describe("workspace and profiles", () => {
     expect((await ctx.app.inject({ method: "GET", url: "/api/admin", headers: { "x-admin-token": token } })).statusCode).toBe(200);
   });
 
-  it("adds kids up to three profiles, with ids derived from names", async () => {
+  it("adds kids and guests up to the profile cap, with ids derived from names", async () => {
     const auth = { "x-admin-token": token };
     const a = await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Chloë-Mae", icon: "🦄" } });
     expect(a.statusCode, a.body).toBe(201);
     expect(a.json()).toMatchObject({ id: "chloe_mae", role: "kid", packName: "Chloë-Mae's Furniture", namespace: "chloe_mae" });
     const b = await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Jules", icon: "🦊" } });
     expect(b.json()).toMatchObject({ id: "jules", packName: "Jules' Furniture" });
-    expect((await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Four", icon: "4" } })).statusCode).toBe(409);
+    // A guest: same packs and editor, but off the family server until a grown-up says otherwise.
+    const g = await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Sam", icon: "🐸", role: "guest" } });
+    expect(g.statusCode, g.body).toBe(201);
+    expect(g.json()).toMatchObject({ id: "sam", role: "guest", onFamilyServer: false });
+    expect((await ctx.app.inject({ method: "PUT", url: "/api/admin/profiles/sam", headers: auth, payload: { onFamilyServer: true } })).json()).toMatchObject({ onFamilyServer: true });
+    expect((await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Five", icon: "5" } })).statusCode).toBe(201);
+    expect((await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", headers: auth, payload: { name: "Six", icon: "6" } })).statusCode).toBe(409);
     expect((await ctx.app.inject({ method: "POST", url: "/api/admin/profiles", payload: { name: "Nope", icon: "x" } })).statusCode).toBe(401);
-    expect((await ctx.app.inject({ method: "GET", url: "/api/workspace" })).json().profiles.map((p: { id: string }) => p.id)).toEqual(["dad", "chloe_mae", "jules"]);
+    expect((await ctx.app.inject({ method: "GET", url: "/api/workspace" })).json().profiles.map((p: { id: string }) => p.id)).toEqual(["dad", "chloe_mae", "jules", "sam", "five"]);
   });
 
   it("keeps pieces per profile with counter ids and an eleven-piece cap", async () => {

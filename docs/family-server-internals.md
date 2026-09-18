@@ -5,8 +5,8 @@ verified on a real server. To set a server up, see [server-setup.md](server-setu
 
 The local-world add-on reaches each device's own worlds and needs the update routine on every device. The
 family server export puts the same furniture into the **shared Paper world**: on the grown-up's request
-("Update the family server" on the grown-up page), Blockshop takes every profile's pieces as they are saved at
-that moment, merges them into one CraftEngine pack and one set of Geyser mappings, writes them into the server's
+("Update the family server" on the grown-up page), Blockshop takes the pieces every profile has chosen for it, as
+they are saved at that moment, merges them into one CraftEngine pack and one set of Geyser mappings, writes them into the server's
 plugin folders, and Geyser hands Bedrock players one resource pack per profile when they join. Nothing is
 imported on the devices; nobody deletes old packs. Only that button touches the server, so nobody gets kicked by
 someone else's edit.
@@ -23,10 +23,17 @@ someone else's edit.
 | `geyser_rp/<profile>/` | (unzipped copies of the packs) | for inspection |
 | `report.json`, `build.json`, `deploy.json` | | build report, last build, last deploy result |
 
+**What is on the server is a choice, and a budget.** A piece carries `options.onFamilyServer` (absent means yes,
+so nothing already on the server falls off), and a profile carries `onFamilyServer` (a guest starts off it). Only
+chosen pieces of included profiles are built, allocated states and listed in `/cat`; everything else costs the
+server nothing and still reaches its own worlds through that profile's packs. Turning a piece or profile off
+leaves its states allocated — states are never reused — and anything placed from it in the shared world becomes
+plain leaves. The grown-up page shows the pieces still left (`piecesLeft`, `statesLeft / 4`).
+
 Carrier states (vanilla *leaves* states that CraftEngine frees; `carrier` in `DATA_DIR/server/java-states.json`)
 are assigned to a piece the first time it reaches the server (keyed `<profile>:<piece>`, four per piece, 143
 available) and never change afterwards, not even when a profile is removed: placed furniture is stored in the
-world as those vanilla states. Three profiles of eleven pieces (the caps) use 132.
+world as those vanilla states. That is 35 pieces for the whole family, whoever they belong to.
 Leaves rather than note blocks because the Java client culls the neighbours of an opaque note block,
 which made the floor under a chair show the sky; leaves are non-occluding with the same full-cube
 collision. Changing the carrier reassigns every state and turns already placed furniture into plain leaves

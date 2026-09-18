@@ -26,14 +26,21 @@ Without a Minecraft server, run only the `blockshop` service from the [setup gui
 ## Profiles
 
 Every person has a profile: a name, an icon and their own pack (own namespace, UUIDs, version counter, pieces,
-history), at most three profiles with eleven pieces each. The first visit shows a setup screen: the grown-up picks
-a PIN and makes their own profile, then adds the kids on the grown-up page (`#/admin`). The home screen lists all
-profiles with *Open* and *Download*, so a kid can import anyone's pack into a local world; each kid bookmarks their
-own gallery (`#/p/<id>`). *Download* makes that profile's pack file. A kid may
-change their own icon; renaming, removing and the family server are behind the PIN. A forgotten PIN is replaced by
-starting the server once with `ADMIN_PIN=<digits>`. Data layout: `DATA_DIR/blockshop.json` (profiles, PIN hash,
-export counter), `profiles/<id>/` (one project each), `server/` (shared Java states and the merged export),
-`deleted/` (folders of removed profiles).
+history), at most five profiles with eleven pieces each. The first visit shows a setup screen: the grown-up picks
+a PIN and makes their own profile, then adds the kids on the grown-up page (`#/admin`). A friend visiting for an
+afternoon gets a **guest** profile there: the same editor and the same packs for their own worlds, but off the
+family server unless a grown-up turns that on. The home screen lists all profiles with *Open* and *Download*, so
+a kid can import anyone's pack into a local world; each kid bookmarks their own gallery (`#/p/<id>`). *Download*
+makes that profile's pack file. A kid may change their own icon; renaming, removing and the family server are
+behind the PIN. A forgotten PIN is replaced by starting the server once with `ADMIN_PIN=<digits>`. Data layout:
+`DATA_DIR/blockshop.json` (profiles, PIN hash, export counter), `profiles/<id>/` (one project each), `server/`
+(shared Java states and the merged export), `deleted/` (folders of removed profiles).
+
+**What goes on the family server.** A tablet's own worlds get everything a profile has. The shared world has room
+for about 35 pieces in total, because each one takes four Java block states that are never reused, so the kids
+choose: long-press a piece in the gallery and pick *Keep in my own worlds* or *Put on the family server*. The
+grown-up page shows how much room is left. Turning a piece off after it has been on the server makes anything
+already placed there turn back into leaves.
 
 ## Templates
 
