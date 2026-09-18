@@ -761,14 +761,23 @@ export class App {
     if (profiles.length < maxProfiles) {
       const name = h("input", { class: "name", type: "text", maxlength: "40", placeholder: T.kidName, autocomplete: "off", autocapitalize: "words" });
       let icon = "🦄";
-      const add = (role: "kid" | "guest") => {
-        if (!name.value.trim()) return;
-        void guard(api.addProfile({ name: name.value.trim(), icon, role }).then((p) => this.uploadPackIcon(p)));
-      };
+      // One Add button; the switch decides whether the new profile is a kid or a guest.
+      const guest = h("input", { type: "checkbox" }) as HTMLInputElement;
+      const hint = h("div", { class: "meta" }, T.guestServerHint);
+      hint.hidden = true;
+      guest.addEventListener("change", () => { hint.hidden = !guest.checked; });
       addKid.append(
-        h("div", { class: "grow" }, h("div", { class: "name" }, `➕ ${T.addKid}`), name, this.iconGrid(icon, (i) => { icon = i; }), h("div", { class: "meta" }, T.guestServerHint)),
-        btn(T.add, "primary", () => add("kid")),
-        btn(`🧑‍🤝‍🧑 ${T.addGuest}`, "", () => add("guest")),
+        h("div", { class: "grow" },
+          h("div", { class: "name" }, `➕ ${T.addKid}`),
+          name,
+          this.iconGrid(icon, (i) => { icon = i; }),
+          h("label", { class: "meta" }, guest, ` ${T.guestToggle}`),
+          hint,
+        ),
+        btn(T.add, "primary", () => {
+          if (!name.value.trim()) return;
+          void guard(api.addProfile({ name: name.value.trim(), icon, role: guest.checked ? "guest" : "kid" }).then((p) => this.uploadPackIcon(p)));
+        }),
       );
     }
 

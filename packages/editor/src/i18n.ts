@@ -95,7 +95,7 @@ export const T = {
   shareOnText: "Everyone on the family server gets it the next time a grown-up updates the server.",
   shareOffText: "It stays in your own worlds. On the family server it disappears, and anything already placed there turns into leaves.",
   serverFull: (n: number) => `The family server has room for ${n} more piece${n === 1 ? "" : "s"}.`,
-  addGuest: "Add guest",
+  guestToggle: "This is a guest",
   guestName: "Guest's name",
   guest: "guest",
   onFamilyServer: "On the family server",
