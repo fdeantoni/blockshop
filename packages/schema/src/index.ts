@@ -275,11 +275,12 @@ export function sanitizeDisplayName(name: string, fallback: string): string {
 /** Three for the family plus room for guests, who normally stay off the family server (see `onFamilyServer`). */
 export const MAX_PROFILES = 5;
 /**
- * Pieces per profile, hidden ones included. What the family server can hold is a separate, shared budget:
- * every piece on it takes four carrier states (one per facing) out of the carrier's supply, and states are
- * never reused, so the count is over everything ever sent. The update says when that budget runs out.
+ * A safety rail, not a design limit: a profile's own worlds can hold as much furniture as its packs can carry,
+ * and what matters for a tablet is the size of the download it fetches when Minecraft opens. The limit that
+ * bites is the family server's, and that one is shared (see `carrierStates`): every piece on it takes four
+ * block states out of a supply of 143, and states are never reused.
  */
-export const MAX_PIECES_PER_PROFILE = 11;
+export const MAX_PIECES_PER_PROFILE = 50;
 export const ProfileIdSchema = z.string().regex(/^[a-z][a-z0-9_]{0,15}$/, "a-z, 0-9 and _; starts with a letter; at most 16");
 /** Namespaces that can never be a profile: Minecraft's, ours for shared items, Geyser's. */
 export const RESERVED_PROFILE_IDS = ["minecraft", "blockshop", "geyser_custom", "geyser", "default", "craftengine"] as const;

@@ -313,6 +313,39 @@ describe("family server update over the API", () => {
     expect(Object.keys(states.states).sort()).toEqual(["chloe_mae:piece_1", "dad:piece_1"]);
     expect(await exists(join(dir, "plugins", "CraftEngine", "resources", "blockshop", "resourcepack", "assets", "chloe_mae"))).toBe(false);
   });
+  it("the shared world's room is the limit, and choosing a piece is where it is refused", async () => {
+    const auth = { "x-admin-token": token };
+    const table = await fixture("table");
+    const st = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth })).json();
+    // Everything the server has room for, counted in pieces rather than block states.
+    expect(st.piecesLeft).toBe(Math.floor(143 / 4) - Math.floor((143 - st.statesLeft) / 4));
+
+    // Fill the rest of the budget with pieces nobody has deployed yet: they are pending, and they count.
+    const room = st.piecesLeft;
+    const ids: string[] = [];
+    for (let i = 0; i < room; i++) {
+      const r = await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: `Filler ${i}`, voxels: table.voxels } });
+      expect(r.statusCode, r.body).toBe(201);
+      ids.push(r.json().id as string);
+      expect((await ctx.app.inject({ method: "PUT", url: `/api/profiles/dad/pieces/${r.json().id}`, payload: { options: { onFamilyServer: true } } })).statusCode).toBe(200);
+    }
+    expect((await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth })).json().piecesLeft).toBe(0);
+
+    // One more: the piece itself is fine, there is just nowhere to put it.
+    const extra = await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "One too many", voxels: table.voxels } });
+    const refused = await ctx.app.inject({ method: "PUT", url: `/api/profiles/dad/pieces/${extra.json().id}`, payload: { options: { onFamilyServer: true } } });
+    expect(refused.statusCode).toBe(409);
+    expect(refused.json().error).toMatch(/family server is full/);
+    // It still exists, still works in its own worlds, and can be deleted because it is not on the server.
+    expect((await ctx.app.inject({ method: "GET", url: `/api/profiles/dad/pieces/${extra.json().id}` })).statusCode).toBe(200);
+    expect((await ctx.app.inject({ method: "DELETE", url: `/api/profiles/dad/pieces/${extra.json().id}` })).statusCode).toBe(204);
+
+    // Taking one off makes room again.
+    await ctx.app.inject({ method: "PUT", url: `/api/profiles/dad/pieces/${ids[0]}`, payload: { options: { onFamilyServer: false } } });
+    expect((await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth })).json().piecesLeft).toBe(1);
+    for (const id of ids) await ctx.app.inject({ method: "PUT", url: `/api/profiles/dad/pieces/${id}`, payload: { options: { onFamilyServer: false } } });
+  });
+
   it("only chosen pieces and included profiles reach the server; the rest cost it nothing", async () => {
     const table = await fixture("table");
     const auth = { "x-admin-token": token };

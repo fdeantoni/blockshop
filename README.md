@@ -26,7 +26,7 @@ Without a Minecraft server, run only the `blockshop` service from the [setup gui
 ## Profiles
 
 Every person has a profile: a name, an icon and their own pack (own namespace, UUIDs, version counter, pieces,
-history), at most five profiles with eleven pieces each. The first visit shows a setup screen: the grown-up picks
+history), at most five profiles. The first visit shows a setup screen: the grown-up picks
 a PIN and makes their own profile, then adds the kids on the grown-up page (`#/admin`). A friend visiting for an
 afternoon gets a **guest** profile there: the same editor and the same packs for their own worlds, but off the
 family server unless a grown-up turns that on. The home screen lists all profiles with *Open* and *Download*, so
@@ -37,11 +37,13 @@ behind the PIN. A forgotten PIN is replaced by starting the server once with `AD
 (shared Java states and the merged export), `deleted/` (folders of removed profiles).
 
 **What goes on the family server.** A tablet's own worlds get everything a profile has. The shared world has room
-for about 35 pieces in total, because each one takes four Java block states that are never reused, so a new piece
-stays at home until someone chooses it: long-press it in the gallery and answer *On the family server?*, or use
+for 35 pieces in total, whoever they belong to, because each one takes four Java block states that are never
+reused. That is the only count that matters: a profile's own worlds can hold as much as its packs carry, and a
+new piece stays at home until someone chooses it: long-press it in the gallery and answer *On the family server?*, or use
 the 🏠 button while building. A card with a green outline is on the server. A piece on it can only be hidden, not deleted, because
 other people have it placed in the shared world; take it off the server first. The grown-up page shows how much room
-is left. Taking a piece off after it has been on the server makes anything already placed there turn into leaves.
+is left, and choosing one more than fits is refused there and then. Taking a piece off after it has been on the
+server makes anything already placed there turn into leaves.
 
 ## Templates
 

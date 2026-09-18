@@ -31,7 +31,9 @@ server nothing and still reaches its own worlds through that profile's packs. Tu
 leaves its states allocated — states are never reused — and anything placed from it in the shared world becomes
 plain leaves (the world always stored leaves states, so nothing shows as an unknown block). A piece can only be
 deleted while it is off the server, and is hidden instead while it is on: taking it off is the deliberate step
-that turns what other people placed back into leaves. The grown-up page shows the pieces still left (`piecesLeft`, `statesLeft / 4`).
+that turns what other people placed back into leaves. The grown-up page shows the pieces still left, and choosing one more than fits is refused when the choice is
+made (`ServerExporter.budget()` counts states already allocated plus pieces chosen since), rather than failing
+later during an update.
 
 Carrier states (vanilla *leaves* states that CraftEngine frees; `carrier` in `DATA_DIR/server/java-states.json`)
 are assigned to a piece the first time it reaches the server (keyed `<profile>:<piece>`, four per piece, 143

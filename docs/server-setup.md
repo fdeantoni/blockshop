@@ -87,9 +87,9 @@ docker compose up -d blockshop
 
 1. Open `http://192.168.1.20:8081` (your address) in a browser. The setup screen creates the grown-up
    profile and its PIN.
-2. On the grown-up page, add a profile for each kid with a name and an icon. There are up to five profiles
-   with eleven pieces each; a friend who is visiting gets a **guest** profile, which stays off the family
-   server unless you turn that on.
+2. On the grown-up page, add a profile for each kid with a name and an icon. There are up to five profiles; a
+   friend who is visiting gets a **guest** profile, which stays off the family server unless you turn that on.
+   Pieces are limited only by what the shared world can hold (35), and only the pieces chosen for it count.
 3. Kids build furniture; a tablet set up as in [ipad-setup.md](ipad-setup.md) picks it up by itself, and
    **Download** makes a pack file, which can also be downloaded
    for a device's own worlds. It does not change the server.

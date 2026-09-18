@@ -22,10 +22,9 @@ describe("profiles", () => {
 
   it("limits and defaults", () => {
     expect(MAX_PROFILES).toBe(5);
-    expect(MAX_PIECES_PER_PROFILE).toBe(11);
-    // What the family server can hold is a shared budget (four carrier states per piece), not this cap;
-    // one profile alone must never be able to exhaust it.
-    expect(MAX_PIECES_PER_PROFILE * 4).toBeLessThanOrEqual(143);
+    // A safety rail for the size of a tablet's download, not a design limit: what the family server can hold
+    // is a shared budget of four carrier states per piece, checked when a piece is chosen for it.
+    expect(MAX_PIECES_PER_PROFILE).toBe(50);
     const ws = WorkspaceSchema.parse({});
     expect(ws).toEqual({ profiles: [], retired: [], admin: null, serverVersion: [1, 0, 0] });
     expect(() => ProfileSchema.parse({ id: "Robin", name: "Robin", icon: "🦄", role: "kid", createdAt: new Date().toISOString() })).toThrow();

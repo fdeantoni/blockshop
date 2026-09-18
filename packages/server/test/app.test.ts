@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { listZip } from "@blockshop/generator";
+import { MAX_PIECES_PER_PROFILE, MAX_PROFILES } from "@blockshop/schema";
 import { buildApp, type AppContext } from "../src/app.js";
 import { loadConfig } from "../src/config.js";
 
@@ -49,7 +50,7 @@ describe("workspace and profiles", () => {
   it("starts empty and asks for setup", async () => {
     const res = await ctx.app.inject({ method: "GET", url: "/api/workspace" });
     expect(res.statusCode).toBe(200);
-    expect(res.json()).toMatchObject({ setupNeeded: true, profiles: [], maxProfiles: 5, maxPieces: 11 });
+    expect(res.json()).toMatchObject({ setupNeeded: true, profiles: [], maxProfiles: MAX_PROFILES, maxPieces: MAX_PIECES_PER_PROFILE });
     expect((await ctx.app.inject({ method: "GET", url: "/api/admin" })).statusCode).toBe(401);
     expect((await ctx.app.inject({ method: "POST", url: "/api/setup", payload: { pin: "12", name: "Dad", icon: "🧔" } })).statusCode).toBe(400);
   });
@@ -58,7 +59,7 @@ describe("workspace and profiles", () => {
     const res = await ctx.app.inject({ method: "POST", url: "/api/setup", payload: { pin: "1234", name: "Dad", icon: "🧔" } });
     expect(res.statusCode, res.body).toBe(201);
     token = res.json().token;
-    expect(res.json().profile).toMatchObject({ id: "dad", name: "Dad", icon: "🧔", role: "grownup", namespace: "dad", packName: "Dad's Furniture", versionString: "1.0.0", latest: null, pieceCount: 0, maxPieces: 11 });
+    expect(res.json().profile).toMatchObject({ id: "dad", name: "Dad", icon: "🧔", role: "grownup", namespace: "dad", packName: "Dad's Furniture", versionString: "1.0.0", latest: null, pieceCount: 0, maxPieces: MAX_PIECES_PER_PROFILE });
     expect((await ctx.app.inject({ method: "POST", url: "/api/setup", payload: { pin: "9999", name: "X", icon: "x" } })).statusCode).toBe(409);
     expect((await ctx.app.inject({ method: "GET", url: "/api/workspace" })).json().setupNeeded).toBe(false);
     const project = JSON.parse(await readFile(join(ctx.dir, "profiles", "dad", "project.json"), "utf8"));
@@ -100,21 +101,21 @@ describe("workspace and profiles", () => {
     expect((await ctx.app.inject({ method: "GET", url: "/api/workspace" })).json().profiles.map((p: { id: string }) => p.id)).toEqual(["dad", "chloe_mae", "jules", "sam", "five"]);
   });
 
-  it("keeps pieces per profile with counter ids and an eleven-piece cap", async () => {
+  it("keeps pieces per profile with counter ids, up to the safety rail", async () => {
     const c1 = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Stoel", author: "Chloë" } });
     expect(c1.statusCode).toBe(201);
     expect(c1.json()).toMatchObject({ id: "piece_1", voxels: [] });
     expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: {} })).json().id).toBe("piece_1"); // counters are per profile
     expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/nope/pieces", payload: {} })).statusCode).toBe(404);
-    for (let i = 2; i <= 11; i++) expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: `P${i}` } })).statusCode).toBe(201);
-    const full = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Twelve" } });
+    for (let i = 2; i <= MAX_PIECES_PER_PROFILE; i++) expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: `P${i}` } })).statusCode).toBe(201);
+    const full = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "One too many" } });
     expect(full.statusCode).toBe(409);
     expect(full.json().error).toMatch(/full/);
-    expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae" })).json().pieceCount).toBe(11);
-    // A hidden piece still counts; a never-published one can be deleted for real.
-    await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces/piece_11/hide" });
+    expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae" })).json().pieceCount).toBe(MAX_PIECES_PER_PROFILE);
+    // A hidden piece still counts; one that is not on the family server can be deleted for real.
+    await ctx.app.inject({ method: "POST", url: `/api/profiles/chloe_mae/pieces/piece_${MAX_PIECES_PER_PROFILE}/hide` });
     expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: {} })).statusCode).toBe(409);
-    for (let i = 3; i <= 11; i++) expect((await ctx.app.inject({ method: "DELETE", url: `/api/profiles/chloe_mae/pieces/piece_${i}` })).statusCode).toBe(204);
+    for (let i = 3; i <= MAX_PIECES_PER_PROFILE; i++) expect((await ctx.app.inject({ method: "DELETE", url: `/api/profiles/chloe_mae/pieces/piece_${i}` })).statusCode).toBe(204);
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/pieces" })).json()).toHaveLength(2);
     expect((await ctx.app.inject({ method: "DELETE", url: "/api/profiles/chloe_mae/pieces/piece_3" })).statusCode).toBe(404);
 
@@ -199,7 +200,7 @@ describe("workspace and profiles", () => {
 
   it("an empty piece changes nothing; a real edit makes the next pack", async () => {
     const empty = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Leeg" } });
-    expect(empty.json().id).toBe("piece_12");
+    const emptyId = empty.json().id as string;
     const unchanged = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
     expect(unchanged.json()).toMatchObject({ versionString: "1.0.1", rebuilt: false });
 
@@ -207,7 +208,7 @@ describe("workspace and profiles", () => {
     const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
     expect(res.statusCode, res.body).toBe(200);
     expect(res.json()).toMatchObject({ versionString: "1.0.2", rebuilt: true, pieceCount: 2 });
-    expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/pieces/piece_12" })).json().publishedInVersion).toBeUndefined();
+    expect((await ctx.app.inject({ method: "GET", url: `/api/profiles/chloe_mae/pieces/${emptyId}` })).json().publishedInVersion).toBeUndefined();
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/pieces/piece_1" })).json().publishedInVersion).toEqual([1, 0, 1]);
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/history" })).json().map((h: { version: string }) => h.version)).toEqual(["1.0.2", "1.0.1"]);
   });

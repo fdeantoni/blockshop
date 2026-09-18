@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { FastifyBaseLogger } from "fastify";
-import { serverStateKey, type JavaStates, type Piece, type Profile } from "@blockshop/schema";
+import { FACINGS, serverStateKey, type JavaStates, type Piece, type Profile } from "@blockshop/schema";
 import {
   CATALOG_JSON, GEYSER_BLOCKS_FILE, GEYSER_ITEMS_FILE, JAVA_DIRS, allocateServerStates, buildServerPack, carrierStateCount, javaSanityCheck,
   type JavaBuildReport, type ServerBuildInput, type ServerProfileInput,
@@ -121,6 +121,39 @@ export class ServerExporter {
     return { input: { version: ws.serverVersion, states, profiles: inputs }, versions, hashes, profiles, snapshots };
   }
 
+  /**
+   * What the shared world can still take. Every piece on it holds four carrier states for good (states are
+   * never reused, because placed furniture *is* that vanilla state), so this counts what has been allocated
+   * plus what the next update would allocate for pieces chosen since.
+   */
+  async budget(): Promise<{ capacity: number; used: number; pending: number; left: number }> {
+    const states = await this.workspace.readStates();
+    const capacity = Math.floor(carrierStateCount(states.carrier) / FACINGS.length);
+    const used = Math.floor(states.cursor / FACINGS.length);
+    let pending = 0;
+    for (const p of await this.workspace.listProfiles()) {
+      if (!p.onFamilyServer) continue;
+      const store = await this.workspace.storeFor(p.id);
+      for (const piece of await store.listPieces()) {
+        if (piece.voxels.length === 0 || piece.options.onFamilyServer === false) continue;
+        if (!states.states[serverStateKey(p.id, piece.id)]) pending++;
+      }
+    }
+    return { capacity, used, pending, left: capacity - used - pending };
+  }
+
+  /** Throws 409 when the shared world has no room for `wanted` more pieces. */
+  async requireRoom(wanted: number, what: string): Promise<void> {
+    if (wanted <= 0) return;
+    const { left, capacity } = await this.budget();
+    if (wanted > left) {
+      throw new ProjectError(
+        `the family server is full: room for ${Math.max(0, left)} more piece${left === 1 ? "" : "s"} of ${capacity}, and ${what} needs ${wanted}. Take something off it first.`,
+        409,
+      );
+    }
+  }
+
   async status(): Promise<ServerStatus> {
     const cfg = this.config.java;
     const ws = await this.workspace.get();
@@ -168,7 +201,7 @@ export class ServerExporter {
       rcon: cfg.rcon !== null, restartCommand: cfg.restartCommand !== null, logWatched: cfg.mcLogFile !== null,
       build, lastDeploy, restartPending: lastDeploy?.restartPending ?? false,
       statesLeft: carrierStateCount(input.states.carrier) - input.states.cursor,
-      piecesLeft: Math.floor((carrierStateCount(input.states.carrier) - input.states.cursor) / 4),
+      piecesLeft: (await this.budget()).left,
       busy: this.busy,
     };
   }

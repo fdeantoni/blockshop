@@ -304,7 +304,17 @@ export class App {
       const action = p.hidden
         ? btn(T.unhide, "big", () => after(api.unhide(pid, p.id)))
         : btn(T.hide, "danger big", () => after(api.hide(pid, p.id)));
-      const set = (on: boolean) => () => (on === p.onFamilyServer ? close() : after(api.update(pid, p.id, { options: { onFamilyServer: on } })));
+      const set = (on: boolean) => () => {
+        if (on === p.onFamilyServer) return close();
+        void api.update(pid, p.id, { options: { onFamilyServer: on } }).then(
+          () => { close(); void this.showGallery(); },
+          (e: unknown) => {
+            close();
+            if (e instanceof ApiError && e.status === 409) this.showNotice(`🏠 ${T.familyServer}`, e.message);
+            else this.showError(e);
+          },
+        );
+      };
       const choice = h("div", { class: "row" },
         btn(T.yes, p.onFamilyServer ? "primary big on" : "big", set(true)),
         btn(T.no, p.onFamilyServer ? "big" : "primary big on", set(false)),
@@ -421,7 +431,7 @@ export class App {
     const views = h("div", { class: "group" }, ...(["front", "side", "top"] as ViewName[]).map((v) => btn(T.views[v as "front" | "side" | "top"], "", () => this.scene?.setView(v))));
     const seat = btn("🪑", "icon", () => this.toggleSeat());
     seat.title = T.seat;
-    const share = btn("🏠", "icon", () => this.toggleShare());
+    const share = btn("🏠", "icon", () => void this.toggleShare());
     const seatVal = h("span", { class: "seatval" }, "5");
     const seatH = h("div", { class: "group" }, btn("▼", "icon", () => this.nudgeSeat(-1)), seatVal, btn("▲", "icon", () => this.nudgeSeat(1)));
     seatH.style.alignItems = "center";
@@ -550,12 +560,27 @@ export class App {
     this.saver.mark();
   }
 
-  /** On the family server or not; a piece is always in its own profile's worlds either way. */
-  private toggleShare(): void {
-    if (!this.piece) return;
-    this.piece.options = { ...this.piece.options, onFamilyServer: this.currentOptions().onFamilyServer === false };
-    this.refreshShare();
-    this.saver.mark();
+  /**
+   * On the family server or not; a piece is always in its own profile's worlds either way. This one saves on
+   * its own rather than through the autosave, because the server can refuse it when the shared world is full.
+   */
+  private async toggleShare(): Promise<void> {
+    const piece = this.piece;
+    const pid = this.profile?.id;
+    if (!piece || !pid) return;
+    const next = this.currentOptions().onFamilyServer === false;
+    this.ui.share.disabled = true;
+    try {
+      await this.saver.flush(false);
+      const saved = await api.update(pid, piece.id, { options: { ...piece.options, onFamilyServer: next } });
+      piece.options = saved.options;
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 409) this.showNotice(`🏠 ${T.familyServer}`, e.message);
+      else this.showError(e);
+    } finally {
+      this.ui.share.disabled = false;
+      this.refreshShare();
+    }
   }
 
   private refreshShare(): void {

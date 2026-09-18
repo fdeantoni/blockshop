@@ -151,7 +151,14 @@ export async function buildApp(config: Config): Promise<AppContext> {
   app.put("/api/admin/profiles/:pid", async (req) => {
     await requireAdmin(req);
     const { pid } = ProfileParam.parse(req.params);
-    return profileInfo(await workspace.updateProfile(pid, ProfilePatchSchema.parse(req.body ?? {})));
+    const patch = ProfilePatchSchema.parse(req.body ?? {});
+    // Putting a profile on the family server brings every piece it has chosen; that has to fit.
+    if (patch.onFamilyServer === true && !(await workspace.getProfile(pid)).onFamilyServer) {
+      const pieces = (await (await workspace.storeFor(pid)).listPieces())
+        .filter((p) => p.voxels.length > 0 && p.options.onFamilyServer !== false).length;
+      await exporter.requireRoom(pieces, `their furniture`);
+    }
+    return profileInfo(await workspace.updateProfile(pid, patch));
   });
   app.delete("/api/admin/profiles/:pid", async (req, reply) => {
     await requireAdmin(req);
@@ -193,7 +200,15 @@ export async function buildApp(config: Config): Promise<AppContext> {
 
   app.put("/api/profiles/:pid/pieces/:id", async (req) => {
     const { pid, id } = ProfilePieceParam.parse(req.params);
-    return (await workspace.storeFor(pid)).updatePiece(id, PieceUpdateSchema.parse(req.body ?? {}));
+    const patch = PieceUpdateSchema.parse(req.body ?? {});
+    const store = await workspace.storeFor(pid);
+    // Choosing a piece for the family server is what spends its room, so that is where it is refused.
+    if (patch.options?.onFamilyServer === true) {
+      const piece = await store.getPiece(id);
+      const alreadyOn = piece?.options.onFamilyServer !== false;
+      if (piece && !alreadyOn) await exporter.requireRoom(1, `"${piece.name}"`);
+    }
+    return store.updatePiece(id, patch);
   });
 
   /** Only for pieces that are not on the family server; those are hidden instead (see `deletePiece`). */
