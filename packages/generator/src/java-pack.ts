@@ -34,6 +34,8 @@ export const CATALOG_JSON = "pieces.json";
 export interface ServerProfileInput {
   project: Project;
   pieces: readonly Piece[];
+  /** The profile's icon as a PNG (the editor renders it), for the pack Bedrock players see on joining. */
+  packIcon?: Uint8Array | undefined;
   /** Piece id → PNG bytes; used as the Bedrock item icon. Pieces without one get a generated icon. */
   thumbnails?: ReadonlyMap<string, Uint8Array> | undefined;
 }
@@ -95,6 +97,7 @@ export function buildServerPack(input: ServerBuildInput): JavaBuildResult {
     project: ProjectSchema.parse(p.project),
     pieces: p.pieces.map((x) => PieceSchema.parse(x)).sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)),
     thumbnails: p.thumbnails,
+    packIcon: p.packIcon,
   })).sort((a, b) => (a.project.namespace < b.project.namespace ? -1 : a.project.namespace > b.project.namespace ? 1 : 0));
 
   for (const { project, pieces } of profiles) {
@@ -117,7 +120,7 @@ export function buildServerPack(input: ServerBuildInput): JavaBuildResult {
   const catalogIcon = packIconPng(32, [accent0[0], accent0[1], accent0[2], 255], [40, 30, 20, 255]);
   const catalogIconName = itemIconName(SHARED_NAMESPACE, CATALOG_ID);
 
-  for (const { project, pieces, thumbnails } of profiles) {
+  for (const { project, pieces, thumbnails, packIcon } of profiles) {
     const ns = project.namespace;
     const palette = new Map<string, PaletteEntry>(project.palette.map((p) => [p.id, p]));
     const assets = `${craftengine}/resourcepack/assets/${ns}`;
@@ -168,7 +171,7 @@ export function buildServerPack(input: ServerBuildInput): JavaBuildResult {
     // (packs stack on the client, so every pack may carry it). No entities, no scripts.
     const accent = project.palette[0]!.rgba;
     tree.set(`${rp}/manifest.json`, jsonText(buildGeyserManifest(project, pieces.length, input.version)));
-    tree.set(`${rp}/pack_icon.png`, packIconPng(256, [accent[0], accent[1], accent[2], 255], [40, 30, 20, 255]));
+    tree.set(`${rp}/pack_icon.png`, packIcon ?? packIconPng(256, [accent[0], accent[1], accent[2], 255], [40, 30, 20, 255]));
     tree.set(`${rp}/textures/terrain_texture.json`, jsonText(buildTerrainTexture(project)));
     tree.set(`${rp}/textures/item_texture.json`, jsonText(buildItemTexture(project.packName, [...pieces.map((p) => itemIconName(ns, p.id)), catalogIconName])));
     tree.set(`${rp}/textures/items/${catalogIconName}.png`, catalogIcon);

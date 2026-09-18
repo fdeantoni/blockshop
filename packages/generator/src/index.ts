@@ -15,4 +15,5 @@ export * from "./java-model.js";
 export * from "./craftengine.js";
 export * from "./geyser.js";
 export * from "./java-pack.js";
+export * from "./dev-pack.js";
 export * from "./java-sanity.js";

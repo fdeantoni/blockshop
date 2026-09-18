@@ -135,8 +135,8 @@ describe("workspace and profiles", () => {
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/dad/pieces/piece_1/thumbnail.png" })).statusCode).toBe(404);
   });
 
-  it("publishes one profile: mcaddon under /p/<id>/packs, history, report, marks pieces", async () => {
-    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" });
+  it("makes one profile's pack: mcaddon under /p/<id>/packs, history, report, marks pieces", async () => {
+    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
     expect(res.statusCode, res.body).toBe(200);
     const r = res.json();
     expect(r.versionString).toBe("1.0.1");
@@ -180,22 +180,32 @@ describe("workspace and profiles", () => {
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/dad/report" })).statusCode).toBe(404);
   });
 
-  it("second publish skips an empty piece, keeps publishedInVersion and bumps again", async () => {
+  it("asking again without an edit hands back the same pack, without a new version", async () => {
+    const again = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
+    expect(again.statusCode, again.body).toBe(200);
+    expect(again.json()).toMatchObject({ versionString: "1.0.1", rebuilt: false });
+    expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/history" })).json()).toHaveLength(1);
+  });
+
+  it("an empty piece changes nothing; a real edit makes the next pack", async () => {
     const empty = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Leeg" } });
     expect(empty.json().id).toBe("piece_12");
-    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" });
+    const unchanged = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
+    expect(unchanged.json()).toMatchObject({ versionString: "1.0.1", rebuilt: false });
+
+    await ctx.app.inject({ method: "PUT", url: "/api/profiles/chloe_mae/pieces/piece_1", payload: { name: "Andere naam" } });
+    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
     expect(res.statusCode, res.body).toBe(200);
-    expect(res.json().versionString).toBe("1.0.2");
-    expect(res.json().pieceCount).toBe(2);
+    expect(res.json()).toMatchObject({ versionString: "1.0.2", rebuilt: true, pieceCount: 2 });
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/pieces/piece_12" })).json().publishedInVersion).toBeUndefined();
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/pieces/piece_1" })).json().publishedInVersion).toEqual([1, 0, 1]);
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/history" })).json().map((h: { version: string }) => h.version)).toEqual(["1.0.2", "1.0.1"]);
   });
 
-  it("serializes publishes per profile: a concurrent request gets 409", async () => {
+  it("serializes pack builds per profile: a concurrent request gets 409", async () => {
     const [a, b] = await Promise.all([
-      ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" }),
-      ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" }),
+      ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" }),
+      ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" }),
     ]);
     expect([a.statusCode, b.statusCode].sort()).toEqual([200, 409]);
   });
@@ -272,12 +282,13 @@ describe("editor static serving", () => {
   });
 });
 
-describe("publish failures", () => {
+describe("pack failures", () => {
   it("refuses an empty profile with 422 but still consumed a version", async () => {
     const ctx = await start();
     await setUp(ctx);
-    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" });
+    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
     expect(res.statusCode).toBe(422);
+    expect(res.json().error).toMatch(/no pieces with voxels/);
     expect((await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae" })).json().versionString).toBe("1.0.1");
     await ctx.app.close();
     await rm(ctx.dir, { recursive: true, force: true });
@@ -288,7 +299,7 @@ describe("publish failures", () => {
     await setUp(ctx);
     const fixture = await chair();
     await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Stoel", voxels: fixture.voxels, options: fixture.options } });
-    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" });
+    const res = await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pack" });
     expect(res.statusCode, res.body).toBe(200);
     expect(res.json().validation.ok).toBe(true);
     expect(res.json().validation.errors).toEqual([]);

@@ -89,7 +89,8 @@ docker compose up -d blockshop
    profile and its PIN.
 2. On the grown-up page, add a profile for each kid with a name and an icon. There are up to three profiles
    with eleven pieces each.
-3. Kids build furniture and press **Send to Minecraft**. That makes their pack, which can also be downloaded
+3. Kids build furniture; a tablet set up as in [ipad-setup.md](ipad-setup.md) picks it up by itself, and
+   **Download** makes a pack file, which can also be downloaded
    for a device's own worlds. It does not change the server.
 4. When you want the furniture on the server, open the grown-up page and press **Update the family server**.
    The page shows who is online and whether the update will restart the server. New furniture needs a

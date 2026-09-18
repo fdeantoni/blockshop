@@ -3,7 +3,7 @@ import type { PaletteEntry, Piece, PieceOptions, Voxel, Version } from "@blocksh
 export interface ProfileInfo {
   id: string; name: string; icon: string; role: "grownup" | "kid"; createdAt: string;
   namespace: string; packName: string; version: Version; versionString: string;
-  palette: PaletteEntry[]; latest: { version: string; mcaddonUrl: string } | null; publishing: boolean;
+  palette: PaletteEntry[]; latest: { version: string; mcaddonUrl: string } | null; makingPack: boolean; hasIconPng: boolean;
   pieceCount: number; maxPieces: number;
 }
 export interface WorkspaceInfo { uiTitle: string; setupNeeded: boolean; maxProfiles: number; maxPieces: number; profiles: ProfileInfo[] }
@@ -16,7 +16,7 @@ export interface JavaDeployResult {
   at: string; version: string; geyserChanged: boolean; mappingsChanged: boolean; packChanged: boolean; pluginChanged: boolean; catalogChanged: boolean; restarted: boolean; reloadedGeyser: boolean;
   restartPending: boolean; restartNeeded: boolean; commands: RconReply[]; error: string | null;
 }
-export interface ServerProfileStatus { id: string; name: string; icon: string; published: string | null; onServer: string | null; pieces: number }
+export interface ServerProfileStatus { id: string; name: string; icon: string; pack: string | null; onServer: string | null; changed: boolean; pieces: number }
 export interface ServerStatus {
   mode: "off" | "on"; version: string; profiles: ServerProfileStatus[]; changed: boolean; needsRestart: boolean | null;
   online: string[] | null; onlineError: string | null; rcon: boolean; restartCommand: boolean; logWatched: boolean;
@@ -24,14 +24,32 @@ export interface ServerStatus {
   restartPending: boolean; statesLeft: number; busy: boolean;
 }
 export interface ServerUpdateResult { version: string; profiles: Record<string, string>; pieces: number; warnings: string[]; deploy: JavaDeployResult }
-export interface PublishResult {
+export interface PackResult {
   version: Version; versionString: string; mcaddonFile: string; mcaddonUrl: string;
   pieceCount: number; cubeCount: number; warnings: string[]; durationMs: number;
   validation: { ok: boolean; errors: string[]; warnings: string[] } | null;
+  /** false when nothing changed since the last pack: the same file, the same version. */
+  rebuilt: boolean;
 }
 export interface HistoryEntry { version: string; mcaddon: string | null; size: number; publishedAt: string }
 export interface PiecePatch { name?: string; author?: string; voxels?: Voxel[]; options?: PieceOptions }
 export interface AdminInfo { profiles: ProfileInfo[]; retired: string[]; maxProfiles: number }
+/** The live packs a tablet's own worlds read from their development pack folders (docs/ipad-setup.md). */
+export interface DevPackInfo {
+  archive: { file: string; url: string };
+  dirs: { bp: string; rp: string };
+  profiles: Array<{
+    namespace: string;
+    packName: string;
+    folders: { bp: string; rp: string };
+    archive: { file: string; url: string };
+    pieces: Array<{ identifier: string; name: string }>;
+    skipped: Array<{ id: string; reason: string }>;
+    warnings: string[];
+  }>;
+  builtAt: string;
+  hash: string;
+}
 
 export class ApiError extends Error {
   constructor(message: string, public readonly status: number, public readonly details?: unknown) { super(message); }
@@ -77,6 +95,7 @@ export const api = {
   server: () => call<ServerStatus>("GET", "/api/admin/server"),
   serverUpdate: () => call<ServerUpdateResult>("POST", "/api/admin/server/update"),
   serverRestarted: () => call<ServerStatus>("POST", "/api/admin/server/restarted"),
+  devPack: () => call<DevPackInfo>("GET", "/api/dev"),
   // one profile
   profile: (pid: string) => call<ProfileInfo>("GET", p(pid)),
   setIcon: (pid: string, icon: string) => call<ProfileInfo>("PUT", `${p(pid)}/icon`, { icon }),
@@ -89,6 +108,7 @@ export const api = {
   unhide: (pid: string, id: string) => call<Piece>("POST", `${p(pid)}/pieces/${id}/unhide`),
   thumbnail: (pid: string, id: string, dataUrl: string) => call<void>("PUT", `${p(pid)}/pieces/${id}/thumbnail`, { dataUrl }),
   thumbnailUrl: (pid: string, id: string, updatedAt: string) => `${p(pid)}/pieces/${id}/thumbnail.png?t=${encodeURIComponent(updatedAt)}`,
-  publish: (pid: string) => call<PublishResult>("POST", `${p(pid)}/publish`),
+  pack: (pid: string) => call<PackResult>("POST", `${p(pid)}/pack`),
+  setIconPng: (pid: string, dataUrl: string) => call<void>("PUT", `${p(pid)}/icon.png`, { dataUrl }),
   history: (pid: string) => call<HistoryEntry[]>("GET", `${p(pid)}/history`),
 };

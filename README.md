@@ -4,6 +4,7 @@ A web app where kids build furniture as 3D pixel art on a tablet and get it as c
 their own Bedrock worlds, and on a shared family server that Java and Bedrock players join.
 
 - **Set up a family server:** [docs/server-setup.md](docs/server-setup.md)
+- **Keep a tablet's own worlds up to date by itself:** [docs/ipad-setup.md](docs/ipad-setup.md)
 - How the server export works: [docs/family-server-internals.md](docs/family-server-internals.md)
 - Verified Bedrock format facts, and what to check after a Minecraft update: [docs/format-notes.md](docs/format-notes.md)
 
@@ -11,8 +12,11 @@ their own Bedrock worlds, and on a shared family server that Java and Bedrock pl
 
 - **Build.** A touch editor in the browser, made for iPad Safari: place and erase voxels on a 16×16×16 grid,
   pick colours, start from templates (chair, sofa, table, lamp, TV and more), mark seats and light.
-- **Send to Minecraft.** Each profile publishes its own Bedrock add-on (`.mcaddon`), validated with Minecraft
-  Creator Tools. Anyone can download any profile's pack and import it into a world on their device.
+- **Tablets update themselves.** A tablet fetches everyone's furniture as live packs and drops them straight
+  into Minecraft's development pack folders, so its own worlds pick up new and changed pieces when they load,
+  with no importing and no pack versions ([docs/ipad-setup.md](docs/ipad-setup.md)).
+- **Download.** *Download* makes that profile's Bedrock add-on (`.mcaddon`), validated with Minecraft Creator
+  Tools, for another device or for a friend. It is on the home screen and in the gallery.
 - **Family server.** A grown-up presses one button to merge every profile's furniture into a Paper server with
   CraftEngine and Geyser. In game, `/cat` opens a furniture menu with pictures.
 
@@ -25,7 +29,7 @@ Every person has a profile: a name, an icon and their own pack (own namespace, U
 history), at most three profiles with eleven pieces each. The first visit shows a setup screen: the grown-up picks
 a PIN and makes their own profile, then adds the kids on the grown-up page (`#/admin`). The home screen lists all
 profiles with *Open* and *Download*, so a kid can import anyone's pack into a local world; each kid bookmarks their
-own gallery (`#/p/<id>`). *Send to Minecraft* sits in the gallery header and publishes that pack only. A kid may
+own gallery (`#/p/<id>`). *Download* makes that profile's pack file. A kid may
 change their own icon; renaming, removing and the family server are behind the PIN. A forgotten PIN is replaced by
 starting the server once with `ADMIN_PIN=<digits>`. Data layout: `DATA_DIR/blockshop.json` (profiles, PIN hash,
 export counter), `profiles/<id>/` (one project each), `server/` (shared Java states and the merged export),
@@ -48,7 +52,7 @@ server starts; the first server update afterwards restarts the family server onc
 |---|---|
 | `packages/schema` | zod schemas and types for pieces, projects, palettes and profiles |
 | `packages/generator` | pure `buildPack(project, pieces)` → Bedrock behavior + resource pack, zip, sanity checks; `buildServerPack` for CraftEngine + Geyser; `pnpm gen` CLI |
-| `packages/server` | Fastify API, JSON-on-disk store, publish pipeline with Minecraft Creator Tools validation, family server export, serves the editor |
+| `packages/server` | Fastify API, JSON-on-disk store, pack builder with Minecraft Creator Tools validation, live packs for tablets, family server export, serves the editor |
 | `packages/editor` | Vite + Three.js touch editor for iPad Safari |
 | `plugin` | BlockshopCatalog, the Paper plugin with the in-game furniture menu (built in the Docker image) |
 
@@ -66,7 +70,7 @@ pnpm seed                       # a "family" profile with the fixture pieces in 
 pnpm dev:server                 # API on :8080 (reads .env; copy .env.example)
 pnpm dev:editor                 # Vite dev server with /api proxied to :8080
 pnpm build && pnpm start        # production: server serves the built editor at /
-pnpm rollback --profile robin --list   # history; pnpm rollback --profile robin 1.0.4 restores that snapshot, then publish again
+pnpm rollback --profile robin --list   # history; pnpm rollback --profile robin 1.0.4 restores that snapshot
 ```
 
 Open `tmp/preview/*.geo.json` in Blockbench with the palette textures next to them for a visual check.

@@ -13,10 +13,10 @@ describe("rollback", () => {
     await app.inject({ method: "POST", url: "/api/setup", payload: { pin: "1234", name: "Dad", icon: "🧔" } });
     const store = await workspace.storeFor("dad");
     await app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "A", voxels: [{ x: 1, y: 0, z: 1, c: "oak" }] } });
-    await app.inject({ method: "POST", url: "/api/profiles/dad/publish" }); // 1.0.1 with A
+    await app.inject({ method: "POST", url: "/api/profiles/dad/pack" }); // 1.0.1 with A
     await app.inject({ method: "PUT", url: "/api/profiles/dad/pieces/piece_1", payload: { name: "A changed", voxels: [{ x: 2, y: 0, z: 2, c: "red" }] } });
     await app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "B", voxels: [{ x: 3, y: 0, z: 3, c: "oak" }] } });
-    await app.inject({ method: "POST", url: "/api/profiles/dad/publish" }); // 1.0.2 with A changed + B
+    await app.inject({ method: "POST", url: "/api/profiles/dad/pack" }); // 1.0.2 with A changed + B
 
     const r = await rollback(store, "1.0.1");
     expect(r).toMatchObject({ version: "1.0.1", restoredPieces: 1, parkedPieces: 1, nextVersion: "1.0.3" });
@@ -27,7 +27,7 @@ describe("rollback", () => {
     expect(a.voxels).toEqual([{ x: 1, y: 0, z: 1, c: "oak" }]);
     expect((await store.getProject()).version).toEqual([1, 0, 2]);
     expect((await store.getProject()).nextPieceNumber).toBe(3);
-    const res = await app.inject({ method: "POST", url: "/api/profiles/dad/publish" });
+    const res = await app.inject({ method: "POST", url: "/api/profiles/dad/pack" });
     expect(res.json().versionString).toBe("1.0.3");
     expect(res.json().pieceCount).toBe(1);
     await expect(rollback(store, "9.9.9")).rejects.toThrow(/no usable history/);

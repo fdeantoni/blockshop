@@ -227,31 +227,27 @@ describe("family server update over the API", () => {
   });
   afterAll(async () => { await ctx.app.close(); await srv.close(); await rm(dir, { recursive: true, force: true }); });
 
-  it("status before anything is published: nothing to send, restart would be needed, players listed", async () => {
+  it("status before anyone has drawn: nothing to send, restart would be needed, players listed", async () => {
     expect((await ctx.app.inject({ method: "GET", url: "/api/admin/server" })).statusCode).toBe(401);
     const st = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth() })).json();
     expect(st).toMatchObject({ mode: "on", version: "1.0.0", changed: false, needsRestart: true, online: ["Steve", ".Alex"], rcon: true, restartCommand: false, build: null, lastDeploy: null, restartPending: false, statesLeft: 143, busy: false });
     expect(st.profiles).toEqual([
-      { id: "dad", name: "Dad", icon: "🧔", published: null, onServer: null, pieces: 0 },
-      { id: "chloe_mae", name: "Chloë-Mae", icon: "🦄", published: null, onServer: null, pieces: 0 },
+      { id: "dad", name: "Dad", icon: "🧔", pack: null, onServer: null, changed: false, pieces: 0 },
+      { id: "chloe_mae", name: "Chloë-Mae", icon: "🦄", pack: null, onServer: null, changed: false, pieces: 0 },
     ]);
     expect((await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth() })).statusCode).toBe(422);
   });
 
-  it("merges every profile's last published pack, allocates shared states, deploys, and reports per profile", async () => {
+  it("takes everyone's pieces as they are, makes their packs, allocates shared states, deploys, reports", async () => {
     const chair = await fixture("chair_asym");
     const table = await fixture("table");
     await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/pieces", payload: { name: "Dad chair", voxels: chair.voxels, options: chair.options } });
     await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Chloë table", voxels: table.voxels } });
-    await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Not yet published" } }); // empty: skipped by publish
-    expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/dad/publish" })).statusCode).toBe(200);
-    expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" })).statusCode).toBe(200);
-    // Edits after the publish stay off the server until the next publish.
-    await ctx.app.inject({ method: "PUT", url: "/api/profiles/chloe_mae/pieces/piece_1", payload: { name: "Renamed later" } });
-
+    await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/pieces", payload: { name: "Still empty" } }); // no voxels: left out
+    // Nobody pressed anything: the update itself makes each profile's pack, so an edit needs no other step.
     const before = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth() })).json();
     expect(before).toMatchObject({ changed: true, needsRestart: true });
-    expect(before.profiles.map((p: { published: string | null; onServer: string | null; pieces: number }) => [p.published, p.onServer, p.pieces])).toEqual([["1.0.1", null, 1], ["1.0.1", null, 1]]);
+    expect(before.profiles.map((p: { pack: string | null; onServer: string | null; changed: boolean; pieces: number }) => [p.pack, p.onServer, p.changed, p.pieces])).toEqual([[null, null, true, 1], [null, null, true, 1]]);
 
     expect((await ctx.app.inject({ method: "POST", url: "/api/admin/server/update" })).statusCode).toBe(401);
     const res = await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth() });
@@ -263,7 +259,7 @@ describe("family server update over the API", () => {
 
     const ceCfg = JSON.parse(await readFile(join(dir, "plugins", "CraftEngine", "resources", "blockshop", "configuration", "blockshop.json"), "utf8"));
     expect(Object.keys(ceCfg.items).sort()).toEqual(["blockshop:catalog", "chloe_mae:piece_1", "dad:piece_1"]);
-    expect(ceCfg.items["chloe_mae:piece_1"].data.item_name).toBe("<!i>Chloë table"); // the published name, not the later edit
+    expect(ceCfg.items["chloe_mae:piece_1"].data.item_name).toBe("<!i>Chloë table");
     expect(Object.keys(ceCfg.categories).sort()).toEqual(["chloe_mae:furniture", "dad:furniture"]);
     expect((await readdir(join(dir, "plugins", "Geyser-Spigot", "packs"))).sort()).toEqual(["blockshop_chloe_mae.mcpack", "blockshop_dad.mcpack"]);
     const pieces = JSON.parse(await readFile(join(dir, "plugins", "BlockshopCatalog", "pieces.json"), "utf8"));
@@ -283,11 +279,11 @@ describe("family server update over the API", () => {
   });
 
   it("a renamed piece changes the Bedrock display name (restart); a reshaped one only the served pack (reload); states never move", async () => {
-    // The rename after the first publish (above) is now published: the item mapping's display_name changes.
-    expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" })).json().versionString).toBe("1.0.2");
+    // A rename, with nothing else pressed: the status sees it, and the item mapping's display_name changes.
+    await ctx.app.inject({ method: "PUT", url: "/api/profiles/chloe_mae/pieces/piece_1", payload: { name: "Renamed later" } });
     const renamed = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth() })).json();
     expect(renamed).toMatchObject({ changed: true, needsRestart: true });
-    expect(renamed.profiles[1]).toMatchObject({ id: "chloe_mae", published: "1.0.2", onServer: "1.0.1" });
+    expect(renamed.profiles[1]).toMatchObject({ id: "chloe_mae", pack: "1.0.1", onServer: "1.0.1", changed: true });
     const before = JSON.parse(await readFile(join(dir, "data", "server", "java-states.json"), "utf8"));
     const r1 = (await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth() })).json();
     expect(r1).toMatchObject({ version: "1.0.2", profiles: { dad: "1.0.1", chloe_mae: "1.0.2" } });
@@ -295,7 +291,6 @@ describe("family server update over the API", () => {
     await ctx.app.inject({ method: "POST", url: "/api/admin/server/restarted", headers: auth() });
     // A reshaped piece: geometry lives in the served pack, the mapping is untouched.
     await ctx.app.inject({ method: "PUT", url: "/api/profiles/chloe_mae/pieces/piece_1", payload: { voxels: [{ x: 1, y: 0, z: 1, c: "red" }] } });
-    expect((await ctx.app.inject({ method: "POST", url: "/api/profiles/chloe_mae/publish" })).json().versionString).toBe("1.0.3");
     const reshaped = (await ctx.app.inject({ method: "GET", url: "/api/admin/server", headers: auth() })).json();
     expect(reshaped).toMatchObject({ changed: true, needsRestart: false });
     const r2 = (await ctx.app.inject({ method: "POST", url: "/api/admin/server/update", headers: auth() })).json();

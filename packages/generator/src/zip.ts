@@ -26,3 +26,8 @@ export function zipSubtree(tree: FileTree, prefix: string): Uint8Array {
 export function listZip(bytes: Uint8Array): string[] {
   return Object.keys(unzipSync(bytes)).sort();
 }
+
+/** A zip's files by path; for checking what was written. */
+export function readZip(bytes: Uint8Array): Record<string, Uint8Array> {
+  return unzipSync(bytes);
+}

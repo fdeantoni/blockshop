@@ -6,8 +6,10 @@ import { join } from "node:path";
 import { z } from "zod";
 import { GRID, IconSchema, MAX_PIECES_PER_PROFILE, MAX_PROFILES, PieceOptionsSchema, PinSchema, ProfileIdSchema, ProfileRoleSchema, VoxelSchema, type Profile } from "@blockshop/schema";
 import type { Config } from "./config.js";
+import { devArchiveName, DEV_ARCHIVE_ALL, DEV_ARCHIVE_DIRS } from "@blockshop/generator";
+import { DevPackServer } from "./dev-pack.js";
 import { ProjectError, Store } from "./store.js";
-import { Publisher, type LastReport } from "./publish.js";
+import { PackBuilder, type LastReport } from "./pack.js";
 import { ServerExporter } from "./server-export.js";
 import { Workspace } from "./workspace.js";
 
@@ -24,6 +26,7 @@ const IdParam = z.object({ id: z.string().regex(/^[a-z][a-z0-9_]{0,40}$/) });
 const ProfileParam = z.object({ pid: ProfileIdSchema });
 const ProfilePieceParam = ProfileParam.extend(IdParam.shape);
 const FileParam = ProfileParam.extend({ file: z.string().regex(/^[a-z0-9_.-]+\.mcaddon$/) });
+const DevFileParam = z.object({ file: z.string().regex(/^blockshop(-all|_[a-z][a-z0-9_]{0,15})\.zip$/) });
 const SetupSchema = z.object({ pin: PinSchema, name: NameSchema, icon: IconSchema });
 const LoginSchema = z.object({ pin: z.string().max(16) });
 const PinChangeSchema = z.object({ pin: PinSchema });
@@ -31,13 +34,15 @@ const ProfileCreateSchema = z.object({ name: NameSchema, icon: IconSchema, role:
 const ProfilePatchSchema = z.object({ name: NameSchema.optional(), icon: IconSchema.optional() });
 const IconPatchSchema = z.object({ icon: IconSchema });
 
-export interface AppContext { app: FastifyInstance; workspace: Workspace; config: Config; publisherFor: (pid: string) => Promise<Publisher>; exporter: ServerExporter }
+export interface AppContext { app: FastifyInstance; workspace: Workspace; config: Config; packBuilderFor: (pid: string) => Promise<PackBuilder>; exporter: ServerExporter; devPacks: DevPackServer }
 
 /** What the editor needs about one profile: identity, pack state and the palette. */
 export interface ProfileInfo extends Profile {
   namespace: string; packName: string; version: number[]; versionString: string;
   palette: unknown; latest: { version: string; mcaddonUrl: string } | null;
-  publishing: boolean; pieceCount: number; maxPieces: number;
+  makingPack: boolean; pieceCount: number; maxPieces: number;
+  /** Whether the editor has uploaded this profile's icon as a PNG for the packs to carry. */
+  hasIconPng: boolean;
 }
 
 async function dirExists(p: string): Promise<boolean> {
@@ -49,14 +54,15 @@ export async function buildApp(config: Config): Promise<AppContext> {
   const workspace = new Workspace(config.dataDir);
   await workspace.init({ adminPin: config.adminPin });
   if (config.adminPin) app.log.warn("ADMIN_PIN is set: the grown-up PIN was replaced from the environment; remove the variable again");
-  const publishers = new Map<string, Publisher>();
-  const exporter = new ServerExporter(workspace, config, app.log);
-  const publisherFor = async (pid: string): Promise<Publisher> => {
+  const builders = new Map<string, PackBuilder>();
+  const packBuilderFor = async (pid: string): Promise<PackBuilder> => {
     const store = await workspace.storeFor(pid);
-    let p = publishers.get(pid);
-    if (!p) { p = new Publisher(store, config, app.log, `${config.hostUrl}/p/${pid}/packs`); publishers.set(pid, p); }
+    let p = builders.get(pid);
+    if (!p) { p = new PackBuilder(store, config, app.log, `${config.hostUrl}/p/${pid}/packs`); builders.set(pid, p); }
     return p;
   };
+  const exporter = new ServerExporter(workspace, config, app.log, packBuilderFor);
+  const devPacks = new DevPackServer(workspace, app.log);
 
   app.setErrorHandler((err: unknown, _req, reply) => {
     if (err instanceof ProjectError) return reply.status(err.status).send({ error: err.message });
@@ -88,7 +94,8 @@ export async function buildApp(config: Config): Promise<AppContext> {
       ...profile,
       namespace: p.namespace, packName: p.packName, version: p.version, versionString: p.version.join("."),
       palette: p.palette, latest: await latestOf(store, profile.id),
-      publishing: publishers.get(profile.id)?.busy ?? false,
+      hasIconPng: (await store.readIconPng()) !== undefined,
+      makingPack: builders.get(profile.id)?.busy ?? false,
       pieceCount: await store.countPieces(), maxPieces: MAX_PIECES_PER_PROFILE,
     };
   };
@@ -150,7 +157,7 @@ export async function buildApp(config: Config): Promise<AppContext> {
     await requireAdmin(req);
     const { pid } = ProfileParam.parse(req.params);
     await workspace.deleteProfile(pid);
-    publishers.delete(pid);
+    builders.delete(pid);
     return reply.status(204).send();
   });
 
@@ -189,7 +196,7 @@ export async function buildApp(config: Config): Promise<AppContext> {
     return (await workspace.storeFor(pid)).updatePiece(id, PieceUpdateSchema.parse(req.body ?? {}));
   });
 
-  /** Only for pieces that were never published; published ones are hidden instead. */
+  /** Only for pieces that never left this Blockshop; ones that reached a pack or the server are hidden instead. */
   app.delete("/api/profiles/:pid/pieces/:id", async (req, reply) => {
     const { pid, id } = ProfilePieceParam.parse(req.params);
     await (await workspace.storeFor(pid)).deletePiece(id);
@@ -206,6 +213,24 @@ export async function buildApp(config: Config): Promise<AppContext> {
     return reply.status(204).send();
   });
 
+  /**
+   * The profile's icon as a PNG for the packs to carry: the editor draws it (it can render emoji and the
+   * custom icons, the server cannot) whenever the icon changes, and once for profiles made before this.
+   */
+  app.put("/api/profiles/:pid/icon.png", async (req, reply) => {
+    const { pid } = ProfileParam.parse(req.params);
+    const { dataUrl } = ThumbnailSchema.parse(req.body);
+    await (await workspace.storeFor(pid)).setIconPng(Buffer.from(dataUrl.slice("data:image/png;base64,".length), "base64"));
+    return reply.status(204).send();
+  });
+
+  app.get("/api/profiles/:pid/icon.png", async (req, reply) => {
+    const { pid } = ProfileParam.parse(req.params);
+    const png = await (await workspace.storeFor(pid)).readIconPng();
+    if (!png) throw new ProjectError("no icon yet", 404);
+    return reply.type("image/png").header("Cache-Control", "no-cache").send(Buffer.from(png));
+  });
+
   app.get("/api/profiles/:pid/pieces/:id/thumbnail.png", async (req, reply) => {
     const { pid, id } = ProfilePieceParam.parse(req.params);
     try {
@@ -217,7 +242,8 @@ export async function buildApp(config: Config): Promise<AppContext> {
     }
   });
 
-  app.post("/api/profiles/:pid/publish", async (req) => (await publisherFor(ProfileParam.parse(req.params).pid)).publish());
+  /** The Download button: makes the pack file current (validating it) and hands back where to get it. */
+  app.post("/api/profiles/:pid/pack", async (req) => (await packBuilderFor(ProfileParam.parse(req.params).pid)).ensure());
   app.get("/api/profiles/:pid/history", async (req) => (await workspace.storeFor(ProfileParam.parse(req.params).pid)).listHistory());
   app.get("/api/profiles/:pid/report", async (req) => {
     const store = await workspace.storeFor(ProfileParam.parse(req.params).pid);
@@ -236,7 +262,7 @@ export async function buildApp(config: Config): Promise<AppContext> {
       const l = JSON.parse(await readFile(join(store.packsDir, "latest.json"), "utf8")) as { file: string };
       return reply.redirect(`/p/${pid}/packs/${l.file}`, 302);
     } catch {
-      throw new ProjectError("nothing published yet", 404);
+      throw new ProjectError("no pack made yet", 404);
     }
   });
   app.get("/p/:pid/packs/:file", async (req, reply) => {
@@ -252,6 +278,44 @@ export async function buildApp(config: Config): Promise<AppContext> {
       .send(createReadStream(path));
   });
 
+  // ---- Live packs for devices' own worlds (docs/ipad-setup.md): a Shortcut downloads one archive on every
+  // Minecraft launch and drops the pack folders inside it into Minecraft's development pack folders.
+  app.get("/api/dev", async () => {
+    const build = await devPacks.get();
+    const url = (file: string) => `${config.hostUrl}/dev/${file}`;
+    return {
+      // Everything a device needs in one download; its inner folders say where each pack goes.
+      archive: { file: DEV_ARCHIVE_ALL, url: url(DEV_ARCHIVE_ALL) },
+      dirs: DEV_ARCHIVE_DIRS,
+      profiles: build.report.profiles.map((p) => ({
+        namespace: p.namespace,
+        packName: p.packName,
+        folders: p.folders,
+        archive: { file: devArchiveName(p.namespace), url: url(devArchiveName(p.namespace)) },
+        pieces: p.pieces.map((x) => ({ identifier: x.identifier, name: x.name })),
+        skipped: p.skipped,
+        warnings: p.warnings,
+      })),
+      builtAt: build.builtAt,
+      hash: build.hash,
+    };
+  });
+
+  app.get("/dev/:file", async (req, reply) => {
+    const { file } = DevFileParam.parse(req.params);
+    const { bytes, hash } = await devPacks.archive(file);
+    const etag = `"${hash}-${file}"`;
+    if (req.headers["if-none-match"] === etag) return reply.status(304).send();
+    const body = Buffer.from(bytes);
+    return reply
+      .header("Content-Type", "application/zip")
+      .header("Content-Disposition", `attachment; filename="${file}"`)
+      .header("Content-Length", String(body.byteLength))
+      .header("ETag", etag)
+      .header("Cache-Control", "no-cache")
+      .send(body);
+  });
+
   // Family-server export files (docs/family-server-internals.md), for the grown-up.
   await app.register(fastifyStatic, { root: workspace.serverJavaDir, prefix: "/java/", decorateReply: false, index: false, list: true });
 
@@ -259,12 +323,12 @@ export async function buildApp(config: Config): Promise<AppContext> {
   if (await dirExists(config.editorDir)) {
     await app.register(fastifyStatic, { root: config.editorDir, prefix: "/", decorateReply: true, index: ["index.html"] });
     app.setNotFoundHandler(async (req, reply) => {
-      if (req.method === "GET" && !/^\/(api|p|java)\//.test(req.url)) return reply.sendFile("index.html");
+      if (req.method === "GET" && !/^\/(api|p|java|dev)\//.test(req.url)) return reply.sendFile("index.html");
       return reply.status(404).send({ error: "not found" });
     });
   } else {
     app.get("/", async () => ({ name: "blockshop", note: "editor not built; run pnpm build", api: "/api/workspace" }));
   }
 
-  return { app, workspace, config, publisherFor, exporter };
+  return { app, workspace, config, packBuilderFor, exporter, devPacks };
 }

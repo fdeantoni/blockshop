@@ -21,8 +21,10 @@ export interface JavaBuildState {
   version: string;
   at: string;
   pieces: number;
-  /** Profile id → the published version of that profile the build was made from. */
+  /** Profile id → the pack version of that profile when the build was made (absent before its first pack). */
   profiles: Record<string, string>;
+  /** Profile id → hash of the pieces the build was made from; how "changed since" is decided. */
+  hashes?: Record<string, string>;
 }
 
 export interface JavaDeployResult {
@@ -100,7 +102,7 @@ export async function markRestarted(distJavaDir: string): Promise<JavaDeployResu
 }
 
 /** Write a build to server/dist/java: the unzipped tree, one .mcpack per profile for Geyser, and the report. */
-export async function writeJavaDist(dir: string, result: JavaBuildResult, version: string, profiles: Record<string, string> = {}): Promise<void> {
+export async function writeJavaDist(dir: string, result: JavaBuildResult, version: string, profiles: Record<string, string> = {}, hashes: Record<string, string> = {}): Promise<void> {
   // Replace the tree wholesale (a removed profile must not leave files behind) but keep deploy.json, the sticky restart state.
   for (const sub of Object.values(JAVA_DIRS)) await rm(join(dir, sub), { recursive: true, force: true });
   await writeTree(result.tree, dir, { clear: false });
@@ -108,7 +110,7 @@ export async function writeJavaDist(dir: string, result: JavaBuildResult, versio
   await mkdir(packs, { recursive: true });
   for (const ns of geyserPackNamespaces(result.tree)) await writeFile(join(packs, geyserMcpackName(ns)), geyserMcpack(result.tree, ns));
   await writeFile(join(dir, "report.json"), jsonText(result.report));
-  const state: JavaBuildState = { version, at: new Date().toISOString(), pieces: result.report.profiles.reduce((n, p) => n + p.pieces.length, 0), profiles };
+  const state: JavaBuildState = { version, at: new Date().toISOString(), pieces: result.report.profiles.reduce((n, p) => n + p.pieces.length, 0), profiles, hashes };
   await writeFile(join(dir, JAVA_BUILD_STATE), jsonText(state));
 }
 

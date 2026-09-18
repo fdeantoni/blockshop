@@ -1,5 +1,6 @@
-import { adminToken, api, ApiError, setAdminToken, type PieceSummary, type ProfileInfo, type PublishResult, type ServerStatus, type ServerUpdateResult, type WorkspaceInfo } from "./api.js";
+import { adminToken, api, ApiError, setAdminToken, type DevPackInfo, type PackResult, type PieceSummary, type ProfileInfo, type ServerStatus, type ServerUpdateResult, type WorkspaceInfo } from "./api.js";
 import { ICONS, PROFILE_ICONS, SOURCE_URL, T } from "./i18n.js";
+import { renderPackIcon } from "./pack-icon.js";
 import { iconNode } from "./icons.js";
 import { attachLongPress, attachTap } from "./input.js";
 import { neighborCell, VoxelModel } from "./model.js";
@@ -104,6 +105,7 @@ export class App {
 
   async start(): Promise<void> {
     this.workspace = await api.workspace();
+    void this.backfillPackIcons();
     document.title = this.workspace.uiTitle;
     this.root.replaceChildren();
     this.home = h("div", { id: "home", class: "screen" });
@@ -115,6 +117,26 @@ export class App {
     this.saver = new Saver((keepalive) => this.savePiece(keepalive), (s) => { this.ui.status.textContent = s === "saving" ? T.saving : s === "saved" ? T.saved : T.offline; });
     window.addEventListener("hashchange", () => { this.routing = this.routing.then(() => this.route()).catch((e) => this.showError(e)); });
     await this.route();
+  }
+
+  /**
+   * Draw the profile's icon and hand it to the server, which puts it on that profile's packs. The server
+   * cannot draw an emoji, so this is the only place it can come from; it runs on every icon change and once
+   * for profiles that predate it.
+   */
+  private async uploadPackIcon(p: ProfileInfo): Promise<void> {
+    try {
+      const palette = p.palette as Array<{ rgba: [number, number, number, number] }>;
+      const accent = palette[0]?.rgba ?? [184, 148, 95, 255];
+      await api.setIconPng(p.id, await renderPackIcon(p.icon, accent));
+    } catch {
+      // A pack icon is decoration: a failure here must never stop a kid from building.
+    }
+  }
+
+  /** Profiles whose packs have no icon yet (made before the editor drew them, or icon changed elsewhere). */
+  private async backfillPackIcons(): Promise<void> {
+    for (const p of this.workspace.profiles) if (!p.hasIconPng) await this.uploadPackIcon(p);
   }
 
   private show(screen: HTMLElement): void {
@@ -147,7 +169,7 @@ export class App {
         h("div", { class: "meta" }, `${T.pieces(p.pieceCount, p.maxPieces)} · ${meta}`),
         h("div", { class: "row" },
           btn(`▶ ${T.open}`, "primary big", () => go(`#/p/${p.id}`)),
-          ...(p.latest ? [h("a", { class: "btn big", href: p.latest.mcaddonUrl }, `⬇︎ ${T.download}`)] : []),
+          (() => { const b = btn(`⬇︎ ${T.makeDownload}`, "big", () => void this.makeDownloadFor(p, b)); return b; })(),
         ),
       );
       cards.append(card);
@@ -177,6 +199,7 @@ export class App {
       try {
         const r = await api.setup({ pin: pin.value, name: name.value.trim(), icon });
         setAdminToken(r.token);
+        void this.uploadPackIcon(r.profile);
         go("#/admin");
       } catch (e) {
         error.textContent = e instanceof ApiError ? e.message : String(e);
@@ -206,7 +229,7 @@ export class App {
   // ---------- Gallery
   private buildGallery(): HTMLElement {
     const cards = h("div", { class: "cards" });
-    const publish = btn(`▶ ${T.publish}`, "primary big", () => void this.publish());
+    const publish = btn(`⬇︎ ${T.makeDownload}`, "big", () => void this.makeDownload());
     const count = h("span", { class: "count" });
     const icon = btn("", "icon profileicon", () => this.pickProfileIcon());
     const title = h("h1", {});
@@ -287,7 +310,7 @@ export class App {
     const overlay = h("div", { class: "overlay" });
     const grid = this.iconGrid(p.icon, (icon) => {
       overlay.remove();
-      void api.setIcon(p.id, icon).then((updated) => { this.profile = updated; this.refreshGalleryHeader(); }, (e) => this.showError(e));
+      void api.setIcon(p.id, icon).then((updated) => { this.profile = updated; this.refreshGalleryHeader(); return this.uploadPackIcon(updated); }, (e) => this.showError(e));
     });
     overlay.append(h("div", { class: "dialog" }, h("h2", {}, T.pickIcon), grid, btn(T.close, "big", () => overlay.remove())));
     this.root.append(overlay);
@@ -538,26 +561,49 @@ export class App {
     try { await api.thumbnail(this.profile.id, this.piece.id, this.thumbs.render(this.scene, this.model.bounds())); } catch { /* thumbnails are best effort */ }
   }
 
-  // ---------- Publish (the whole pack, from the gallery)
-  private async publish(): Promise<void> {
+  // ---------- The pack file (for another device or a friend), from the gallery or the home screen
+  private async makeDownload(): Promise<void> {
     const p = this.profile;
     if (!p) return;
     const { publish } = this.galleryUi;
     publish.disabled = true;
-    publish.textContent = T.publishing;
+    publish.textContent = T.working;
     try {
-      const r = await api.publish(p.id);
+      const r = await api.pack(p.id);
       await this.refreshProfile();
       this.showReady(r, p);
     } catch (e) {
-      this.showError(e);
+      this.showPackError(e);
     } finally {
       publish.disabled = false;
-      publish.textContent = `▶ ${T.publish}`;
+      publish.textContent = `⬇︎ ${T.makeDownload}`;
     }
   }
 
-  private showReady(r: PublishResult, p: ProfileInfo): void {
+  /** The same from the home screen, where there is no gallery button to put in a working state. */
+  private async makeDownloadFor(p: ProfileInfo, button: HTMLButtonElement): Promise<void> {
+    button.disabled = true;
+    const label = button.textContent;
+    button.textContent = T.working;
+    try {
+      this.showReady(await api.pack(p.id), p);
+      this.workspace = await api.workspace();
+      this.showHome();
+    } catch (e) {
+      this.showPackError(e);
+    } finally {
+      button.disabled = false;
+      button.textContent = label;
+    }
+  }
+
+  /** "Nothing drawn yet" is a normal thing for a kid to run into, not an error to apologise for. */
+  private showPackError(e: unknown): void {
+    if (e instanceof ApiError && e.status === 422) this.showNotice(`✏️ ${T.nothingToPack}`, T.downloadWhy);
+    else this.showError(e);
+  }
+
+  private showReady(r: PackResult, p: ProfileInfo): void {
     const overlay = h("div", { class: "overlay" });
     const wasFirst = p.latest === null;
     // A plain same-tab link: Safari's download manager takes over, and tapping the file there
@@ -565,6 +611,7 @@ export class App {
     const dialog = h("div", { class: "dialog" },
       h("h2", {}, `🎉 ${T.ready}`),
       h("p", {}, T.readyText(p.packName, r.versionString)),
+      h("p", { class: "meta" }, T.downloadWhy),
       ...(wasFirst ? [h("p", {}, `💾 ${T.backupTip}`)] : []),
       h("a", { class: "btn primary big", href: r.mcaddonUrl }, `⬇︎ ${T.download}`),
       h("p", {}, T.downloadHint),
@@ -626,8 +673,12 @@ export class App {
     this.show(this.admin);
     if (!adminToken()) return this.showLogin();
     try {
-      const [info, server] = await Promise.all([api.admin(), api.server().catch((e: unknown) => (e instanceof ApiError && e.status === 401 ? Promise.reject(e) : null))]);
-      this.renderAdmin(info.profiles, info.maxProfiles, server);
+      const [info, server, devPack] = await Promise.all([
+        api.admin(),
+        api.server().catch((e: unknown) => (e instanceof ApiError && e.status === 401 ? Promise.reject(e) : null)),
+        api.devPack().catch(() => null),
+      ]);
+      this.renderAdmin(info.profiles, info.maxProfiles, server, devPack);
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) { setAdminToken(null); return this.showLogin(); }
       this.showError(e);
@@ -645,7 +696,7 @@ export class App {
     pin.focus();
   }
 
-  private renderAdmin(profiles: ProfileInfo[], maxProfiles: number, server: ServerStatus | null): void {
+  private renderAdmin(profiles: ProfileInfo[], maxProfiles: number, server: ServerStatus | null, devPack: DevPackInfo | null): void {
     const refresh = () => void this.showAdmin();
     const guard = (promise: Promise<unknown>) => promise.then(refresh, (e) => this.showError(e));
 
@@ -658,7 +709,7 @@ export class App {
         btn(T.rename, "", () => void this.prompt(T.newName, T.kidName, p.name).then((name) => { if (name?.trim()) void guard(api.updateProfile(p.id, { name: name.trim() })); })),
         btn(T.changeIcon, "", () => {
           const overlay = h("div", { class: "overlay" });
-          overlay.append(h("div", { class: "dialog" }, h("h2", {}, T.pickIcon), this.iconGrid(p.icon, (icon) => { overlay.remove(); void guard(api.updateProfile(p.id, { icon })); }), btn(T.close, "big", () => overlay.remove())));
+          overlay.append(h("div", { class: "dialog" }, h("h2", {}, T.pickIcon), this.iconGrid(p.icon, (icon) => { overlay.remove(); void guard(api.updateProfile(p.id, { icon }).then((updated) => this.uploadPackIcon(updated))); }), btn(T.close, "big", () => overlay.remove())));
           this.root.append(overlay);
         }),
       );
@@ -671,7 +722,7 @@ export class App {
     if (profiles.length < maxProfiles) {
       const name = h("input", { class: "name", type: "text", maxlength: "40", placeholder: T.kidName, autocomplete: "off", autocapitalize: "words" });
       let icon = "🦄";
-      addKid.append(h("div", { class: "grow" }, h("div", { class: "name" }, `➕ ${T.addKid}`), name, this.iconGrid(icon, (i) => { icon = i; })), btn(T.add, "primary", () => { if (name.value.trim()) void guard(api.addProfile({ name: name.value.trim(), icon })); }));
+      addKid.append(h("div", { class: "grow" }, h("div", { class: "name" }, `➕ ${T.addKid}`), name, this.iconGrid(icon, (i) => { icon = i; })), btn(T.add, "primary", () => { if (name.value.trim()) void guard(api.addProfile({ name: name.value.trim(), icon }).then((p) => this.uploadPackIcon(p))); }));
     }
 
     // Family server
@@ -679,7 +730,7 @@ export class App {
     if (!server || server.mode === "off") {
       serverBox.append(h("p", {}, T.serverOff));
     } else {
-      const rows = server.profiles.map((s) => h("li", {}, iconNode(s.icon), ` ${s.name}: ${T.published} ${s.published ?? T.never}, ${T.onServer} ${s.onServer ?? T.never}`));
+      const rows = server.profiles.map((s) => h("li", {}, iconNode(s.icon), ` ${s.name}: ${T.piecesNow(s.pieces)}, ${T.onServer} ${s.onServer ?? T.never}${s.changed ? ` · ${T.changedSince}` : ""}`));
       const online = server.online === null ? (server.onlineError ? `? (${server.onlineError})` : "?") : server.online.length ? server.online.map((n) => n.replace(/^\./, "")).join(", ") : T.nobodyOnline;
       const verdict = !server.changed ? T.serverUpToDate : server.needsRestart ? T.serverRestartNeeded : T.serverReloadOnly;
       serverBox.append(
@@ -696,6 +747,32 @@ export class App {
       );
     }
 
+    // The live packs for tablets' own worlds: one download for everyone, or one profile at a time.
+    const tabletBox = h("div", { class: "box" }, h("h2", {}, `📲 ${T.tabletPack}`));
+    tabletBox.append(h("p", {}, T.tabletPackIntro));
+    if (devPack) {
+      const linkRow = (file: string, url: string, meta: string) => {
+        const copy = btn(T.copyLink, "", () => {
+          void navigator.clipboard?.writeText(url).then(() => { copy.textContent = T.copied; setTimeout(() => { copy.textContent = T.copyLink; }, 1500); }, () => undefined);
+        });
+        return h("div", { class: "prow" },
+          h("div", { class: "grow" }, h("div", { class: "name" }, h("a", { href: url }, file)), h("div", { class: "meta" }, meta)),
+          copy,
+        );
+      };
+      tabletBox.append(
+        h("p", { class: "meta" }, T.tabletPackEveryone),
+        h("div", { class: "list" }, linkRow(devPack.archive.file, devPack.archive.url, devPack.profiles.map((p) => p.packName).join(" · "))),
+        h("p", { class: "meta" }, T.tabletPackOne),
+        h("div", { class: "list" }, ...devPack.profiles.map((p) => linkRow(
+          p.archive.file,
+          p.archive.url,
+          `${p.packName} · ${T.tabletPackPieces(p.pieces.length)}${p.skipped.length ? ` · ${T.tabletPackSkipped(p.skipped.length)}` : ""}`,
+        ))),
+        h("p", { class: "meta" }, T.tabletPackHowTo),
+      );
+    }
+
     const pinBox = h("div", { class: "row" },
       btn(`🔑 ${T.changePin}`, "", () => void this.prompt(T.changePin, T.newPin, "", { pin: true }).then((pin) => { if (pin) void api.changePin(pin).then((r) => { setAdminToken(r.token); refresh(); }, (e) => this.showError(e)); })),
       btn(T.logOut, "", () => void api.logout().catch(() => undefined).then(() => { setAdminToken(null); go("#/"); })),
@@ -705,6 +782,7 @@ export class App {
       h("div", { class: "adminbody" },
         h("div", { class: "box" }, h("h2", {}, `👪 ${T.profiles}`), list, addKid),
         serverBox,
+        tabletBox,
         h("div", { class: "box" }, pinBox),
         legalFooter(),
       ),

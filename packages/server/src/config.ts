@@ -2,7 +2,7 @@ import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 import type { McSuite } from "./validate.js";
 
-/** `on`: the grown-up page can update the family server. Kids' publishes never touch it. (`manual`/`publish` from older env files read as `on`.) */
+/** `on`: the grown-up page can update the family server. Nothing else touches it. (`manual`/`publish` from older env files read as `on`.) */
 export type JavaDeployMode = "off" | "on";
 
 /** CraftEngine rebuilds and re-sends the Java pack; Geyser re-reads the served Bedrock pack (verified 2026-09-15). */

@@ -19,7 +19,7 @@ export function jsonText(value: unknown): string {
  * Throws on invalid input (schema errors, unknown palette ids, empty pieces).
  * Output depends only on the input; no timestamps or randomness.
  */
-export function buildPack(projectIn: Project, piecesIn: readonly Piece[]): BuildResult {
+export function buildPack(projectIn: Project, piecesIn: readonly Piece[], opts: { packIcon?: Uint8Array | undefined } = {}): BuildResult {
   const project = ProjectSchema.parse(projectIn);
   const pieces = piecesIn.map((p) => PieceSchema.parse(p)).sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const palette = new Map<string, PaletteEntry>(project.palette.map((p) => [p.id, p]));
@@ -73,7 +73,9 @@ export function buildPack(projectIn: Project, piecesIn: readonly Piece[]): Build
   const lang = buildLang(project, pieces, { seats: seatsEnabled });
   const languages = jsonText(["en_US"]);
   const accent = project.palette[0]!.rgba;
-  const icon = packIconPng(256, [accent[0], accent[1], accent[2], 255], [40, 30, 20, 255]);
+  // The profile's own icon when the editor has drawn one (it can render emoji and the custom icons;
+  // nothing here can), else the generated chair glyph.
+  const icon = opts.packIcon ?? packIconPng(256, [accent[0], accent[1], accent[2], 255], [40, 30, 20, 255]);
 
   tree.set(`${bp}/manifest.json`, jsonText(manifests.bp));
   tree.set(`${bp}/texts/en_US.lang`, lang);

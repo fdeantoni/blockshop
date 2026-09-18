@@ -125,4 +125,13 @@ describe("sanityCheck", () => {
     result.report.pieces[0]!.bounds = [-9, 0, 0, 8, 16, 8];
     expect(sanityCheck(pr, [a], result).errors.some((e) => e.includes("leave the block volume"))).toBe(true);
   });
+
+  it("a supplied pack icon goes on both packs, else the generated one", () => {
+    const own = new Uint8Array([137, 80, 78, 71, 1, 2, 3]);
+    const withIcon = buildPack(project(), [piece("table")], { packIcon: own });
+    expect(withIcon.tree.get("family_furniture_bp/pack_icon.png")).toEqual(own);
+    expect(withIcon.tree.get("family_furniture_rp/pack_icon.png")).toEqual(own);
+    const without = buildPack(project(), [piece("table")]);
+    expect(without.tree.get("family_furniture_bp/pack_icon.png")).not.toEqual(own);
+  });
 });

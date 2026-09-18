@@ -78,6 +78,21 @@ Rule: pin `project.json` to the **lowest** version installed on the family iPads
   time, and 14 of 86 on the device-tested chair, which nobody had noticed. `mirrorX` now keeps the keys (without
   it the piece is mirrored and the keys swap). *Device*: confirm the sides are
   closed after publishing, importing and activating the new version on the world.
+- **Development packs work on iPad (2026-09-17)**: a pack folder moved with the Files app into
+  `On My iPad/Minecraft/games/com.mojang/development_behavior_packs` (and `development_resource_packs`)
+  appears under My Packs, activates on a world, and is **referenced, not copied**: replacing the folder's
+  contents and re-entering the world shows the new geometry, colours and item names at once. No import, no
+  version bump, no Storage cleanup, and the pack keeps one uuid and version forever. Verified with a two-piece
+  test pack in two colour variants.
+- **A Shortcut can do the placing, and an automation can run it (2026-09-17)**: one zip per destination folder,
+  named exactly like that folder (Shortcuts names an extracted folder after the archive), then per folder:
+  *Get Contents of URL* → *Extract Archive* → *Save Files* to `development_behavior_packs` /
+  `development_resource_packs` with *Ask Where to Save* off and *Overwrite If File Exists* on. The destination
+  is picked once in the action (default is iCloud Drive → Shortcuts) and remembered. Deleting the old folder
+  first is optional; keep *Get File from Folder* (or *Get Contents of Folder* + *Filter Files*) → *Delete Files*
+  as the fallback if a run duplicates a folder as "… 2". Automation: Automation → New → App → Minecraft →
+  Is Opened → **Run Shortcut** → the shortcut, with *Ask Before Running* and *Notify When Run* off. Opening
+  Minecraft ran it. Worth guarding on the home Wi-Fi name so launches away from home fail quietly.
 - **A newer pack version was not picked up by the world**: version 1.0.4 (changed chair) was imported, yet the world kept showing the 1.0.3 model. The expectation was that the newest version is used automatically; it is not, at least while the older version is still installed. See step 5 of "After a Minecraft update" for the manual switch. **2026-09-15:** deleting the old copies from Storage does not make the world switch either; the new version must be activated on the world (Edit → Behavior Packs → My Packs), otherwise the world has no furniture pack and every piece is gone from the creative inventory.
 - **Tapping a block in a creative world breaks it instantly**, so `onPlayerInteract` is not reachable by touch on a creative world. Seats now use a persistent rideable entity per placed chair (touch shows a ride button for rideable entities); `onPlayerInteract` remains for mouse/controller.
 - `min_engine_version` 1.26.40 was refused by the 26.32 client (see the version table).
@@ -129,6 +144,13 @@ Rule: pin `project.json` to the **lowest** version installed on the family iPads
 - **"x, y, z is under spawn protection" (2026-09-15)**: vanilla `spawn-protection=16` (translatable `build.spawn_protection`)
   blocks non-op players near the world spawn; the Java tester is op, the iPad account is not. `SPAWN_PROTECTION: "0"`.
 - Still to observe with clients: the menu on the iPad (form opens on hotbar select, pictures show, choice gives the item), facing, sit, break.
+- *Device*: **Download** makes a profile's pack file (validated) and the Ready dialog's steps still import it
+  on a second device; and **Update the family server** now takes everyone's pieces as they are, with nobody
+  having pressed anything first.
+- *Device*: **the live packs** (`docs/ipad-setup.md`). Each profile's live pack is the same tree its `.mcaddon`
+  carries (one `buildPack` call, seats and script included), only with derived ids, a fixed version 1.0.0 and
+  "(live)" in the name, so the checks are: the packs appear under My Packs, a world can enable one kid's and
+  leave another's off, placed furniture survives switching from the imported pack, and the chair can be sat on.
 
 ## Still open (device)
 
@@ -145,7 +167,7 @@ Rule: pin `project.json` to the **lowest** version installed on the family iPads
 Minecraft changes the add-on format from time to time. When the tablets or the server move to a new Minecraft
 version, check once, in a copy of a test world:
 
-1. In a profile's gallery, press **Send to Minecraft**, download the pack and open it on the tablet. Minecraft
+1. In a profile's gallery, press **Download**, download the pack and open it on the tablet. Minecraft
    shows "Successfully imported".
 2. Edit the world → Behavior Packs → My Packs, and activate *<Name>'s Furniture*. Its resource pack comes along.
 3. Place a chair facing each of the four directions. Its back should point away from you, with the armrest on

@@ -5,10 +5,11 @@ verified on a real server. To set a server up, see [server-setup.md](server-setu
 
 The local-world add-on reaches each device's own worlds and needs the update routine on every device. The
 family server export puts the same furniture into the **shared Paper world**: on the grown-up's request
-("Update the family server" on the grown-up page), Blockshop merges every profile's last published pack into
-one CraftEngine pack and one set of Geyser mappings, writes them into the server's plugin folders, and Geyser
-hands Bedrock players one resource pack per profile when they join. Nothing is imported on the devices; nobody
-deletes old packs. Kids' publishes never touch the server, so nobody gets kicked by someone else's edit.
+("Update the family server" on the grown-up page), Blockshop takes every profile's pieces as they are saved at
+that moment, merges them into one CraftEngine pack and one set of Geyser mappings, writes them into the server's
+plugin folders, and Geyser hands Bedrock players one resource pack per profile when they join. Nothing is
+imported on the devices; nobody deletes old packs. Only that button touches the server, so nobody gets kicked by
+someone else's edit.
 
 ## What a server update produces (`DATA_DIR/server/dist/java/`, served at `/java/`)
 
@@ -83,7 +84,8 @@ against Paper 26.2 with JDK 25.
 The grown-up page shows, per profile, the version last sent and the version on the server, who is online, and
 whether the next update restarts or only reloads (exact: the merged build is pure, so its mapping is compared
 with the file in the Geyser folder). The update then bumps the export counter, allocates carrier states for new
-pieces, builds from every profile's last *published* version (edits since stay off the server until published),
+pieces, makes each profile's pack file current (which is where the Creator Tools validation runs, and what
+leaves the version and history behind), builds from every profile's pieces as they are now,
 replaces the CraftEngine folder, syncs the Geyser files and the plugin, and either runs the RCON commands
 (`JAVA_RCON_COMMANDS`) or the restart command (`JAVA_RESTART_COMMAND`). Command failures are reported on the
 page; the files are already in place.
@@ -100,7 +102,7 @@ new piece showed as leaves on Java until the reload).
 
 Same idea as the first iPad test: prove the format on a real server. Repeat it when the export format changes.
 
-1. Set up the stack from [server-setup.md](server-setup.md), publish a profile from its gallery, then press
+1. Set up the stack from [server-setup.md](server-setup.md), draw a piece in a profile, then press
    "Update the family server" on the grown-up page. `DATA_DIR/server/dist/java/` now holds the export (also
    browsable at `/java/` on Blockshop) and the update copied it through the mounts.
 2. The same by hand, from the stack directory (`./blockshop` is Blockshop's state, `./data` the server's):
@@ -126,7 +128,7 @@ Same idea as the first iPad test: prove the format on a real server. Repeat it w
       are the ways to get them.
    4. **Facing**: place a chair while looking north. Its front (the editor's +z side) should face you
       (south). If it faces away, swap north↔south and east↔west in `java.yaw` **and** `java.bedrockYaw`
-      in `project.json` and publish again. If Java and Bedrock disagree with each other, only
+      in `project.json` and update again. If Java and Bedrock disagree with each other, only
       `bedrockYaw` is wrong.
    5. **Shape**: armrest on the same side as in the editor (Bedrock geometry is the one already verified
       in local worlds; the Java model is unmirrored by design).
@@ -153,6 +155,6 @@ states are leaves; turn that toggle off on the client.
 ## Endpoints (grown-up session: `x-admin-token` from `POST /api/admin/login`)
 
 - `GET /api/admin/server` — mode, per-profile versions (sent / on the server), online players, whether an update is needed and whether it restarts, last build, last deploy, pending restart, states left.
-- `POST /api/admin/server/update` — build from every profile's last published pack and deploy (409 while another update runs or when `JAVA_DEPLOY=off`, 422 before any profile has published).
+- `POST /api/admin/server/update` — refresh every profile's pack, build from their current pieces and deploy (409 while another update runs or when `JAVA_DEPLOY=off`, 422 before anyone has drawn a piece).
 - `POST /api/admin/server/restarted` — the grown-up restarted the server by hand; clears the pending restart.
 - `GET /java/…` — the export files (directory listing).

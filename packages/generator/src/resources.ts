@@ -44,11 +44,11 @@ export function buildLang(project: Project, pieces: readonly Piece[], opts: { se
   return lines.join("\n") + "\n";
 }
 
-export function buildManifests(project: Project, opts: { scripts: boolean; pieceCount: number }) {
+export function buildManifests(project: Project, opts: { scripts: boolean; pieceCount: number; description?: string }) {
   const { version, uuids, minEngineVersion } = project;
   // Minecraft shows no version for local packs, but it shows the description under the pack
   // name in every pack list; the name must stay constant so imports keep replacing the pack.
-  const description = `Blockshop v${version.join(".")} · ${opts.pieceCount} piece${opts.pieceCount === 1 ? "" : "s"}`;
+  const description = opts.description ?? `Blockshop v${version.join(".")} · ${opts.pieceCount} piece${opts.pieceCount === 1 ? "" : "s"}`;
   const bpModules: unknown[] = [{ type: "data", uuid: uuids.bpModule, version }];
   const dependencies: unknown[] = [{ uuid: uuids.rp, version }];
   if (opts.scripts) {

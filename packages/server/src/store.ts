@@ -178,6 +178,17 @@ export class Store {
     await rm(this.thumbnailPath(id), { force: true });
   }
 
+  /** The profile's icon as a PNG, drawn by the editor (which can render emoji and the custom icons). */
+  get iconPath() { return join(this.dataDir, "icon.png"); }
+
+  async setIconPng(png: Uint8Array): Promise<void> {
+    await atomicWrite(this.iconPath, png);
+  }
+
+  async readIconPng(): Promise<Uint8Array | undefined> {
+    try { return new Uint8Array(await readFile(this.iconPath)); } catch { return undefined; }
+  }
+
   async setThumbnail(id: string, png: Uint8Array): Promise<void> {
     if (!(await this.getPiece(id))) throw new ProjectError(`no such piece: ${id}`, 404);
     await atomicWrite(this.thumbnailPath(id), png);
