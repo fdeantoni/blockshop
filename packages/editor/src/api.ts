@@ -6,7 +6,7 @@ export interface ProfileInfo {
   palette: PaletteEntry[]; latest: { version: string; mcaddonUrl: string } | null; makingPack: boolean; hasIconPng: boolean;
   pieceCount: number; maxPieces: number;
 }
-export interface WorkspaceInfo { uiTitle: string; setupNeeded: boolean; maxProfiles: number; maxPieces: number; profiles: ProfileInfo[] }
+export interface WorkspaceInfo { uiTitle: string; version: string; setupNeeded: boolean; maxProfiles: number; maxPieces: number; profiles: ProfileInfo[] }
 export interface PieceSummary {
   id: string; name: string; author: string; hidden: boolean; updatedAt: string; createdAt: string;
   voxelCount: number; hasThumbnail: boolean; publishedInVersion?: Version; onFamilyServer: boolean;

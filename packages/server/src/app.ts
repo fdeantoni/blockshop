@@ -5,7 +5,7 @@ import { access, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
 import { GRID, IconSchema, MAX_PIECES_PER_PROFILE, MAX_PROFILES, PieceOptionsSchema, PinSchema, ProfileIdSchema, ProfileRoleSchema, VoxelSchema, type Profile } from "@blockshop/schema";
-import type { Config } from "./config.js";
+import { blockshopVersion, type Config } from "./config.js";
 import { devArchiveName, DEV_ARCHIVE_ALL, DEV_ARCHIVE_DIRS } from "@blockshop/generator";
 import { DevPackServer } from "./dev-pack.js";
 import { ProjectError, Store } from "./store.js";
@@ -105,6 +105,7 @@ export async function buildApp(config: Config): Promise<AppContext> {
     const profiles = await workspace.listProfiles();
     return {
       uiTitle: config.uiTitle,
+      version: blockshopVersion(),
       setupNeeded: await workspace.setupNeeded(),
       maxProfiles: MAX_PROFILES,
       maxPieces: MAX_PIECES_PER_PROFILE,

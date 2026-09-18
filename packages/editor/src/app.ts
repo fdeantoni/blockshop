@@ -12,10 +12,12 @@ import type { Piece, PieceOptions, Voxel } from "@blockshop/schema";
 const link = (href: string, text: string) => { const a = document.createElement("a"); a.href = href; a.textContent = text; a.target = "_blank"; a.rel = "noopener"; return a; };
 
 /** License, source code (AGPL-3.0 section 13) and the Minecraft disclaimer, at the bottom of the home and grown-up pages. */
-function legalFooter(): HTMLElement {
+function legalFooter(version?: string): HTMLElement {
   const footer = document.createElement("footer");
   footer.className = "legal";
   const line = document.createElement("p");
+  // The running version, so it is clear at a glance which Blockshop a server is on.
+  if (version) line.append(`Blockshop ${version} · `);
   line.append(`${T.freeSoftware} · `, link(SOURCE_URL, T.sourceCode), " · ", link("third-party-licenses.txt", T.thirdPartyLicenses));
   const disclaimer = document.createElement("p");
   disclaimer.textContent = T.notOfficial;
@@ -186,7 +188,7 @@ export class App {
       h("header", {}, h("h1", {}, this.workspace.uiTitle), btn(`⚙️ ${T.grownUp}`, "", () => go("#/admin"))),
       h("h2", { class: "sub" }, T.whoseFurniture),
       cards,
-      legalFooter(),
+      legalFooter(this.workspace.version),
     );
   }
 
@@ -882,7 +884,7 @@ export class App {
         serverBox,
         tabletBox,
         h("div", { class: "box" }, pinBox),
-        legalFooter(),
+        legalFooter(this.workspace.version),
       ),
     );
   }

@@ -1,6 +1,20 @@
 import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { McSuite } from "./validate.js";
+
+/**
+ * The running Blockshop version, so a grown-up can see which one a server is on without asking it. Read from
+ * this package's own package.json, which sits one level above both `src/` in development and `dist/` in the
+ * image; a version that cannot be read is not worth failing a start over.
+ */
+export function blockshopVersion(): string {
+  try {
+    return (JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string }).version;
+  } catch {
+    return "unknown";
+  }
+}
 
 /** `on`: the grown-up page can update the family server. Nothing else touches it. (`manual`/`publish` from older env files read as `on`.) */
 export type JavaDeployMode = "off" | "on";

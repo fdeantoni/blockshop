@@ -51,6 +51,8 @@ describe("workspace and profiles", () => {
     const res = await ctx.app.inject({ method: "GET", url: "/api/workspace" });
     expect(res.statusCode).toBe(200);
     expect(res.json()).toMatchObject({ setupNeeded: true, profiles: [], maxProfiles: MAX_PROFILES, maxPieces: MAX_PIECES_PER_PROFILE });
+    // The running version, for the footer: whatever this package says, never a failure to start.
+    expect(res.json().version).toMatch(/^\d+\.\d+\.\d+$/);
     expect((await ctx.app.inject({ method: "GET", url: "/api/admin" })).statusCode).toBe(401);
     expect((await ctx.app.inject({ method: "POST", url: "/api/setup", payload: { pin: "12", name: "Dad", icon: "🧔" } })).statusCode).toBe(400);
   });
