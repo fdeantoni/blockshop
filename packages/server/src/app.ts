@@ -196,7 +196,7 @@ export async function buildApp(config: Config): Promise<AppContext> {
     return (await workspace.storeFor(pid)).updatePiece(id, PieceUpdateSchema.parse(req.body ?? {}));
   });
 
-  /** Only for pieces that never left this Blockshop; ones that reached a pack or the server are hidden instead. */
+  /** Only for pieces that are not on the family server; those are hidden instead (see `deletePiece`). */
   app.delete("/api/profiles/:pid/pieces/:id", async (req, reply) => {
     const { pid, id } = ProfilePieceParam.parse(req.params);
     await (await workspace.storeFor(pid)).deletePiece(id);

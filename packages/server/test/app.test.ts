@@ -173,7 +173,11 @@ describe("workspace and profiles", () => {
 
     const piece = (await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/pieces/piece_1" })).json();
     expect(piece.publishedInVersion).toEqual([1, 0, 1]);
+    // Being in a pack does not protect a piece; being on the family server does, because other people
+    // have it placed in the shared world.
+    expect((await ctx.app.inject({ method: "PUT", url: "/api/profiles/chloe_mae/pieces/piece_1", payload: { options: { onFamilyServer: true } } })).statusCode).toBe(200);
     expect((await ctx.app.inject({ method: "DELETE", url: "/api/profiles/chloe_mae/pieces/piece_1" })).statusCode).toBe(409);
+    await ctx.app.inject({ method: "PUT", url: "/api/profiles/chloe_mae/pieces/piece_1", payload: { options: { onFamilyServer: false } } });
 
     const history = (await ctx.app.inject({ method: "GET", url: "/api/profiles/chloe_mae/history" })).json();
     expect(history).toHaveLength(1);

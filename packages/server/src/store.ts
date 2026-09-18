@@ -175,10 +175,15 @@ export class Store {
   }
 
   /** Remove a piece for good. Only pieces that were never published: a published identifier must stay (placed blocks). */
+  /**
+   * A piece can go for good while it is not on the family server. On it, other people have it placed in the
+   * shared world, so it is hidden instead; taking it off the server is the deliberate step that turns what
+   * they placed back into leaves, and after that there is nothing left to protect.
+   */
   async deletePiece(id: string): Promise<void> {
     const piece = await this.getPiece(id);
     if (!piece) throw new ProjectError(`no such piece: ${id}`, 404);
-    if (piece.publishedInVersion) throw new ProjectError(`${id} was published in v${piece.publishedInVersion.join(".")}: hide it instead`, 409);
+    if (piece.options.onFamilyServer !== false) throw new ProjectError(`${id} is on the family server: take it off there, or hide it instead`, 409);
     await rm(this.piecePath(id), { force: true });
     await rm(this.thumbnailPath(id), { force: true });
   }

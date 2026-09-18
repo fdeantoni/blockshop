@@ -195,13 +195,18 @@ async function readJson<T>(path: string): Promise<T | null> {
  * What a pack is built from, as one string. Bookkeeping that never reaches the pack is left out, or a
  * build would always look like a change: the version rises with each build, `publishedInVersion` is
  * stamped on the pieces by the build that included them, and `nextPieceNumber` moves whenever a kid
- * starts a piece. Empty pieces are left out too, because they never reach a pack.
+ * starts a piece. `options.onFamilyServer` goes too (a pack file holds every piece whatever that says, and the
+ * family server hashes the list it actually builds from), and so does `updatedAt`, which moves when a piece is
+ * touched without its contents changing. Empty pieces never reach a pack either.
  */
 export function packInputHash(project: Project, pieces: readonly Piece[], packIcon?: Uint8Array | undefined): string {
   const { version: _v, nextPieceNumber: _n, ...rest } = project;
   const input = {
     project: rest,
-    pieces: pieces.filter((p) => p.voxels.length > 0).map(({ publishedInVersion: _p, ...piece }) => piece),
+    pieces: pieces.filter((p) => p.voxels.length > 0).map(({ publishedInVersion: _p, updatedAt: _u, options, ...piece }) => {
+      const { onFamilyServer: _s, ...rest } = options;
+      return { ...piece, options: rest };
+    }),
   };
   const h = createHash("sha256").update(JSON.stringify(input));
   if (packIcon) h.update(packIcon);

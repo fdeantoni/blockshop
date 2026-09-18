@@ -310,7 +310,7 @@ export class App {
         btn(T.no, p.onFamilyServer ? "big" : "primary big on", set(false)),
       );
       const row = h("div", { class: "row" }, btn(`📋 ${T.copy}`, "big", () => { close(); void this.copyPiece(p); }), action);
-      if (!p.publishedInVersion) row.append(btn(`🗑 ${T.delete}`, "danger big", () => after(api.remove(pid, p.id))));
+      if (!p.onFamilyServer) row.append(btn(`🗑 ${T.delete}`, "danger big", () => after(api.remove(pid, p.id))));
       overlay.append(dialog(close,
         h("h2", {}, p.name),
         h("p", {}, `🏠 ${T.onFamilyServer}?`),
